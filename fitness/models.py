@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class Usuario(models.Model):
@@ -11,7 +12,7 @@ class Usuario(models.Model):
     
 class Perfil_de_Usuario(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    edad = models.PositiveBigIntegerField()
+    edad = models.IntegerField()
     altura = models.FloatField()
     peso = models.FloatField()
     foto_perfil = models.ImageField(upload_to='imagenes/')
@@ -40,39 +41,49 @@ class CategoriaEjercicio(models.Model):
         return self.nombre
     
 class Entrenamiento(models.Model):
+    TIPOS = [
+        ('AER','Aeróbico'),
+        ('FUE','Fuerza o anaeróbico'),
+        ('FUN','Funcional'),
+        ('HIT','Hit'),
+        ('POT','Potencia'),
+    ]
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200)
     descripcion= models.TextField()
-    duracion = models.PositiveBigIntegerField()
-    dificultad = models.CharField(max_length=25)
+    duracion = models.IntegerField()
+    tipo = models.CharField(max_length=3,
+                            choices=TIPOS,
+                            default='HIT',
+                            )
     ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio')
     
 
 class EntrenamientoEjercicio(models.Model):
     entrenamiento = models.ForeignKey(Entrenamiento, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    repeticiones = models.PositiveIntegerField()
-    peso_utilizado = models.FloatField()
+    repeticiones = models.IntegerField(default=0)
+    peso_utilizado = models.FloatField(default=0)
     
 class HistorialEjercicio(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
-    fecha = models.DateField()
-    duracion = models.PositiveIntegerField()
-    repeticiones = models.PositiveIntegerField()
-    peso = models.FloatField()
+    fecha = models.DateTimeField(default=timezone.now)
+    duracion = models.IntegerField(default=0)
+    repeticiones = models.IntegerField(default=0)
+    peso = models.FloatField(default=0)
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     entrenamiento = models.ForeignKey(Entrenamiento, on_delete=models.CASCADE)
     texto = models.TextField()
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(default=timezone.now)
 
 class PlanEntrenamiento(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
-    duracion_estimada = models.PositiveIntegerField()
+    duracion_estimada = models.IntegerField()
     dificultad = models.CharField(max_length=20)
     entrenamientos = models.ManyToManyField(Entrenamiento, through='EntrenamientoPlan')
 
@@ -83,15 +94,15 @@ class EntrenamientoPlan(models.Model):
 class SeguimientoPlanEntrenamiento(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     plan_entrenamiento = models.ForeignKey(PlanEntrenamiento, on_delete=models.CASCADE)
-    fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
-    progreso = models.PositiveIntegerField()
+    fecha_inicio = models.DateTimeField(default=timezone.now)
+    fecha_fin = models.DateTimeField(default=timezone.now)
+    progreso = models.IntegerField()
 
 class RutinaDiaria(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    fecha = models.DateField()
+    fecha = models.DateTimeField(default=timezone.now)
     descripcion = models.TextField()
-    duracion = models.PositiveIntegerField()
+    duracion = models.IntegerField()
     ejercicios = models.ManyToManyField(Ejercicio, through='RutinaEjercicio')
 
 class RutinaEjercicio(models.Model):
