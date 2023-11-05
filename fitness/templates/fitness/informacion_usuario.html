@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <ul>
+        {% for usuario in usuario_mostrar %}
+            <li>
+                <p><b>ID:</b> {{ usuario.id }}</p>
+                <p><b>Nombre:</b> {{ usuario.nombre }}</p>
+                <p><b>Email:</b> {{ usuario.email }}</p>
+                <a href="{% url 'perfil_usuario' usuario.id %}">Ver Perfil de Usuario</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <p>Pie de página &copy; 2023 Tu Nombre</p>
+    </footer>
+</body>
+</html>
