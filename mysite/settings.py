@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fitness',
-    'django_seed'
+    'django_seed',
 ]
 
 MIDDLEWARE = [
