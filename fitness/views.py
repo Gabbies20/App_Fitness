@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Ejercicio,Usuario,Perfil_de_Usuario
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento
 
 # Create your views here.
 def index(request):
@@ -20,3 +20,7 @@ def informacion_usuario(request):
 def perfil_usuario(request, id_usuario):
     perfil = Perfil_de_Usuario.objects.filter(usuario_id=id_usuario).first()
     return render(request, 'fitness/perfil_usuario.html', {'perfil_mostrar': perfil})
+
+def entrenamiento_aerobico(reques):
+    entrenamientos = Entrenamiento.objects.prefetch_related('ejercicios').filter(tipo='AER')
+    return render(reques,'fitness/entrenamientos_aerobicos.html',{'entrenamientos_mostrar':entrenamientos})
