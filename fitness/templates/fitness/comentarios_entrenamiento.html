@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Comentarios del Entrenamiento</title>
+</head>
+<body>
+    <h1>Comentarios del Entrenamiento "{{ entrenamiento.nombre }}"</h1>
+
+    <ul>
+        {% for comentario in comentarios %}
+            <li>
+                <p><strong>Usuario:</strong> {{ comentario.usuario.nombre }}</p>
+                <p><strong>Fecha:</strong> {{ comentario.fecha }}</p>
+                <p><strong>Comentario:</strong> {{ comentario.texto }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <p>Pie de página &copy; 2023 Tu Nombre</p>
+    </footer>
+</body>
+</html>

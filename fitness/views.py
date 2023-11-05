@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario
 
 # Create your views here.
 def index(request):
@@ -30,3 +30,11 @@ def usuario_con_h(request):
     # Filtra las rutinas diarias de usuarios cuyos nombres comienzan con 'H'
     rutinas_diarias = RutinaDiaria.objects.filter(usuario__nombre__istartswith='H').select_related('usuario').prefetch_related('ejercicios')
     return render(request, 'fitness/rutina_diaria_usuario_con_H.html', {'rutinas_diarias': rutinas_diarias})
+
+
+def comentarios_entrenamiento(request, entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.select_related('usuario').get(id=entrenamiento_id)
+    comentarios = Comentario.objects.filter(entrenamiento=entrenamiento)
+    
+    return render(request, 'fitness/comentarios_entrenamiento.html', {'entrenamiento': entrenamiento, 'comentarios': comentarios})
+

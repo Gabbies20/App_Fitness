@@ -7,5 +7,6 @@ urlpatterns = [
     path('informacion_usuario/',views.informacion_usuario,name='informacion_usuario'),
     path('perfil_usuario/<int:id_usuario>/',views.perfil_usuario,name='perfil_usuario'),
     path('entrenamientos',views.entrenamiento_aerobico,name='entrenamientos'),
-    path('usuario_H',views.usuario_con_h,name='usuario_H')
+    path('usuario_H',views.usuario_con_h,name='usuario_H'),
+    path('entrenamiento/<int:entrenamiento_id>/comentarios/', views.comentarios_entrenamiento, name='comentarios_entrenamiento'),
 ]
