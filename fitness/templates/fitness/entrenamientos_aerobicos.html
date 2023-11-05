@@ -16,7 +16,7 @@
                 <p><strong>Tipo de entrenamiento:</strong> {{ entrenamiento.get_tipo_display }}</p>
                 <p><strong>Usuarios:</strong> {{ entrenamiento.usuario }}</p>
                 <h3>Ejercicios:</h3>
-                <ul> <!--Entrenamiento tiene una relacion MAnytoMany con ejercicios-->
+                <ul> <!--Entrenamiento tiene una relacion ManytoMany con ejercicios-->
                     {% for ejercicio in entrenamiento.ejercicios.all %}
                         <p><strong>Ejercicio:</strong> {{ ejercicio.nombre }}</p>
                         

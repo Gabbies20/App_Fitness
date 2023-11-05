@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rutina Diaria de Usuarios con Nombre que Empieza por "H"</title>
+</head>
+<body>
+    <h1>Rutina diaria de usuarios, cuyo nombre empieza por 'H':</h1>
+
+    <ul>
+        {% for rutina_diaria in rutinas_diarias %}
+            <li>
+                <h2>{{ rutina_diaria.usuario.nombre }}</h2>
+                <p><strong>Fecha:</strong> {{ rutina_diaria.fecha }}</p>
+                <p><strong>Descripción:</strong> {{ rutina_diaria.descripcion }}</p>
+                <p><strong>Duración (minutos):</strong> {{ rutina_diaria.duracion }}</p>
+                <h3>Ejercicios:</h3>
+                <ul>
+                    {% for ejercicio in rutina_diaria.ejercicios.all %}
+                        <li>{{ ejercicio.nombre }} - {{ ejercicio.descripcion }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <footer>
+        <p>Pie de página &copy; 2023 Tu Nombre</p>
+    </footer>
+</body>
+</html>

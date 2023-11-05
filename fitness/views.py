@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria
 
 # Create your views here.
 def index(request):
@@ -24,3 +24,9 @@ def perfil_usuario(request, id_usuario):
 def entrenamiento_aerobico(reques):
     entrenamientos = Entrenamiento.objects.prefetch_related('ejercicios').filter(tipo='AER')
     return render(reques,'fitness/entrenamientos_aerobicos.html',{'entrenamientos_mostrar':entrenamientos})
+
+
+def usuario_con_h(request):
+    # Filtra las rutinas diarias de usuarios cuyos nombres comienzan con 'H'
+    rutinas_diarias = RutinaDiaria.objects.filter(usuario__nombre__istartswith='H').select_related('usuario').prefetch_related('ejercicios')
+    return render(request, 'fitness/rutina_diaria_usuario_con_H.html', {'rutinas_diarias': rutinas_diarias})
