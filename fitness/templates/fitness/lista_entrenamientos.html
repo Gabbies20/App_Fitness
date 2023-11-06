@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Entrenamientos</title>
+</head>
+<body>
+    <h1>Lista de entrenamientos</h1>
+    <p>Este es un párrafo de ejemplo.</p>
+    {%for entrenamiento in entrenamientos %}
+
+    <p><strong>Nombre:</strong>{{entrenamiento.nombre}}</p>
+    <ul>
+        <li><p><strong>Descripción:</strong>{{entrenamiento.descripcion}}</p></li>
+        <li><p><strong>Duración:</strong>{{entrenamiento.duracion}}</p></li>
+        <li><p><strong>Tipo:</strong>{{entrenamiento.tipo}}</p></li>
+        <li><p><strong>Ejercicios:</strong>
+        
+            <ul>
+                {%for ejercicio in entrenamiento.ejercicios.all %}
+                    <li><p><strong>Nombre:</strong>{{ejercicio.nombre}}</p></li>
+                   <li><p><strong>Descripción</strong>{{ejercicio.descripcion}}</p></li>
+                {% endfor %}
+            </ul>
+        </p></li>
+    </ul>
+
+    {% endfor%}
+
+
+</body>
+<footer>
+    <p>Pie de página &copy; 2023 Tu Nombre</p>
+</footer>
+</html>

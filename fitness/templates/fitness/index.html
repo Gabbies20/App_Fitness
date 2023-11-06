@@ -46,7 +46,29 @@
             </h3>
             <a href=" {% url 'categoria_lisos'%}">URL 7</a>
         </div>
-        
+        <div>
+            <h3>
+                Crea la URL que que muestre la lista de entrenamientos de tipo HIT y sus ejercicios correspondientes y su duración sea superior a 10000.
+            </h3>
+            <a href=" {% url 'lista_entrenamientos'%}">URL 8</a>
+        </div>
+        <div>
+            <h3>
+                Crea la URL que que muestre las categorías de ejercicios relacionadas con un grupo muscular específico y ver los ejercicios relacionados.
+            </h3>
+            <a href=" {% url 'grupo_muscular' 'Cárdiacos' %}">URL 9</a>
+        </div>
+        <div>
+            <h3>
+                Crea la URL que que muestre el usuario que no ha realizado ningun comentario.
+            </h3>
+            <a href=" {% url 'usuarios_sin_comentarios' %}">URL 10</a>
+        </div>
+        <div>
+            <h3>
+                Crea la URL que que muestre el historial de ejercicios de un usuario
+            <a href=" {% url 'historial_ejercicios_usuario' 1  %}">URL 11</a>
+        </div>
     </body>
 
 </html>

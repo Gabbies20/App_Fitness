@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Categorías de Ejercicios por Grupo Muscular</title>
+</head>
+<body>
+    <h1>Categorías de Ejercicios para el Grupo Muscular: {{ grupo_muscular }}</h1>
+    
+    <ul>
+        {% for category in categories %}
+        <li>
+            <p><strong>Nombre:</strong>{{ category.nombre }}</p>
+            <ul> 
+                <strong>Ejercicios:</strong>
+                {% for exercise in category.ejercicios.all %}
+                <li>{{ exercise.nombre }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

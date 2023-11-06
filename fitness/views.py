@@ -1,11 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio
+from django.shortcuts import render
+from django.views.defaults import page_not_found
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio
 
 # Create your views here.
 def index(request):
     return render (request,'fitness/index.html',{})
-
-
 
 #1.Vista que muestra todos los ejercicios y sus datos, incluidos los relcionados.
 def lista_ejercicios(request):
@@ -51,3 +50,56 @@ def categoria_lisos(request):
     return render(request,'fitness/categoria_lisos.html',{'categoria_mostrar':categoria})
 
 
+def lista_entrenamientos(request):
+    entrenamiento = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios').filter(tipo='HIT',duracion__gt=10000)
+    return render(request, 'fitness/lista_entrenamientos.html',{'entrenamientos':entrenamiento})
+
+
+def grupo_muscular(request, grupo_muscular):
+    categories = CategoriaEjercicio.objects.filter(grupo_muscular_principal=grupo_muscular)
+    
+    context = {
+        'grupo_muscular': grupo_muscular,
+        'categories': categories,
+    }
+    
+    return render(request, 'fitness/grupo_muscular.html', context)
+
+
+
+def usuarios_sin_comentarios(request):
+    # Obtén la lista de usuarios que no han realizado ningún comentario
+    usuarios_sin_comentarios = Usuario.objects.exclude(comentario__isnull=False)
+    
+    contexto = {
+        'usuarios_sin_comentarios': usuarios_sin_comentarios
+    }
+    
+    return render(request, 'fitness/usuarios_sin_comentarios.html', contexto)
+
+
+def historial_ejercicios_usuario(request, usuario_id):
+    usuario = Usuario.objects.get(id=usuario_id)
+    historial_ejercicios = HistorialEjercicio.objects.filter(usuario=usuario)
+
+    contexto = {
+        'usuario': usuario,
+        'historial_ejercicios': historial_ejercicios
+    }
+
+    return render(request, 'fitness/historial_ejercicios_usuario.html', contexto)
+
+
+#ERRORES:
+
+def mi_error_404(request, exception=None):
+    return render(request, 'errores/404.html', None, status=404)
+
+def mi_error_400(request, exception=None):
+    return render(request, 'errores/400.html', None, status=400)
+
+def mi_error_403(request, exception=None):
+    return render(request, 'errores/403.html', None, status=403)
+
+def mi_error_500(request, exception=None):
+    return render(request, 'errores/500.html', None, status=500)
