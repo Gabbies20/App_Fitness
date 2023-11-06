@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Comentarios por Fecha</title>
+</head>
+<body>
+    <h1>Comentarios por Fecha</h1>
+
+    <ul>
+        {% for comentario in comentarios_mostrar %}
+            <li>
+                <p><strong>Usuario:</strong> {{ comentario.usuario.nombre }}</p>
+                <p><strong>Fecha:</strong> {{ comentario.fecha }}</p>
+                <p><strong>Texto:</strong> {{ comentario.texto }}</p>
+                <p><strong>Entrenamiento:</strong> {{ comentario.entrenamiento.nombre }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <p>Pie de página &copy; 2023 Tu Nombre</p>
+    </footer>
+</body>
+</html>

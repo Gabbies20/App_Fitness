@@ -38,3 +38,8 @@ def comentarios_entrenamiento(request, entrenamiento_id):
     
     return render(request, 'fitness/comentarios_entrenamiento.html', {'entrenamiento': entrenamiento, 'comentarios': comentarios})
 
+
+def comentarios_fecha(request,anyo_comentario,mes_comentario):
+    comentarios = Comentario.objects.select_related('usuario','entrenamiento')
+    comentarios = comentarios.filter(fecha__year=anyo_comentario,fecha__month=mes_comentario)
+    return render(request,'fitness/comentarios_fecha.html',{'comentarios_mostrar':comentarios})
