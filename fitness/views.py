@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio
 
 # Create your views here.
 def index(request):
@@ -43,3 +43,11 @@ def comentarios_fecha(request,anyo_comentario,mes_comentario):
     comentarios = Comentario.objects.select_related('usuario','entrenamiento')
     comentarios = comentarios.filter(fecha__year=anyo_comentario,fecha__month=mes_comentario)
     return render(request,'fitness/comentarios_fecha.html',{'comentarios_mostrar':comentarios})
+
+
+def categoria_lisos(request):
+    categoria = CategoriaEjercicio.objects.prefetch_related('ejercicios')
+    categoria = categoria.filter(grupo_muscular_principal = 'Lisos')
+    return render(request,'fitness/categoria_lisos.html',{'categoria_mostrar':categoria})
+
+
