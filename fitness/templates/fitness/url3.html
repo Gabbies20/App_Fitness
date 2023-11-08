@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cuentas Bancarias</title>
+    <title>Usuarios sin Votos</title>
 </head>
 <body>
-    <h1>Puntuación numerica mayor o igual a 3:</h1>
+    <h1>Usuarios o Clientes sin Votos</h1>
+    
     <ul>
-        {% for cuenta in cuenta_mostrar %}
+        {% for usuario in usuarios_sin_votos %}
             <li>
-                Propietario: {{ cuenta.titular.nombre }}<br>
-                Banco: {{ cuenta.banco }}<br>
-                Número de cuenta: {{ cuenta.numero_cuenta }}<br>
+                <h2>{{ usuario.nombre }}</h2>
+                <p>Email: {{ usuario.email }}</p>
+                <p>Otra información del usuario o cliente</p>
             </li>
         {% empty %}
-            <li>No se encontraron cuentas que cumplan con los criterios.</li>
+            <li>No se encontraron usuarios o clientes sin votos.</li>
         {% endfor %}
     </ul>
 </body>

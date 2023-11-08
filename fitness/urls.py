@@ -17,5 +17,6 @@ urlpatterns = [
     path('historial_ejercicios/<int:usuario_id>/', views.historial_ejercicios_usuario, name='historial_ejercicios_usuario'),
     path('ultimo_voto/<int:id_ejercicio>',views.ultimo_voto,name='ultimo_voto'),
     path('banco_tipo/<str:texto>',views.cuentas_bancarias,name='banco_tipo'),
-    path('puntuacion_tres/<int:id_usuario>',views.puntuacion_tres,name='puntuacion_tres')
+    path('puntuacion_tres/<int:id_usuario>',views.puntuacion_tres,name='puntuacion_tres'),
+    path('usuarios_sin_votos',views.usuarios_sin_votos,name='usuarios_sin_votos')
 ]

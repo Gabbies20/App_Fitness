@@ -126,6 +126,11 @@ def puntuacion_tres(request, id_usuario):
     
 
 #Todos los usuarios o clientes que no han votado nunca y mostrar información sobre estos usuarios y clientes al completo..
+def usuarios_sin_votos(request):
+    # Obtén una lista de usuarios o clientes que no han votado nunca
+    usuarios_sin_votos = Usuario.objects.exclude(voto__isnull=False)
+
+    return render(request, 'fitness/url3.html', {'usuarios_sin_votos': usuarios_sin_votos})
 
 
 
