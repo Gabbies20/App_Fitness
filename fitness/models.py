@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Usuario(models.Model):
@@ -27,6 +28,7 @@ class Ejercicio(models.Model):
     descripcion = models.TextField()
     tipo_ejercicio = models.CharField(max_length=20)
     usuarios = models.ManyToManyField(Usuario, through='HistorialEjercicio')
+    usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
 
     def __str__(self) -> str:
         return self.nombre
@@ -108,3 +110,37 @@ class RutinaDiaria(models.Model):
 class RutinaEjercicio(models.Model):
     rutina_diaria = models.ForeignKey(RutinaDiaria, on_delete=models.CASCADE)
     ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+    
+    
+class Voto(models.Model):
+    u_creador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    puntuacion = models.IntegerField(default=1,
+                                            validators=[
+                                                MaxValueValidator(5),
+                                                MinValueValidator(1)
+                                            ])
+    comentario = models.TextField()
+    fecha = models.DateTimeField(default=timezone.now)
+    ejercicio = models.ForeignKey(Ejercicio,on_delete=models.CASCADE)
+    
+
+class Suscripcion(models.Model):
+    BANCOS = [
+        ('CAI', 'Caixa'),
+        ('BBV', 'BBVA'),
+        ('UNI', 'Unicaja'),
+        ('ING', 'ING España'),
+    ]
+    
+    banco = models.CharField(
+                            max_length=3,
+                            choices=BANCOS,
+                            default='ING',
+                             )
+    
+    numero_cuenta = models.CharField(max_length=20)
+    titular = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    
+
+    

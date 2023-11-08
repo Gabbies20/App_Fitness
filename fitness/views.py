@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.defaults import page_not_found
-from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio
+from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio,Voto,Suscripcion
+from django.db.models import Q,F
 
 # Create your views here.
 def index(request):
@@ -103,3 +104,37 @@ def mi_error_403(request, exception=None):
 
 def mi_error_500(request, exception=None):
     return render(request, 'errores/500.html', None, status=500)
+
+
+    """
+    EXAMEN:
+    
+    """
+#El último voto que se realizó en un modelo principal en concreto, y mostrar el comentario, la votación e información del usuario o cliente que lo realizó.
+def ultimo_voto(request,id_ejercicio):
+    usuario = Voto.objects.select_related('u_creador','ejercicio').filter(ejercicio=id_ejercicio).order_by('-fecha')[:1].get()
+    return render(request,'fitness/url1.html',{'usuario_mostrar':usuario})
+
+
+#Todos los ejercicios que tengan votos con una puntuación numérica igual a 3 y que realizó un usuario o cliente en concreto. 
+def puntuacion_tres(request, id_usuario):
+    usuario = Usuario.objects.get(id=id_usuario)
+    votos = Voto.objects.filter(puntuacion=3, u_creador=usuario)
+    ejercicios = Ejercicio.objects.filter(voto__in=votos)
+
+    return render(request, 'fitness/url2.html', {'ejercicios_mostrar': ejercicios})
+    
+
+#Todos los usuarios o clientes que no han votado nunca y mostrar información sobre estos usuarios y clientes al completo..
+
+
+
+#Obtener las cuentas bancarias que sean de la Caixa o de Unicaja y que el propietario tenga un nombre que contenga un texto en concreto, por ejemplo “Juan”.
+
+def cuentas_bancarias(request,texto):
+    cuentas = Suscripcion.objects.select_related('titular')
+    cuentas = cuentas.filter(Q(banco='CAI') | Q(banco='Uni'), titular__nombre__icontains=texto)
+    return render(request, 'fitness/url4.html', {'cuenta_mostrar': cuentas})
+
+
+#Obtener todos los modelos principales que tengan una media de votaciones mayor del 2,5.

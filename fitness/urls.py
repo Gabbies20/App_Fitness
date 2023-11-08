@@ -15,4 +15,7 @@ urlpatterns = [
     path('grupo_muscular/<str:grupo_muscular>/', views.grupo_muscular,name='grupo_muscular'),
     path('usuarios_sin_comentarios/', views.usuarios_sin_comentarios, name='usuarios_sin_comentarios'),
     path('historial_ejercicios/<int:usuario_id>/', views.historial_ejercicios_usuario, name='historial_ejercicios_usuario'),
+    path('ultimo_voto/<int:id_ejercicio>',views.ultimo_voto,name='ultimo_voto'),
+    path('banco_tipo/<str:texto>',views.cuentas_bancarias,name='banco_tipo'),
+    path('puntuacion_tres/<int:id_usuario>',views.puntuacion_tres,name='puntuacion_tres')
 ]
