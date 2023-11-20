@@ -1,106 +1,44 @@
-<html>
-    <body>
-        <h1>APLICACION FITNESS</h1>
-        <h2>Listados de enlaces</h2>
-        <div>
-            <h3>
-                Crea una URL que muestre una lista de todos 
-            los ejercicios de la aplicación 
-            con sus datos correspondientes.
-            </h3>
-            <a href=" {% url 'lista_ejercicios' %}">URL 1</a>
-        </div>
-        <div>
-            <h3>
-                Crea una URL que muestre la información de un usuario especifico, incluyendo su nombre, correo y enlace a su perfil de usuario.
-            </h3>
-            <a href=" {% url 'informacion_usuario'  %}">URL 2</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que muestre los entrenamientos de tipo aerobico y sus usuarios asignados.
-            </h3>
-            <a href=" {% url 'entrenamientos'  %}">URL 3</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que muestre la rutina diaria de un usuario, cuyo nombre empiece por H.
-            </h3>
-            <a href=" {% url 'usuario_H'  %}">URL 4</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre los comentarios que pertenecen a un entrenamiento en especifico.
-            </h3>
-            <a href=" {% url 'comentarios_entrenamiento' entrenamiento_id=1 %}">URL 5</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre los comentarios de un año y mes concreto.
-            </h3>
-            <a href=" {% url 'comentarios_fecha' 2020 2%}">URL 6</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre los ejercicios cuyo grupo muscular es 'Lisos'.
-            </h3>
-            <a href=" {% url 'categoria_lisos'%}">URL 7</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre la lista de entrenamientos de tipo HIT y sus ejercicios correspondientes y su duración sea superior a 10000.
-            </h3>
-            <a href=" {% url 'lista_entrenamientos'%}">URL 8</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre las categorías de ejercicios relacionadas con un grupo muscular específico y ver los ejercicios relacionados.
-            </h3>
-            <a href=" {% url 'grupo_muscular' 'Cárdiacos' %}">URL 9</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre el usuario que no ha realizado ningun comentario.
-            </h3>
-            <a href=" {% url 'usuarios_sin_comentarios' %}">URL 10</a>
-        </div>
-        <div>
-            <h3>
-                Crea la URL que que muestre el historial de ejercicios de un usuario en concreto.
-            </h3>
-            <a href=" {% url 'historial_ejercicios_usuario' 1  %}">URL 11</a>
-        </div>
+{% extends 'fitness/principal.html' %}
+{% load static%}
 
-        <div>
-            <h3>
-            Examen
-            </h3>
-            <a href=" {% url 'ultimo_voto' 1  %}">URL 1</a>
-        </div>
-        <div>
-            <h3>
-            Examen
-            </h3>
-            <a href=" {% url 'puntuacion_tres' 2 %}">URL 2</a>
-        </div>
-        <div>
-            <h3>
-            Examen
-            </h3>
-            <a href=" {% url 'usuarios_sin_votos' %}">URL 3</a>
-        </div>
-        <div>
-            <h3>
-            Examen
-            </h3>
-            <a href=" {% url 'banco_tipo' 'Jennifer' %}">URL 4</a>
-        </div>
+{% block contenido%}
 
-        
 
-        <footer>
-            <p>Pie de página &copy; 2023 Gabriela Pinzón</p>
-        </footer>
-    </body>
 
-</html>
+    <div class="contenedor row align-items-center">
+        <div class="main col-md-8">
+            <h3>MAIN</h3>
+            <p class="d-none d-md-block">8 Columnas</p>
+            <p class="d-block d-md-none">12 Columnas</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit tempora atque incidunt illo
+                voluptate a vel et inventore excepturi, fugiat obcaecati, delectus reiciendis voluptates possimus
+                nisi placeat magnam quos nam beatae quia laboriosam temporibus! Sint impedit voluptatum reiciendis
+                dolor delectus?
+
+            </p>
+            <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias reprehenderit asperiores maiores
+                qui sequi numquam minus aliquid ea explicabo ratione!
+            </p>
+        </div>
+        <div class="aside col">
+            <h3>ASIDE</h3>
+            <!--Quiero que no se muestre y a partir de tamaño mediano se muestre : d-md-block-->
+            <p class="d-none d-md-block">4 Columnas</p>
+
+            <!-- Quiero que por defecto te muestres pero al llegar a un tamaño mediando quiero que no te muestres-->
+            <p class="d-block d-md-none">12 Columnas</p>
+        </div>
+    </div>
+{% endblock%}
+
+
+
+
+
+
+
+
+
+
+
