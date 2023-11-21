@@ -1,36 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Detalles de los Entrenamientos</title>
-</head>
-<body>
-    <h1>Detalles de los Entrenamientos</h1>
+{% extends 'fitness/principal.html' %}
+{% load static%}
 
-    <ul>
-        {% for entrenamiento in entrenamientos_mostrar %}
-            <li>
-                <h2>{{ entrenamiento.nombre }}</h2>
-                <p><strong>Descripción:</strong> {{ entrenamiento.descripcion }}</p>
-                <p><strong>Duración (minutos):</strong> {{ entrenamiento.duracion }}</p>
-                <p><strong>Tipo de entrenamiento:</strong> {{ entrenamiento.get_tipo_display }}</p>
-                <p><strong>Usuarios:</strong> {{ entrenamiento.usuario }}</p>
-                <h3>Ejercicios:</h3>
-                <ul> <!--Entrenamiento tiene una relacion ManytoMany con ejercicios-->
-                    {% for ejercicio in entrenamiento.ejercicios.all %}
-                        <p><strong>Ejercicio:</strong> {{ ejercicio.nombre }}</p>
-                        
-                        <p><strong>Tipo:</strong>{{ ejercicio.tipo_ejercicio }}</p>
+{% block cabecera%}
+<br>
+  <h2>DETALLES DE LOS ENTRENAMIENTOS ANAEROBICOS</h2>
+{% endblock %}
+   {% block contenido %}
+   <img src="{% static 'imagenes/entrenamientos_anaerobicos.jpg'%}" width="450" height="280"></img>
+   <ul>
+    {% for entrenamiento in entrenamientos_mostrar %}
+    <br>
+        <li>
+            <p><strong>Nombre:</strong>{{ entrenamiento.nombre }}</h2>
+            <p><strong>Descripción:</strong> {{ entrenamiento.descripcion }}</p>
+            <p><strong>Duración (minutos):</strong> {{ entrenamiento.duracion }}</p>
+            <p><strong>Tipo de entrenamiento:</strong> {{ entrenamiento.get_tipo_display }}</p>
+            <p><strong>Usuarios:</strong> {{ entrenamiento.usuario }}</p>
+            <h3>EJERCICIOS:</h3>
+            <ul> <!--Entrenamiento tiene una relacion ManytoMany con ejercicios-->
+                {% for ejercicio in entrenamiento.ejercicios.all %}
+                    <p><strong>Ejercicio:</strong> {{ ejercicio.nombre }}</p>
                     
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
-    
-    <footer>
-        <p>Pie de página &copy; 2023 Gabriela Pinzón</p>
-    </footer>
-</body>
-</html>
+                    <p><strong>Tipo:</strong>{{ ejercicio.tipo_ejercicio }}</p>
+                
+                {% endfor %}
+            </ul>
+        </li>
+        <hr>
+    {% endfor %}
+</ul>
+{% endblock %}
+
 

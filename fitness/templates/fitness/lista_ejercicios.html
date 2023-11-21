@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Ejercicios</title>
-</head>
-<body>
-  <h1>Lista de Ejercicios</h1>
+{% extends 'fitness/principal.html' %}
+{% load static%}
+
+{% block cabecera%}
+<br>
+  <h2>EJERCICIOS</h2>
+{% endblock %}
+
+{% block contenido%}
+    <img src="{% static 'imagenes/list.jpg'%}" width="450" height="300"></img>
+    
     {% for ejercicio in ejercicios_mostrar%}
-    <h2>Ejercicio:</h2>
-        <p><strong>Nombre:</strong>{{ejercicio.nombre}}</p>
+    <br>
+    <p><strong>Ejercicio:</strong>{{ejercicio.nombre}}</p>
         <p><strong>Descripción:</strong>{{ejercicio.descripcion}}</p>
         <p><strong>Tipo de Ejercicio:</strong>{{ejercicio.tipo_ejercicio}}</p>
         <br>
@@ -19,10 +22,7 @@
                     <li><p><strong>Email:</strong>{{usuario.email}}</li>
         {%endfor%}
             </ul>
+            <hr>
     {% endfor%}
+{% endblock %}
 
-    <footer>
-        <p>Pie de página &copy; 2023 Gabriela Pinzón</p>
-    </footer>
-</body>
-</html>

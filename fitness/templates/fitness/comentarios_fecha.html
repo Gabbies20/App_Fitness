@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Comentarios por Fecha</title>
-</head>
-<body>
-    <h1>Comentarios por Fecha</h1>
+{% extends 'fitness/principal.html' %}
+{% load static%}
 
-    <ul>
-        {% for comentario in comentarios_mostrar %}
-            <li>
-                <p><strong>Usuario:</strong> {{ comentario.usuario.nombre }}</p>
-                <p><strong>Fecha:</strong> {{ comentario.fecha }}</p>
-                <p><strong>Texto:</strong> {{ comentario.texto }}</p>
-                <p><strong>Entrenamiento:</strong> {{ comentario.entrenamiento.nombre }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+{% block cabecera%}
+<br>
+<h1>COMENTARIOS POR FECHA:</h1>
+{% endblock %}
 
-    <footer>
-        <p>Pie de página &copy; 2023 Gabriela Pinzón</p>
-    </footer>
-</body>
-</html>
+{% block contenido %}
+<ul>
+    {% for comentario in comentarios_mostrar %}
+        <li>
+            <p><strong>Usuario:</strong> {{ comentario.usuario.nombre }}</p>
+            <p><strong>Fecha:</strong> {{ comentario.fecha|date:"d-m-Y" }}</p>
+            <p><strong>Texto:</strong> {{ comentario.texto }}</p>
+            <p><strong>Entrenamiento:</strong> {{ comentario.entrenamiento.nombre }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock%}
+

@@ -1,5 +1,5 @@
 {% load static%}
-<div class="row menu">
+<div class="row menu row-cols-5">
     <div class="col"><a href="{% url 'lista_ejercicios' %}">URL 1</a></div>
     <div class="col"><a href="{% url 'informacion_usuario'  %}">URL 2</a></div>
     <div class="col"><a href="{% url 'entrenamientos'  %}">URL 3</a></div>
@@ -10,7 +10,7 @@
     <div class="col"><a href="{% url 'lista_entrenamientos'%}">URL 8</a></div>
     <div class="col"><a href="{% url 'grupo_muscular' 'Cárdiacos' %}">URL 9</a></div>
     <div class="col"><a href=" {% url 'usuarios_sin_comentarios' %}">URL 10</a></div>
-    <div class="col"><a href="{% url 'historial_ejercicios_usuario' 1  %}">URL 11</a></div>
-    <div class="col"><a href="">URL 12</a></div>
+    {#<div class="col"><a href="{% url 'historial_ejercicios_usuario' 1  %}">URL 11</a></div> #}
+    {#<div class="col"><a href="">URL 12</a></div>#}
 </div>
 

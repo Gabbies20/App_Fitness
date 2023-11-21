@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Rutina Diaria de Usuarios con Nombre que Empieza por "H"</title>
-</head>
-<body>
-    <h1>Rutina diaria de usuarios, cuyo nombre empieza por 'H':</h1>
+{% extends 'fitness/principal.html' %}
+{% load static%}
 
+{% block cabecera%}
+<br>
+  <h2>RUTINA DIARIA DE USUARIOS, CUYO NOMBRE ENPIEZA CON H:</h2>
+{% endblock %}
+
+{% block contenido%}
     <ul>
         {% for rutina_diaria in rutinas_diarias %}
             <li>
-                <h2>{{ rutina_diaria.usuario.nombre }}</h2>
+                <p><strong>Nombre:</strong>{{ rutina_diaria.usuario.nombre }}</p>
                 <p><strong>Fecha:</strong> {{ rutina_diaria.fecha }}</p>
                 <p><strong>Descripción:</strong> {{ rutina_diaria.descripcion }}</p>
                 <p><strong>Duración (minutos):</strong> {{ rutina_diaria.duracion }}</p>
@@ -23,9 +23,4 @@
             </li>
         {% endfor %}
     </ul>
-    
-    <footer>
-        <p>Pie de página &copy; 2023 Gabriela Pinzón</p>
-    </footer>
-</body>
-</html>
+{% endblock%}

@@ -21,11 +21,13 @@
 
     <div class="container">
         <div class="header row">
-            <h1>APP FITNESS</h1>
+            <h1><a href="{% url 'index' %}">APP FITNESS</a></h1>
             <p>Logo</p>
         </div>
-
         {% include 'fitness/menu.html' %}
+
+        {% block cabecera%}
+        {% endblock %}
 
         {% block contenido%}
         {% endblock%}
