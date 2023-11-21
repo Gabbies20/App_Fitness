@@ -36,6 +36,9 @@ class EjercicioModelForm(ModelForm):
             
         
         if not re.match("^[a-zA-Z]+$", tipo_ejercicio):
+        
+           # La función re.match(pattern, string) es una función del módulo re en Python que se utiliza para verificar si el patrón especificado al principio de la cadena coincide. 
+        
             self.add_error('tipo_ejercicio','Este campo solo debe contener letras.')
             
         return self.cleaned_data
