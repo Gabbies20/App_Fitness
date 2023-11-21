@@ -53,3 +53,8 @@ body{
     height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
     display: none; /* La imagen está oculta por defecto */
 }
+@media (min-width: 768px) {
+    .aside img {
+        display: block; /* La imagen se muestra en pantallas medianas y más grandes */
+    }
+}
