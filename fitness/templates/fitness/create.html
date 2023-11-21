@@ -1,0 +1,22 @@
+{% extends 'fitness/principal.html' %}
+{% load static%}
+
+{% block cabecera%}
+<br>
+  <h2>CREAR EJERCICIO</h2>
+{% endblock %}
+
+{% block contenido%}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+    <form action ="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form formulario %}
+        <br>
+        {% buttons %}
+        <button type="submit" class="btn btn-secondary">Enviar</button>
+        {% endbuttons %}
+    </form>
+    <br>
+{% endblock %}
+<br>

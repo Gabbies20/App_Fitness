@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.defaults import page_not_found
 from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio,Voto,Suscripcion
 from django.db.models import Q,F
+from .forms import *
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -143,3 +145,44 @@ def cuentas_bancarias(request,texto):
 
 
 #Obtener todos los modelos principales que tengan una media de votaciones mayor del 2,5.
+
+
+
+#Crear un ejercicio:
+def ejercicio_crear(request):
+   # formulario = EjercicioModelForm()
+    #return render(request, 'fitness/create.html',{'formulario':formulario})
+    
+    
+    #Por defecto la primera vez que entra esta vacio.
+    #Esto es una variable 
+    datosFormulario = None
+    
+    #SI le escribimos datos ya entra a este if, ya esta usando el metodo POST
+    if request.method == 'POST':
+        datosFormulario = request.POST
+    
+    
+    #Sigue vacio
+    formulario = EjercicioModelForm(datosFormulario)
+    
+    
+    #Ahora ya lo llenado es POST O GET, COMO YA HA PULSADO EL USUARIO ENVIAR,el ḿetodo es POSt ya ya entra aquí.
+    if (request.method == 'POST'):
+        ejercicio_creado = crear_ejercicio_modelo(formulario)
+        if(ejercicio_creado):
+            messages.success(request, 'Se ha creado el ejercicio'+formulario.cleaned_data.get('nombre')+" correctamente.")
+            return redirect("lista_ejercicios")
+    return render(request, 'fitness/create.html',{"formulario":formulario})
+
+def crear_ejercicio_modelo(formulario):
+    ejercicio_creado = False
+    
+    #Compreubo si es valido y lo guarda.
+    if formulario.is_valid():
+        try:
+            formulario.save()
+            ejercicio_creado = True
+        except:
+            pass
+    return ejercicio_creado
