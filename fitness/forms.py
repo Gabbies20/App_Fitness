@@ -2,6 +2,7 @@ from typing import Any
 from django import forms
 from .models import *
 from django.forms import ModelForm
+import re 
 
 class EjercicioModelForm(ModelForm):
     class Meta:
@@ -29,7 +30,15 @@ class EjercicioModelForm(ModelForm):
         ejercicioNombre = Ejercicio.objects.filter(nombre=nombre).first()
         if(not ejercicioNombre is None):
             self.add_error('nombre','Ya existe un ejercicio con ese nombre.')
+           
+        if len(descripcion) < 5:
+            self.add_error('descripcion','La descripcion deber ser superior a 5 caracteres.') 
+            
+        
+        if not re.match("^[a-zA-Z]+$", tipo_ejercicio):
+            self.add_error('tipo_ejercicio','Este campo solo debe contener letras.')
             
         return self.cleaned_data
+        
         
         
