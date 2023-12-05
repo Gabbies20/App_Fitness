@@ -186,3 +186,18 @@ def crear_ejercicio_modelo(formulario):
         except:
             pass
     return ejercicio_creado
+
+
+#Vista para la búsqueda:
+def ejercicio_buscar(request):
+    formulario = BusquedaEjercicioForm(request.GET)
+    
+    if(formulario.is_valid()):
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        ejercicios = Ejercicio.objects.prefetch_related('usuarios_votos')
+        ejercicios = ejercicios.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
+        return render (request,'fitness/ejercicio_busqueda.html',{'ejercicio_mostrar':ejercicios,'texto_busqueda':texto})
+    if('HTPP_REFERER' in request.META):
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        return redirect('index')

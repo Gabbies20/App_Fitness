@@ -44,4 +44,7 @@ class EjercicioModelForm(ModelForm):
         return self.cleaned_data
         
         
-        
+#FORMULARIO DE BÚSQUEDA:
+class BusquedaEjercicioForm(forms.Form):
+    #E formulario solo tendra un campo y este no esta relacionado con ningún modelo, por esa razón se usa el formulario genérico.
+    textoBusqueda = forms.CharField(required=True)

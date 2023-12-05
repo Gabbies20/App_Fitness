@@ -19,5 +19,7 @@ urlpatterns = [
     path('banco_tipo/<str:texto>',views.cuentas_bancarias,name='banco_tipo'),
     path('puntuacion_tres/<int:id_usuario>',views.puntuacion_tres,name='puntuacion_tres'),
     path('usuarios_sin_votos',views.usuarios_sin_votos,name='usuarios_sin_votos'),
-    path('create',views.ejercicio_crear,name='create')
+    path('create',views.ejercicio_crear,name='create'),
+    #Url de búsqueda:
+    path('ejercicio_buscar/',views.ejercicio_buscar,name='ejercicio_buscar'),
 ]
