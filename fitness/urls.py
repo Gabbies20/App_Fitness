@@ -22,4 +22,7 @@ urlpatterns = [
     path('create',views.ejercicio_crear,name='create'),
     #Url de búsqueda:
     path('ejercicio_buscar/',views.ejercicio_buscar,name='ejercicio_buscar'),
+    path('ejercicio_busqueda_avanzada/',views.ejercicio_busqueda_avanzada,name='ejercicio_busqueda_avanzada'),
+    path('ejercicio/editar/<int:ejercicio_id>/',views.ejercicio_editar,name='ejercicio_editar'),
+    path('ejercicio/eliminar/<int:ejercicio_id>/',views.ejercicio_eliminar,name='ejercicio_eliminar'),
 ]

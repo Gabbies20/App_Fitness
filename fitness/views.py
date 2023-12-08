@@ -169,6 +169,7 @@ def ejercicio_crear(request):
     
     #Ahora ya lo llenado es POST O GET, COMO YA HA PULSADO EL USUARIO ENVIAR,el ḿetodo es POSt ya ya entra aquí.
     if (request.method == 'POST'):
+        #Llamamaos a la función que creará el libro.
         ejercicio_creado = crear_ejercicio_modelo(formulario)
         if(ejercicio_creado):
             messages.success(request, 'Se ha creado el ejercicio'+formulario.cleaned_data.get('nombre')+" correctamente.")
@@ -201,3 +202,72 @@ def ejercicio_buscar(request):
         return redirect(request.META['HTTP_REFERER'])
     else:
         return redirect('index')
+    
+
+#VISTA BÚSQUEDA AVANZADA:
+def ejercicio_busqueda_avanzada(request):
+    
+    #Vamos a verificar si tenemos datos o no, para procesar el formulario y validarlo.
+    if(len(request.GET)> 0):
+        formulario = BusquedaAvanzadaEjercicioForm(request.GET)
+        if formulario.is_valid():
+            print('Es valido')
+            
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores: \n'
+            
+            QSEjercicios = Ejercicio.objects.prefetch_related('usuarios_votos')
+            
+            #OBTENEMOS LOS FILTROS:
+            textoBusqueda = formulario.cleaned_data['textoBusqueda']
+            nombre = formulario.cleaned_data['nombre']
+            descripcion = formulario.cleaned_data['descripcion']
+            #usuarios = formulario.cleaned_data.get['usuarios', []]
+            
+            #POR CADA FILTRO COMPROBAMOS SI TIENE UN VALOR Y LO AÑADIMOS A LA QUERYSET:
+            if textoBusqueda:
+                QSEjercicios = QSEjercicios.filter(Q(nombre__contains=textoBusqueda) | Q(descripcion__contains=textoBusqueda))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+textoBusqueda+"\n"
+                
+                
+            ejercicios = QSEjercicios.all()
+            print('Estamos aqui')
+            
+            return render(request,'fitness/ejercicio_busqueda.html',{'ejercicios_mostrar':ejercicios,'texto_busqueda':mensaje_busqueda})
+    else:
+        #En el caso de que procesa desde una URL y no tenga datos, mostramos el formulario correspondiente.
+        formulario = BusquedaAvanzadaEjercicioForm(None)
+        print('No hay nada')
+    return render(request,'fitness/ejercicio/busqueda_avanzada.html',{'formulario':formulario})
+
+
+
+#VISTA EDITAR-EJERCICIO:
+def ejercicio_editar(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.get(id=ejercicio_id)
+    
+    datosFormulario = None
+    
+    if(request.method == 'POST'):
+        datosFormulario = request.POST
+        
+    formulario = EjercicioModelForm(datosFormulario,instance= ejercicio)
+    
+    if(request.method=='POST'):
+        if(formulario.is_valid()):
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_ejercicios')
+            except Exception as error:
+                print(error)
+    return render(request,'fitness/ejercicio/actualizar.html',{'formulario':formulario,'ejercicio':ejercicio})
+
+
+#VISTA ELIMINAR-EJERCICIO:
+def ejercicio_eliminar(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.get(id=ejercicio_id)
+    try:
+        ejercicio.delete()
+    except:
+        pass
+    return redirect ('lista_ejercicios')

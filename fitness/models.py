@@ -139,7 +139,7 @@ class Suscripcion(models.Model):
                              )
     
     numero_cuenta = models.CharField(max_length=20)
-    titular = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    titular = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
     
 

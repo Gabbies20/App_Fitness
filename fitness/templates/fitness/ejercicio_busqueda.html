@@ -5,6 +5,10 @@
 <br>
   <h2>RESULTADO DE BÚSQUEDA:</h2>
 {% endblock %}
+
+{% block busqueda %}
+    <h2 class="display-5">{{ texto_busqueda|linebreaksbr }}</h1>
+{% endblock %}
 {% block contenido %}
     
         {% for ejercicio in ejercicio_mostrar %}

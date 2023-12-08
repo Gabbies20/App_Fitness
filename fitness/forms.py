@@ -44,7 +44,65 @@ class EjercicioModelForm(ModelForm):
         return self.cleaned_data
         
         
-#FORMULARIO DE BÚSQUEDA:
+#FORMULARIO DE BÚSQUEDA PARA EJERCICIO:
 class BusquedaEjercicioForm(forms.Form):
-    #E formulario solo tendra un campo y este no esta relacionado con ningún modelo, por esa razón se usa el formulario genérico.
+    #El formulario solo tendra un campo y este no esta relacionado con ningún modelo, por esa razón se usa el formulario genérico.
     textoBusqueda = forms.CharField(required=True)
+    
+    
+    
+class BusquedaAvanzadaEjercicioForm(forms.Form):
+    
+    """class Ejercicio(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    tipo_ejercicio = models.CharField(max_length=20)
+    usuarios = models.ManyToManyField(Usuario, through='HistorialEjercicio')
+    usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
+
+    def __str__(self) -> str:
+        return self.nombre"""
+        
+        
+    """
+    forms.CharField: Sería como un InputText en HTML y los usaremos para los campos tipo Char y Text
+forms.DateField: Sería como input tipo Date en HTML y lo usaremos para los campos tipo Fecha
+forms.ChoiceField: Sería como un select en HTML y lo usaremos para los campos tipo Char con opciones
+forms.ModelChoiceField: Sería como un Select en HTML y lo usaremos para las relaciones OneToOne o ManyToOne
+forms.ModelMultipleChoiceField: Sería como un Select Múltiple en HTML y lo usaremos para las relaciones ManyToMany o OneToMany 
+Existen más tipos de campos que podemos encontrar en la documentación
+    
+    """
+    
+    """
+    Los campos anteriormente especificados pueden tener una serie de parámetros para personalizarlos. :
+required: Para indicar si el campo es obligatorio en el formulario.
+max_length: Para indicar el tamaño máximo de caracteres del campo
+help_text: Texto de ayuda que aparecerá al lado del campo del formulario para facilitar la introducción de datos al usuario
+label: La etiqueta label que queremos que aparezca en el formulario asociada al campo
+initial: Valor por defecto en el campo
+choices: Para especificar los valores que aparecerán para seleccionar en el Select
+empty_label: Cuando hay que seleccionar en un Select
+querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan las opciones correspondientes. """
+    
+    textoBusqueda = forms.CharField(required=False)
+    nombre = forms.CharField(required=False)
+    descripcion = forms.CharField(widget=forms.Textarea, required=False)
+    tipo_ejercicio = forms.CharField(required=False)
+
+
+    def clean(self):
+    
+        super().clean()  # Corregir llamada a super()
+
+        # Obtenemos los campos:
+        textoBusqueda = self.cleaned_data['textoBusqueda']
+        nombre = self.cleaned_data['nombre']  # Corregir sintaxis
+
+        # Controlamos los campos:
+        if textoBusqueda == "" and not nombre and not descripcion and not usuarios:
+            self.add_error('textoBusqueda', 'Debo introducir al menos un valor en un campo del formulario')
+            self.add_error('nombre', 'Debo introducir al menos un valor en el campo del nombre')
+            self.add_error('descripcion', 'Debo introducir al menos un valor en el campo de la descripción')
+
+        return self.cleaned_data
