@@ -3,20 +3,32 @@
 
 {% block cabecera%}
 <br>
-  <h2>CREAR EJERCICIO</h2>
+ 
 {% endblock %}
 
 {% block contenido%}
 {% load bootstrap5 %}
 {% bootstrap_css %}
-    <form action ="{% url 'create' %}" method="post">
-        {% csrf_token %}
-        {% bootstrap_form formulario %}
-        <br>
-        {% buttons %}
-        <button type="submit" class="btn btn-secondary">Enviar</button>
-        {% endbuttons %}
-    </form>
+<div class="container">
+  <div class="row ">
+    <h2>CREAR EJERCICIO</h2>
+      <div class="col-md-6">
+          <div class="card">
+              <div class="card-body">
+                  <form action="{% url 'create' %}" method="post">
+                      {% csrf_token %}
+                      {% bootstrap_form formulario %}
+                      <br>
+                      {% buttons %}
+                      <button type="submit" class="btn btn-secondary">Enviar</button>
+                      {% endbuttons %}
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
     <br>
 {% endblock %}
 <br>

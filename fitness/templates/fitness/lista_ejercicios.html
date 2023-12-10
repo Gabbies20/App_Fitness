@@ -4,46 +4,71 @@
 
 {% block cabecera %}
 <br>
-  <h2>EJERCICIOS</h2>
+  <h2 class="display-5">LISTA DE EJERCICIOS:</h2>
 {% endblock %}
 
 {% block contenido %}
-    <img src="{% static 'imagenes/list.jpg' %}" width="450" height="300"></img>
-    
+    <!--<img src="{% static 'imagenes/list.jpg' %}" width="450" height="300"></img>
+    <br> -->
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
     {% block busqueda %}
     {% endblock %}
 
+
     {% for ejercicio in ejercicios_mostrar %}
-    <br>
-    <p><strong>Ejercicio:</strong>{{ ejercicio.nombre }}</p>
-    <p><strong>Descripción:</strong>{{ ejercicio.descripcion }}</p>
-    <p><strong>Tipo de Ejercicio:</strong>{{ ejercicio.tipo_ejercicio }}</p>
-    <br>
-    <strong>Usuarios</strong>
-        <ul>
-            {% for usuario in ejercicio.usuarios.all %}
-                <li><p><strong>Nombre:</strong>{{ usuario.nombre }}</li>
-                <li><p><strong>Email:</strong>{{ usuario.email }}</li>
-            {% endfor %}
-        </ul>
-        <div class="row btn-group">
-            <div class="mb-2">
-                <button type="button" class="btn btn-outline-primary"> 
-                    <a href="{% url 'ejercicio_editar' ejercicio.id %}">
-                        <span>{% bs_icon 'pencil' %}</span>
-                    </a>
-                </button>
-            </div>
-            <div class="mb-2">
-                <form action="{% url 'ejercicio_eliminar' ejercicio.id %}" method="post"> 
-                    {% csrf_token %}
-                    <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                        <span>{% bs_icon 'trash' %}</span>
-                    </button> 
-                </form>
+    {% if forloop.first or forloop.counter0|divisibleby:4 %}
+        <div class="row">
+    {% endif %}
+
+    <div class="col-sm-3 mb-2">
+        <div class="card d-flex flex-column">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Ejercicio:</strong> {{ ejercicio.nombre }}</h5>
+                <p class="card-text"><strong>Descripción:</strong> {{ ejercicio.descripcion }}</p>
+                <p class="card-text"><strong>Tipo de Ejercicio:</strong> {{ ejercicio.tipo_ejercicio }}</p>
+                
+                <strong>Usuarios</strong>
+                <ul class="list-unstyled">
+                    {% for usuario in ejercicio.usuarios.all %}
+                        <li>
+                            <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+                            <p><strong>Email:</strong> {{ usuario.email }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary">
+                        <a href="{% url 'ejercicio_editar' ejercicio.id %}">
+                            <span>{% bs_icon 'pencil' %}</span> 
+                        </a>
+                    </button>
+                    
+                    <form action="{% url 'ejercicio_eliminar' ejercicio.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                            <span>{% bs_icon 'trash' %}</span> 
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-        <hr>
-    {% endfor %}
+    </div>
+
+    {% if forloop.last or forloop.counter|divisibleby:4 %}
+        </div>
+    {% endif %}
+{% endfor %}
+
+
 {% endblock %}
 

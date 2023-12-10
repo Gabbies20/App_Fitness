@@ -35,7 +35,7 @@ class EjercicioModelForm(ModelForm):
             self.add_error('descripcion','La descripcion deber ser superior a 5 caracteres.') 
             
         
-        if not re.match("^[a-zA-Z]+$", tipo_ejercicio):
+        if not re.match("^[a-zA-ZÀ-ÖØ-öø-ÿ]+$", tipo_ejercicio):
         
            # La función re.match(pattern, string) es una función del módulo re en Python que se utiliza para verificar si el patrón especificado al principio de la cadena coincide. 
         
