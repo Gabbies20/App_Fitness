@@ -12,7 +12,7 @@ def index(request):
 #1.Vista que muestra todos los ejercicios y sus datos, incluidos los relcionados.
 def lista_ejercicios(request):
     ejercicios = Ejercicio.objects.prefetch_related('usuarios')
-    return render(request,'fitness/lista_ejercicios.html',{'ejercicios_mostrar':ejercicios})
+    return render(request,'fitness/ejercicio/lista_ejercicios.html',{'ejercicios_mostrar':ejercicios})
 
 #2.Vista que muestra la información de un usuario especifico, incluyendo su nombre, correo y enlace a su perfil de usuario.
 def informacion_usuario(request):
@@ -146,9 +146,21 @@ def cuentas_bancarias(request,texto):
 
 #Obtener todos los modelos principales que tengan una media de votaciones mayor del 2,5.
 
+"""
+    CRUDS
+"""
 
 
-#Crear un ejercicio:
+#EJERCICIO MOSTRAR:
+def ejercicio_mostrar(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.prefetch_related('usuarios','usuarios_votos')
+    ejercicio = ejercicio.get(id=ejercicio_id)
+    return render (request, 'fitness/ejercicio/ejercicio_mostrar.html',{'ejercicio'})
+
+
+
+
+#CREAR UN EJERCICIO:
 def ejercicio_crear(request):
    # formulario = EjercicioModelForm()
     #return render(request, 'fitness/create.html',{'formulario':formulario})
@@ -271,3 +283,8 @@ def ejercicio_eliminar(request,ejercicio_id):
     except:
         pass
     return redirect ('lista_ejercicios')
+
+#CRUD ENTRENAMIENTO:
+def entrenamiento_create(request):
+    formulario = EntrenamientoForm()
+    return render(request,'fitness/entrenamiento/create.html',{'formulario':formulario})

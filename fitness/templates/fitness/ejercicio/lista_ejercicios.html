@@ -1,0 +1,33 @@
+{% extends 'fitness/principal.html' %}
+{% load static %}
+{% load bootstrap_icons %}  <!-- Debe ir antes de cualquier uso de las etiquetas de íconos -->
+
+{% block cabecera %}
+<br>
+  <h2 class="display-5">LISTA DE EJERCICIOS:</h2>
+{% endblock %}
+
+{% block contenido %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block busqueda %}
+    {% endblock %}
+
+    <div class="row">
+        {% for ejercicio in ejercicios_mostrar %}
+            <div class="col-sm-4 mb-2">
+                {% include 'fitness/ejercicio/ejercicio.html' %}
+            </div>
+        {% empty %}
+            <h1>Lo sentimos pero no hay libros</h1>
+        {% endfor %}
+    </div>
+{% endblock %}

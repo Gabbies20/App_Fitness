@@ -25,4 +25,7 @@ urlpatterns = [
     path('ejercicio_busqueda_avanzada/',views.ejercicio_busqueda_avanzada,name='ejercicio_busqueda_avanzada'),
     path('ejercicio/editar/<int:ejercicio_id>/',views.ejercicio_editar,name='ejercicio_editar'),
     path('ejercicio/eliminar/<int:ejercicio_id>/',views.ejercicio_eliminar,name='ejercicio_eliminar'),
+    path('ejercicio/<int:ejercicio_id>/',views.ejercicio_mostrar,name='ejercicio_mostrar'),
+    #URL DE ENTRENAMIENTOS:
+    path('create_entrenamiento',views.entrenamiento_create,name='create_entrenamiento'),
 ]

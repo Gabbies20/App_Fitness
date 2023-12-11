@@ -106,3 +106,51 @@ querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan
             self.add_error('descripcion', 'Debo introducir al menos un valor en el campo de la descripción')
 
         return self.cleaned_data
+    
+#------------------ENTRENAMIOENTO----------------------
+        """
+        
+       class Entrenamiento(models.Model):
+    TIPOS = [
+        ('AER','Aeróbico'),
+        ('FUE','Fuerza o anaeróbico'),
+        ('FUN','Funcional'),
+        ('HIT','Hit'),
+        ('POT','Potencia'),
+    ]
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=200)
+    descripcion= models.TextField()
+    duracion = models.IntegerField()
+    tipo = models.CharField(max_length=3,
+                            choices=TIPOS,
+                            default='HIT',
+                            )
+    ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio')
+    
+ 
+        
+        """
+class EntrenamientoForm(forms.Form):
+    nombre = forms.CharField(label = 'Nombre', max_length=200, required=False)
+    descripcion = forms.CharField(label='Descripcion',required=False,widget=forms.Textarea())
+    duracion = forms.IntegerField()
+    tipo = forms.ChoiceField(choices=Entrenamiento.TIPOS,
+                             initial='AER')
+    #Campo SelectMultiple para sellecionar los ejercicios que es una relación ManytoMany
+    ejerciciosDisponibles = Ejercicio.objects.all()
+    ejercicios = forms.ModelMultipleChoiceField(
+        queryset=ejerciciosDisponibles,
+        required=True,
+        help_text='Selecciona varios ejercicios'
+    )
+#Campo para selelcionar un usuario que es una relación ManytoOne:
+usuariosDisponibles= Usuario.objects.all()
+usuario = forms.ModelChoiceField(
+    queryset=usuariosDisponibles,
+    widget=forms.Select,
+    required=True,
+    empty_label='Ninguna'
+)
+    
+    
