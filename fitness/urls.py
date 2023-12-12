@@ -28,4 +28,6 @@ urlpatterns = [
     path('ejercicio/<int:ejercicio_id>/',views.ejercicio_mostrar,name='ejercicio_mostrar'),
     #URL DE ENTRENAMIENTOS:
     path('create_entrenamiento',views.entrenamiento_create,name='create_entrenamiento'),
+    path('listar_entrenamiento',views.lista_entrenamientos,name='listar_entrenamientos'),
+     path('entrenamiento/<int:entrenamiento_id>/',views.entrenamiento_mostrar,name='entrenamiento_mostrar'),
 ]

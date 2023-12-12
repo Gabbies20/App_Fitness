@@ -7,7 +7,7 @@
         <p class="card-text">Tipo de ejercicio:{{ ejercicio.tipo_ejercicio }}</p>
         <div>
             <p class="card-text" >Usuarios:</p>
-            <ul  style="list-style-type: disc">
+            <ul >
                 {% for usuario in ejercicio.usuarios.all %}
                     <li class="card-text" >{{ usuario.nombre }}</li>
                 {% endfor%}

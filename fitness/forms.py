@@ -4,6 +4,10 @@ from .models import *
 from django.forms import ModelForm
 import re 
 
+"""
+Los formularios en Django se crean mediante la definición de una clase que hereda de django.forms.Form. 
+    """
+
 class EjercicioModelForm(ModelForm):
     class Meta:
         model = Ejercicio
@@ -129,9 +133,8 @@ querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan
     ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio')
     
  
-        
-        """
-class EntrenamientoForm(forms.Form):
+ 
+ class EntrenamientoForm(forms.Form):
     nombre = forms.CharField(label = 'Nombre', max_length=200, required=False)
     descripcion = forms.CharField(label='Descripcion',required=False,widget=forms.Textarea())
     duracion = forms.IntegerField()
@@ -144,13 +147,22 @@ class EntrenamientoForm(forms.Form):
         required=True,
         help_text='Selecciona varios ejercicios'
     )
-#Campo para selelcionar un usuario que es una relación ManytoOne:
-usuariosDisponibles= Usuario.objects.all()
-usuario = forms.ModelChoiceField(
+    #Campo para selelcionar un usuario que es una relación ManytoOne:
+    usuariosDisponibles= Usuario.objects.all()
+    usuario = forms.ModelChoiceField(
     queryset=usuariosDisponibles,
     widget=forms.Select,
     required=True,
     empty_label='Ninguna'
-)
+    )
+        
+        """
+
+    
+class EntrenamientoForm(forms.ModelForm):
+    class Meta:
+        model = Entrenamiento
+        fields = ['nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios', 'usuario']
+   
     
     

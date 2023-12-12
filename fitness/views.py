@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 from django.views.defaults import page_not_found
+
+from django.contrib import messages
 from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio,Voto,Suscripcion
 from django.db.models import Q,F
 from .forms import *
-from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -155,7 +156,7 @@ def cuentas_bancarias(request,texto):
 def ejercicio_mostrar(request,ejercicio_id):
     ejercicio = Ejercicio.objects.prefetch_related('usuarios','usuarios_votos')
     ejercicio = ejercicio.get(id=ejercicio_id)
-    return render (request, 'fitness/ejercicio/ejercicio_mostrar.html',{'ejercicio'})
+    return render (request, 'fitness/ejercicio/ejercicio_mostrar.html',{'ejercicio':ejercicio})
 
 
 
@@ -284,7 +285,58 @@ def ejercicio_eliminar(request,ejercicio_id):
         pass
     return redirect ('lista_ejercicios')
 
-#CRUD ENTRENAMIENTO:
-def entrenamiento_create(request):
-    formulario = EntrenamientoForm()
+
+
+    """
+    
+    CRUD ENTRENAMIENTO:
+    def entrenamiento_create(request):
+    formulario = EntrenamientoForm() 
+    
+    datosFormulario = {
+    'nombre': 'Entrenamiento de prueba',
+    'duracion': 60,
+    # Otros datos...
+}
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    #La variable formulario es un objeto que va a contener los datos de mi Formulario
+    formulario = EntrenamientoForm(datosFormulario)
+    
     return render(request,'fitness/entrenamiento/create.html',{'formulario':formulario})
+    """
+
+
+    return entrenamiento
+
+def entrenamiento_mostrar(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
+    entrenamiento = entrenamiento.get(id=entrenamiento_id)
+    return render(request,'fitness/entrenamiento/entrenamiento_mostrar.html',{'entrenamiento':entrenamiento})
+
+def entrenamiento_create(request):
+    
+    datosFormulario = None
+    
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = EntrenamientoForm(datosFormulario)
+    if(request.method=='POST'):
+        if(formulario.is_valid()):
+            try:
+                #Gurada el entrenamiento en la base de datos.
+                formulario.save()
+                #print(formulario)
+                return redirect('lista_entrenamientos')
+            except Exception as error:
+                print(error)
+    else:
+        print(formulario.errors)
+    return render(request,'fitness/entrenamiento/create.html',{'formulario':formulario})
+  
+
+
+def lista_entrenamientos(request):
+    entrenamientos = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
+    return render(request,'fitness/entrenamiento/lista_entrenamientos.html',{'mostrar_entrenamientos':entrenamientos})

@@ -1,0 +1,41 @@
+{% load static %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'entrenamiento_mostrar' entrenamiento.id  %}"> {{ entrenamiento.nombre|capfirst }}</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">Nombre:{{ entrenamiento.nombre }}</h6>
+        <p class="card-text">Descripción:{{ entrenamiento.descripcion }}</p>
+        <p class="card-text">Tipo de ejercicio:{{ entrenamiento.duracion }}</p>
+        <p class="card-text">Tipo de ejercicio:{{ entrenamiento.tipo }}</p>
+        <div>
+            <p class="card-text" >Usuarios:</p>
+            <ul >
+                {% for usuario in entrenamiento.usuario.all %}
+                    <li class="card-text" >{{ usuario.nombre }}</li>
+                {% endfor%}
+            </ul>
+        </div>
+        <div>
+            <p class="card-text" >Ejercicios:</p>
+            <ul >
+                {% for ejercicio in entrenamiento.ejercicios.all %}
+                    <li class="card-text" >{{ ejercicio.nombre }}</li>
+                {% endfor%}
+            </ul>
+        </div>
+        {% load bootstrap_icons %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary">
+                <a href="">
+                    <span>{% bs_icon 'pencil' %}</span> 
+                </a>
+            </button>
+            
+            <form action="" method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                    <span>{% bs_icon 'trash' %}</span> 
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
