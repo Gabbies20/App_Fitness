@@ -30,4 +30,6 @@ urlpatterns = [
     path('create_entrenamiento',views.entrenamiento_create,name='create_entrenamiento'),
     path('listar_entrenamiento',views.lista_entrenamientos,name='listar_entrenamientos'),
      path('entrenamiento/<int:entrenamiento_id>/',views.entrenamiento_mostrar,name='entrenamiento_mostrar'),
+     path('entrenamiento/editar/<int:entrenamiento_id>/',views.entrenamiento_editar,name='entrenamiento_editar'),
+     path('entrenamiento/eliminar/<int:entrenamiento_id>/',views.entrenamiento_eliminar,name='entrenamiento_eliminar'),
 ]

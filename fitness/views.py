@@ -340,3 +340,30 @@ def entrenamiento_create(request):
 def lista_entrenamientos(request):
     entrenamientos = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
     return render(request,'fitness/entrenamiento/lista_entrenamientos.html',{'mostrar_entrenamientos':entrenamientos})
+
+def entrenamiento_editar(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    
+    datosFormulario = None
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = EntrenamientoForm(datosFormulario,instance=entrenamiento)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_entrenamientos')
+            except Exception as e:
+                pass
+    return render(request,'fitness/entrenamiento/actualizar.html',{'formulario':formulario,'entrenamiento':entrenamiento})
+        
+        
+def entrenamiento_eliminar(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    try:
+        entrenamiento.delete()
+    except:
+        pass
+    return redirect ('lista_ejercicios')
