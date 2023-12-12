@@ -18,11 +18,7 @@
                     required
                 {% endif %}
                 value="{% spaceless %}
-                       {% if formulario.is_bound%}
-                            {{ formulario.nombre.value }}
-                       {% elif libro %}
-                            {{ formulario.nombre.value }}
-                       {% endif %} 
+                        {{ formulario.nombre.value }}
                        {% endspaceless %}"
         />
         {% if formulario.nombre.help_text %}
@@ -43,11 +39,7 @@
                   class="form-control {% if formulario.descripcion.errors %} is-invalid{% elif formulario.is_bound %} is-valid{% endif %}" 
                   id="{{ formulario.descripcion.id_for_label }}"
                   >{% spaceless %}
-                        {% if formulario.is_bound%}
-                            {{ formulario.descripcion.value }}
-                        {% elif libro %}
-                            {{ formulario.descripcion.value }}
-                        {% endif %} 
+                        {{ formulario.descripcion.value }}
                         {% endspaceless %}</textarea>
         <div class="invalid-feedback">
             {% for error in formulario.descripcion.errors %} 
