@@ -210,7 +210,7 @@ def ejercicio_buscar(request):
         texto = formulario.cleaned_data.get('textoBusqueda')
         ejercicios = Ejercicio.objects.prefetch_related('usuarios_votos')
         ejercicios = ejercicios.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
-        return render (request,'fitness/ejercicio_busqueda.html',{'ejercicio_mostrar':ejercicios,'texto_busqueda':texto})
+        return render (request,'fitness/ejercicio/ejercicio_busqueda.html',{'ejercicio_mostrar':ejercicios,'texto_busqueda':texto})
     if('HTPP_REFERER' in request.META):
         return redirect(request.META['HTTP_REFERER'])
     else:
@@ -367,3 +367,44 @@ def entrenamiento_eliminar(request,entrenamiento_id):
     except:
         pass
     return redirect ('lista_ejercicios')
+
+
+    """CRUD PLAN DE ENTRENAMIENTO
+    """
+
+def lista_plan(request):
+    plan = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('entrenamientos')
+    return render(request,'fitness/plan/lista_plan.html',{'mostrar_planes':plan})
+    
+def mostrar_plan(request, plan_id):
+    plan = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('entrenamientos')
+    plan = plan.get(id=plan_id)
+    return render(request,'fitness/plan/mostrar_plan.html',{'plan':plan})
+
+def plan_create(request):
+    datosFormulario = None
+    if request.method=='POST':
+        datosFormulario = request.POST
+    formulario = PlanEntrenamientoModelForm(datosFormulario)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            try:
+                #Guarda el libro en la base de datos:
+                formulario.save()
+                return redirect('lista_plan')
+            except Exception as error:
+                print(error)
+    return render (request,'fitness/plan/create.html',{'formulario':formulario})
+                
+def plan_buscar(request):
+    formulario = BusquedaPlanForm(request.GET)
+    
+    if formulario.is_valid():
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        plan = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('entrenamientos')
+        plan = plan.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
+        return render(request,'fitness/plan/lista_busqueda.html',{'planes_mostrar':plan,'texto_busqueda':texto})  
+    if('HTPP_REFERER' in request.META):
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        return redirect('index')

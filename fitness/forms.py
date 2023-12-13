@@ -165,4 +165,80 @@ class EntrenamientoForm(forms.ModelForm):
         fields = ['nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios', 'usuario']
    
     
+        """
+        FORMULARIOS DE PLAN DE ENTRENAMIENTO:
+        class PlanEntrenamiento(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    duracion_estimada = models.IntegerField()
+    dificultad = models.CharField(max_length=20)
+    entrenamientos = models.ManyToManyField('Entrenamiento', through='EntrenamientoPlan')
+    fecha_inicio = models.DateTimeField(default=timezone.now)
+    fecha_fin = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.nombre
+        """
+class PlanEntrenamientoModelForm(ModelForm):
+    class Meta:
+        model = PlanEntrenamiento
+        fields = ['usuario','nombre','descripcion','duracion_estimada','dificultad','entrenamientos','fecha_inicio','fecha_fin']
+        help_texts ={
+            'nombre':('100 caracteres como máximo.'),
+            'entrenamientos' : ('Mantén pulsada la tecla control para seleccionar varios elementos.')
+        }
+        widgets = {
+            'fecha_inicio':forms.SelectDateWidget(),
+            'fecha_fin' : forms.SelectDateWidget()
+        }
+        localized_fields = ['fecha_inicio','fecha_fin']
+        
+        
+    #Este metodo sirve para comprobar si los campos tienen el valor adecuado paar el modelo.
+    def clean(self):
+        
+        
+        #Estás utilizando super().clean() para llamar al método clean de la clase base, lo cual es importante porque realiza la mayor parte del trabajo relacionado con la validación y limpieza estándar proporcionado por Django.
+        super().clean()
+        #Obtenemos los campos:
+        usuario = self.cleaned_data.get('usuario')
+        nombre = self.cleaned_data.get('nombre')
+        descripcion = self.cleaned_data.get('descripcion')
+        duracion_estimada = self.cleaned_data.get('duracion_estimada')
+        dificultad = self.cleaned_data.get('dificultad')
+        entrenamientos = self.cleaned_data.get('entrenamientos')
+        fecha_inicio = self.cleaned_data.get('fecha_inicio')
+        fecha_fin = self.cleaned_data.get('fecha_fin')
+        
+        #Empezamos con las validaciones:
+        #Comprobamos que no exista un plan con ese nombre.
+        planNombre = PlanEntrenamiento.objects.filter(nombre=nombre).first()
+        
+        #En Python, None es un valor especial que representa la ausencia de un valor o la falta de asignación a una variable. Es un singleton del tipo NoneType. En otros términos, None no es lo mismo que 0, False, o una cadena vacía. Es un valor único que indica la ausencia de valor o la falta de algo concreto.
+        
+        #None se evalúa como False en contextos booleanos, pero ten en cuenta que None no es lo mismo que False. Por ejemplo, bool(None) es False, pero None == False es False. Es importante usar is o is not cuando se verifica si una variable es None para evitar sorpresas relacionadas con la igualdad de valores.
+        if(not planNombre is None):
+            self.add_error('nombre','Ya existe un plan con ese nombre.')
+            
+        if not usuario:
+            self.add_error('usuario',"El campo usuario es obligatorio.")
+
+
+        if not descripcion:
+            self.add_error('descripcion',"El campo descripcion es obligatorio.")
+
+        if duracion_estimada <= 0:
+            self.add_error('duracion_estimada',"La duración estimada debe ser un número positivo.")
+
+        # Puedes agregar más validaciones según tus necesidades.
+
+        # Validación de fechas
+        if fecha_inicio and fecha_fin:
+            if fecha_fin < fecha_inicio:
+                self.add_error('fecha_inicio','fecha_fin',"La fecha de fin debe ser posterior a la fecha de inicio.")
+            
+        return self.cleaned_data
     
+class BusquedaPlanForm(forms.Form):
+    textoBusqueda = forms.CharField(required=True)  

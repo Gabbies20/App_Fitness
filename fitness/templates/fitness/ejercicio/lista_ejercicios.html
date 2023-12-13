@@ -19,6 +19,12 @@
     {% endif %}
 
     {% block busqueda %}
+    <form method="get" action="{% url 'ejercicio_buscar' %}">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Buscar ejercicio" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+    </form>
     {% endblock %}
 
     <div class="row">

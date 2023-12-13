@@ -87,7 +87,12 @@ class PlanEntrenamiento(models.Model):
     descripcion = models.TextField()
     duracion_estimada = models.IntegerField()
     dificultad = models.CharField(max_length=20)
-    entrenamientos = models.ManyToManyField(Entrenamiento, through='EntrenamientoPlan')
+    entrenamientos = models.ManyToManyField('Entrenamiento', through='EntrenamientoPlan')
+    fecha_inicio = models.DateTimeField(default=timezone.now)
+    fecha_fin = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.nombre
 
 class EntrenamientoPlan(models.Model):
     plan_entrenamiento = models.ForeignKey(PlanEntrenamiento, on_delete=models.CASCADE)

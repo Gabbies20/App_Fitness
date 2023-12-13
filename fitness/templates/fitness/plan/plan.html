@@ -1,0 +1,37 @@
+{% load static %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'mostrar_plan' plan.id  %}"> {{ plan.nombre|capfirst }}</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">Nombre:{{ plan.nombre }}</h6>
+        <p class="card-text">Descripción:{{ plan.descripcion }}</p>
+        <p class="card-text">Tipo de ejercicio:{{ plan.duracion_estimada}}</p>
+        <p class="card-text">Tipo de ejercicio:{{ plan.dificultad }}</p>
+        <div>
+            <p class="card-text">Entrenamientos:</p>
+            <ul >
+                
+            </ul>
+        </div>
+        <div>
+            <p class="card-text" >Ejercicios:</p>
+            <ul >
+                
+            </ul>
+        </div>
+        {% load bootstrap_icons %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary">
+                <a href="">
+                    <span>{% bs_icon 'pencil' %}</span> 
+                </a>
+            </button>
+            
+            <form action="" method="post">
+                {% csrf_token %}
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                    <span>{% bs_icon 'trash' %}</span> 
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
