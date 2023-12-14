@@ -33,17 +33,12 @@ urlpatterns = [
      path('entrenamiento/editar/<int:entrenamiento_id>/',views.entrenamiento_editar,name='entrenamiento_editar'),
      path('entrenamiento/eliminar/<int:entrenamiento_id>/',views.entrenamiento_eliminar,name='entrenamiento_eliminar'),
      #URL PLAN_ENTRENAMIENTO:
-    path('entrenamientos/listar',views.lista_plan,name='lista_plan'),
+    path('plan/listar',views.lista_plan,name='lista_plan'),
      path('create-plan',views.plan_create,name='create-plan'),
      path('plan_buscar/',views.plan_buscar,name='plan_buscar'),
-    path('ejercicio_busqueda_avanzada/',views.ejercicio_busqueda_avanzada,name='ejercicio_busqueda_avanzada'),
-    path('ejercicio/editar/<int:ejercicio_id>/',views.ejercicio_editar,name='ejercicio_editar'),
-    path('ejercicio/eliminar/<int:ejercicio_id>/',views.ejercicio_eliminar,name='ejercicio_eliminar'),
-    path('ejercicio/<int:ejercicio_id>/',views.ejercicio_mostrar,name='ejercicio_mostrar'),
-     path('ejercicio_buscar/',views.ejercicio_buscar,name='ejercicio_buscar'),
-    path('ejercicio_busqueda_avanzada/',views.ejercicio_busqueda_avanzada,name='ejercicio_busqueda_avanzada'),
-    path('ejercicio/editar/<int:ejercicio_id>/',views.ejercicio_editar,name='ejercicio_editar'),
-    path('ejercicio/eliminar/<int:ejercicio_id>/',views.ejercicio_eliminar,name='ejercicio_eliminar'),
+    path('plan_busqueda_avanzada/',views.plan_busqueda_avanzada,name='plan_busqueda_avanzada'),
+    #path('plan/editar/<int:plan_id>/',views.plan_editar,name='plan_editar'),
+    #path('plan/eliminar/<int:plan_id>/',views.plan_eliminar,name='plan_eliminar'),
     path('plan/<int:plan_id>/',views.mostrar_plan,name='mostrar_plan'),
      
 ]

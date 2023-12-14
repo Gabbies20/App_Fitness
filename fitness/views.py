@@ -5,6 +5,10 @@ from django.contrib import messages
 from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiaria,Comentario,CategoriaEjercicio,HistorialEjercicio,Voto,Suscripcion
 from django.db.models import Q,F
 from .forms import *
+from datetime import datetime
+
+
+
 
 # Create your views here.
 def index(request):
@@ -210,10 +214,11 @@ def ejercicio_buscar(request):
         texto = formulario.cleaned_data.get('textoBusqueda')
         ejercicios = Ejercicio.objects.prefetch_related('usuarios_votos')
         ejercicios = ejercicios.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
-        return render (request,'fitness/ejercicio/ejercicio_busqueda.html',{'ejercicio_mostrar':ejercicios,'texto_busqueda':texto})
+        return render (request,'fitness/ejercicio/lista_busqueda.html',{'ejercicios_mostrar':ejercicios,'texto_busqueda':texto})
     if('HTPP_REFERER' in request.META):
         return redirect(request.META['HTTP_REFERER'])
     else:
+        print(formulario.error)
         return redirect('index')
     
 
@@ -232,7 +237,6 @@ def ejercicio_busqueda_avanzada(request):
             
             #OBTENEMOS LOS FILTROS:
             textoBusqueda = formulario.cleaned_data['textoBusqueda']
-            nombre = formulario.cleaned_data['nombre']
             descripcion = formulario.cleaned_data['descripcion']
             #usuarios = formulario.cleaned_data.get['usuarios', []]
             
@@ -240,12 +244,15 @@ def ejercicio_busqueda_avanzada(request):
             if textoBusqueda:
                 QSEjercicios = QSEjercicios.filter(Q(nombre__contains=textoBusqueda) | Q(descripcion__contains=textoBusqueda))
                 mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+textoBusqueda+"\n"
-                
+            if descripcion:
+                QSEjercicios = QSEjercicios.filter(Q(nombre__contains=descripcion) | Q(descripcion__contains=descripcion))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+descripcion+"\n"
                 
             ejercicios = QSEjercicios.all()
+            
             print('Estamos aqui')
             
-            return render(request,'fitness/ejercicio_busqueda.html',{'ejercicios_mostrar':ejercicios,'texto_busqueda':mensaje_busqueda})
+            return render(request,'fitness/ejercicio/lista_busqueda.html',{'ejercicios_mostrar':ejercicios,'texto_busqueda':mensaje_busqueda})
     else:
         #En el caso de que procesa desde una URL y no tenga datos, mostramos el formulario correspondiente.
         formulario = BusquedaAvanzadaEjercicioForm(None)
@@ -255,7 +262,7 @@ def ejercicio_busqueda_avanzada(request):
 
 
 #VISTA EDITAR-EJERCICIO:
-def ejercicio_editar(request,ejercicio_id):
+def ejercicio_editar(request, ejercicio_id):
     ejercicio = Ejercicio.objects.get(id=ejercicio_id)
     
     datosFormulario = None
@@ -270,6 +277,7 @@ def ejercicio_editar(request,ejercicio_id):
             formulario.save()
             try:
                 formulario.save()
+                messages.success(request, 'Se ha editado el ejercicio'+formulario.cleaned_data.get('nombre')+" correctamente")
                 return redirect('lista_ejercicios')
             except Exception as error:
                 print(error)
@@ -281,6 +289,7 @@ def ejercicio_eliminar(request,ejercicio_id):
     ejercicio = Ejercicio.objects.get(id=ejercicio_id)
     try:
         ejercicio.delete()
+        messages.success(request, "Se ha elimnado el ejercicio "+ejercicio.nombre+" correctamente")
     except:
         pass
     return redirect ('lista_ejercicios')
@@ -408,3 +417,52 @@ def plan_buscar(request):
         return redirect(request.META['HTTP_REFERER'])
     else:
         return redirect('index')
+    
+def plan_busqueda_avanzada(request):
+    
+    if(len(request.GET)>0):
+        formulario = BusquedaAvanzadaPlanForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores:  \n'
+            
+            QSPlanes = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('entrenamientos')
+            
+            #Obtenemos los filtros:
+            texto_busqueda = formulario.cleaned_data.get('texto_busqueda')
+            descripcion = formulario.cleaned_data.get('descripcion')
+            fecha_desde = formulario.cleaned_data.get('fecha_desde')
+            fecha_hasta = formulario.cleaned_data.get('fecha_hasta')
+            
+            
+            #Por cada filtro comprobamos si tienen un valor y lo añadimos a la QuerySet:
+            if(texto_busqueda!=0):
+                QSPlanes = QSPlanes.filter(Q(nombre__contains=texto_busqueda) | Q(descripcion__contains=texto_busqueda))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+texto_busqueda+"\n"
+                
+            
+            if(descripcion!= None):
+                QSPlanes = QSPlanes.filter(Q(nombre__contains=descripcion) | Q(descripcion__contains=descripcion))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+descripcion+"\n"
+                
+            
+            #Comprobamos fechas
+            #Obtenemos los libros con fecha publicacion mayor a la fecha desde
+            if(not fecha_desde is None):
+                mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fecha_desde,'%d-%m-%Y')+"\n"
+                QSPlanes = QSPlanes.filter(fecha_inicio__gte=fecha_desde)
+            
+             #Obtenemos los libros con fecha publicacion menor a la fecha desde
+            if(not fecha_hasta is None):
+                mensaje_busqueda +=" La fecha sea menor a "+datetime.strftime(fecha_hasta,'%d-%m-%Y')+"\n"
+                QSPlanes = QSPlanes.filter(fecha_fin__lte=fecha_hasta)
+            
+            planes = QSPlanes.all()
+            
+            
+            return render(request,'fitness/plan/lista_busqueda.html',{'planes_mostrar':planes,'texto_busqueda':mensaje_busqueda})
+    else:
+        formulario =BusquedaAvanzadaPlanForm(None)
+    return render(request,'fitness/plan/busqueda_avanzada.html',{'formulario':formulario})
+
+

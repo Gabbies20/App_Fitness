@@ -56,16 +56,7 @@ class BusquedaEjercicioForm(forms.Form):
     
     
 class BusquedaAvanzadaEjercicioForm(forms.Form):
-    
-    """class Ejercicio(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-    tipo_ejercicio = models.CharField(max_length=20)
-    usuarios = models.ManyToManyField(Usuario, through='HistorialEjercicio')
-    usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
 
-    def __str__(self) -> str:
-        return self.nombre"""
         
         
     """
@@ -90,26 +81,35 @@ empty_label: Cuando hay que seleccionar en un Select
 querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan las opciones correspondientes. """
     
     textoBusqueda = forms.CharField(required=False)
-    nombre = forms.CharField(required=False)
     descripcion = forms.CharField(widget=forms.Textarea, required=False)
-    tipo_ejercicio = forms.CharField(required=False)
 
 
     def clean(self):
     
-        super().clean()  # Corregir llamada a super()
+        super().clean()
 
         # Obtenemos los campos:
-        textoBusqueda = self.cleaned_data['textoBusqueda']
-        nombre = self.cleaned_data['nombre']  # Corregir sintaxis
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        descripcion = self.cleaned_data.get('descripcion')
+        # Corregir sintaxis
 
         # Controlamos los campos:
-        if textoBusqueda == "" and not nombre and not descripcion and not usuarios:
+        if not textoBusqueda and not descripcion:
             self.add_error('textoBusqueda', 'Debo introducir al menos un valor en un campo del formulario')
-            self.add_error('nombre', 'Debo introducir al menos un valor en el campo del nombre')
             self.add_error('descripcion', 'Debo introducir al menos un valor en el campo de la descripción')
-
+        else:
+        # Si introduce un texto al menos que tenga  3 caracteres o más
+            if textoBusqueda and len(textoBusqueda) < 3:
+                self.add_error('textoBusqueda', 'Debe introducir al menos 3 caracteres')
+                
+            if descripcion and len(descripcion) < 3:
+                self.add_error('descripcion', 'Debe introducir al menos 3 caracteres')
+            
+            
+        #Siempre devolvemos el conjunto de datos.
         return self.cleaned_data
+    
+    
     
 #------------------ENTRENAMIOENTO----------------------
         """
@@ -242,3 +242,45 @@ class PlanEntrenamientoModelForm(ModelForm):
     
 class BusquedaPlanForm(forms.Form):
     textoBusqueda = forms.CharField(required=True)  
+    
+
+class BusquedaAvanzadaPlanForm(forms.Form):
+    #usuario,descripcion,fecha_inicio,fecha_fin:
+    texto_busqueda = forms.CharField(required=False)
+    descripcion = forms.Textarea()
+    fecha_desde = forms.DateField(label='Fecha Inicio',
+                                  required=False,
+                                  widget=forms.SelectDateWidget(years=range(1990,2023)))
+    fecha_hasta = forms.DateField(label='Fecha hasta',
+                                  required=False,
+                                  widget=forms.SelectDateWidget(years=range(1990,2024)))
+    
+    def clean(self):
+        
+        super().clean()
+        
+        #Obtenemos los campos:
+        texto_busqueda = self.cleaned_data.get('texto_busqueda')
+        descripcion = self.cleaned_data.get('descripcion')
+        fecha_desde = self.cleaned_data.get('fecha_desde')
+        fecha_hasta = self.cleaned_data.get('fecha_hasta')
+        
+        #Controlamos los campos:
+        if(texto_busqueda==0
+           and descripcion == ''
+           and fecha_desde is None
+           and fecha_hasta is None):
+            self.add_error('texto_busqueda','Debe introducir al menos un valor')
+            self.add_error('descripcion','Debe introduciar al menos un valor.')
+            self.add_error('fecha_desde','Debe introduicar al menos un valor en un campo del formulario.')
+            self.add_error('fecha_hasta','Debe introducir al menos un valor de un campo del formulario.')
+        else:
+            if(texto_busqueda != '' and len(texto_busqueda)<3):
+                self.add_error('texto_busqueda','Debe introduciar al menos 3 caracteres.')
+                
+            if(not fecha_desde is None and not fecha_hasta is None and fecha_hasta < fecha_desde):
+                self.add_error('fecha_desde','La fecha de fin no puede ser menor que la fecha de inicio.')
+                self.add_error('fecha_hasta','La fecha de fin no puede ser menor que la fecha de incio.')
+        
+        return self.cleaned_data
+        

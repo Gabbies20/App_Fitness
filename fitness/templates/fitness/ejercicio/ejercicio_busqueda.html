@@ -3,25 +3,9 @@
 
 {% block cabecera%}
 <br>
-  <h2>RESULTADO DE BÚSQUEDA:</h2>
+  <h2>RESULTADO dfgdfgDE BÚSQUEDA:</h2>
 {% endblock %}
 
 {% block busqueda %}
     <h2 class="display-5">{{ texto_busqueda|linebreaksbr }}</h1>
-{% endblock %}
-{% block contenido %}
-    
-        {% for ejercicio in ejercicio_mostrar %}
-        <br>
-        <p><strong>Ejercicio:</strong>{{ejercicio.nombre}}</p>
-            <p><strong>Descripción:</strong>{{ejercicio.descripcion}}</p>
-            <p><strong>Tipo de Ejercicio:</strong>{{ejercicio.tipo_ejercicio}}</p>
-            <br>
-            <strong>Usuarios</strong>
-                <ul>
-                    {% for usuario in ejercicio.usuarios.all%}
-                        <li><p><strong>Nombre:</strong>{{usuario.nombre}}</li>
-                        <li><p><strong>Email:</strong>{{usuario.email}}</li>
-                            {% endfor%}
-        {% endfor %}
 {% endblock %}

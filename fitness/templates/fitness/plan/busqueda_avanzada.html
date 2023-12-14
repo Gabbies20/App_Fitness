@@ -3,9 +3,8 @@
 
 {% block cabecera%}
 <br>
-  <h2>RESULTADO DE BÚSQUEDAppppppppppppp:</h2>
+  <h2>RESULTADO DE BÚSQUEDA:</h2>
 {% endblock %}
-
 {% block contenido %}
 {% load bootstrap5 %}
     <form action = "{% url 'ejercicio_busqueda_avanzada' %}" method = "GET"> 
@@ -14,7 +13,11 @@
 
         <div class="mb-4">
             {% bootstrap_field formulario.textoBusqueda show_label=True %}
-        </div>   
+        </div>
+
+        <div class="mb-4">
+            {% bootstrap_field formulario.nombre show_label=True %}
+        </div>    
 
         <div class="mb-4">
             {% bootstrap_field formulario.descripcion%}

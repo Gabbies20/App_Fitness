@@ -38,3 +38,56 @@ a.btn.btn-outline-dangerous {
 .user-list {
         list-style-type: square;  /* Puedes ajustar el peso de la fuente según tus preferencias */
 }
+
+.custom-card-body .card-title,
+ .card-subtitle, .card-text {
+    margin: 10px;
+    /* Estilos específicos para la nueva estructura */
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip; /* O puedes eliminar esta línea */
+    max-width: none;
+}
+
+.custom-btn-group {
+    display: flex;
+    justify-content: center;
+    gap:px; /* Puedes ajustar este valor según tus necesidades */
+}
+
+.custom-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.custom-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-btn-group button {
+    margin: 0 5px; /* Ajusta el margen entre los botones */
+}
+.custom-btn-group button {
+    margin: 0 5px; /* Ajusta el margen entre los botones */
+    max-width: 150px; /* O ajusta según tus necesidades */
+    width: auto; /* Ajusta el ancho automáticamente según el contenido */
+}
+
+.custom-card:hover {
+    /* Estilos para el hover */
+    background-color: #ececec;
+}
+
+.custom-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.custom-card:hover {
+    transform: none; /* Esto restablecerá la transformación a su valor predeterminado */
+}

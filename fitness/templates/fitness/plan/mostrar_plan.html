@@ -9,8 +9,49 @@
 
 {% block contenido %}
 
-    <h1 class="display-6">{{plan.descripcion|upper}}</h1>
-    <div class="col-sm-12 mb-2">
-        {% include 'fitness/plan/plan.html'%}
+    <h6 class="">{{plan.descripcion|upper}}</h6>
+    <div class="card custom-card">
+      <div class="col-sm-12 mb-2">
+        {#Esta nueva clase me mostrará la información completa porque la clase de car tendrá un estilo directo con style.#}
+        <div class="custom-card-body">
+          <h5 class="card-title"><p href="{% url 'mostrar_plan' plan.id  %}" style="color: red;"> {{ plan.nombre|capfirst }}</p></h5>
+          <h6 class="card-subtitle mb-2 text-muted">Nombre:{{ plan.nombre }}</h6>
+          <p class="card-text">Descripción:{{ plan.descripcion }}</p>
+          <p class="card-text">Tipo de ejercicio:{{ plan.duracion_estimada}}</p>
+          <p class="card-text">Tipo de ejercicio:{{ plan.dificultad }}</p>
+          <div>
+              <p class="card-text">Entrenamientos:</p>
+              <ul >
+                  
+              </ul>
+          </div>
+          <div>
+              <p class="card-text" >Ejercicios:</p>
+              <ul >
+                  
+              </ul>
+          </div>
+          {% load bootstrap_icons %}
+          <div class="btn-group custom-btn-group">
+              <button type="button" class="btn btn-outline-primary">EDITAR
+                  <a href="">
+                      <span>{% bs_icon 'pencil' %}</span> 
+                  </a>
+              </button>
+              
+              <form action="" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-danger" onclick="return eliminar();" type="submit">ELIMINAR
+                      <span>{% bs_icon 'trash' %}</span> 
+                  </button>
+                  <br>
+              </form>
+          </div>
+      </div>
     </div>
+    <br>
+    <br>
+    </div>
+    <br>
+    <br>
 {% endblock %}
