@@ -555,7 +555,7 @@ def promocion_busqueda_avanzada(request):
             
             print('Estamos aqui')
             
-            return render(request,'fitness/ejercicio/lista_busqueda.html',{'ejercicios_mostrar':promociones,'texto_busqueda':mensaje_busqueda})
+            return render(request,'fitness/promocion/lista_busqueda.html',{'ejercicios_mostrar':promociones,'texto_busqueda':mensaje_busqueda})
     else:
         #En el caso de que procesa desde una URL y no tenga datos, mostramos el formulario correspondiente.
         formulario = BusquedaAvanzadaPromocionForm(None)
