@@ -37,8 +37,14 @@ urlpatterns = [
      path('create-plan',views.plan_create,name='create-plan'),
      path('plan_buscar/',views.plan_buscar,name='plan_buscar'),
     path('plan_busqueda_avanzada/',views.plan_busqueda_avanzada,name='plan_busqueda_avanzada'),
-    #path('plan/editar/<int:plan_id>/',views.plan_editar,name='plan_editar'),
-    #path('plan/eliminar/<int:plan_id>/',views.plan_eliminar,name='plan_eliminar'),
     path('plan/<int:plan_id>/',views.mostrar_plan,name='mostrar_plan'),
+    
+    #URL EXAMEN:
+    path('promocion/<int:promocion_id>/',views.mostrar_promocion,name='promocion_mostrar'),
+    path('promocion/listar',views.lista_promocion,name='lista_promocion'),
+    path('create-promocion',views.promocion_create,name='create-promocion'),
+    path('promocion/eliminar/<int:promocion_id>/',views.promocion_eliminar,name='promocion_eliminar'),
+    path('plan/promocionar/<int:promocion_id>/',views.promocion_editar,name='promocion_editar'),
+    path('promocion_busqueda_avanzada/',views.promocion_busqueda_avanzada,name='promocion_busqueda_avanzada'),
      
 ]

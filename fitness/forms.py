@@ -283,4 +283,106 @@ class BusquedaAvanzadaPlanForm(forms.Form):
                 self.add_error('fecha_hasta','La fecha de fin no puede ser menor que la fecha de incio.')
         
         return self.cleaned_data
+    
+    
+        """
         
+                                    FORMULARIOS DEL EXAMEN:
+   
+        
+        """                 
+
+class PromocionModelForm(ModelForm):
+    class Meta:
+        model = Promocion
+        fields = ['nombre','descripcion','descuento','fecha','usuario']
+        labels = {
+            'nombre': ('Nombre de la Promoción')
+        }
+        help_texts = {
+            'nombre':('100 caracteres como maximo'),
+            'usuarios':('Mantén pulsado la tecla control para seleccionar más autores')
+        }
+        widgets = {
+            'fecha':forms.SelectDateWidget()
+        }
+        localized_fields = ['fecha']
+        
+    def clean(self):
+    
+        super().clean()
+        
+        #Obtenemos los campos:
+        nombre = self.cleaned_data.get('nombre')
+        descripcion = self.cleaned_data.get('descripcion')
+        descuento = self.cleaned_data.get('descuento')
+        fecha = self.cleaned_data.get('fecha')
+        usuario = self.cleaned_data.get('usuario')
+        
+        """
+        Nombre de la promoción: el nombre tiene que ser único.
+        Descripción de la promoción: Debe tener al menos 100 caracteres
+        Usuario al que se le aplica la promoción: Un usuario no puede usar la misma promoción dos veces
+        Descuento que se le aplica: Tiene que ser un valor entero entre 0 y 100
+        Fecha fin de la promoción: Esta fecha no puede inferior a la fecha actual
+        """
+        promocionNombre = Promocion.objects.filter(nombre=nombre).first()
+        if(not promocionNombre is None):
+            self.add_error('nombre','Ya existe una promoción con ese nombre.')
+    
+    
+        if(len(descripcion) < 100):
+            self.add_error('descripcion','Debes introducir al menos 100 caracteres.')
+            
+        if not (0 <= descuento <=100):
+            self.add_error('descuento','Tiene que ser un valor entero entre 0 y 100')
+            
+        if fecha < timezone.now().date():
+            self.add_error('fecha','La fecha de fin de la promoción no puede ser inferior a la fecha actual.')
+            
+        return self.cleaned_data
+    
+#FORMULARIO DE LA PROMOCION PARA BUSQUEDA AVANZADA:
+class BusquedaAvanzadaPromocionForm(forms.Form):
+    
+    textoBusqueda = forms.CharField(required=False)
+    descripcion = forms.CharField(widget=forms.Textarea, required=False)
+
+
+    def clean(self):
+    
+        super().clean()
+
+        # Obtenemos los campos:
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        descripcion = self.cleaned_data.get('descripcion')
+        # Corregir sintaxis
+
+        # Controlamos los campos:
+        if not textoBusqueda and not descripcion:
+            self.add_error('textoBusqueda', 'Debo introducir al menos un valor en un campo del formulario')
+            self.add_error('descripcion', 'Debo introducir al menos un valor en el campo de la descripción')
+        else:
+        # Si introduce un texto al menos que tenga  3 caracteres o más
+            if textoBusqueda and len(textoBusqueda) < 3:
+                self.add_error('textoBusqueda', 'Debe introducir al menos 3 caracteres')
+                
+            if descripcion and len(descripcion) < 100:
+                self.add_error('descripcion', 'Debe introducir al menos 3 caracteres')
+            
+            
+        #Siempre devolvemos el conjunto de datos.
+        return self.cleaned_data
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   

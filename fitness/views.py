@@ -466,3 +466,98 @@ def plan_busqueda_avanzada(request):
     return render(request,'fitness/plan/busqueda_avanzada.html',{'formulario':formulario})
 
 
+    """
+    
+        VIEWS DEL EXAMEN
+    
+    """
+    
+def mostrar_promocion(request,promocion_id):
+    promocion = Promocion.objects.select_related('usuario')
+    promocion = promocion.get(id=promocion_id)
+    return render (request, 'fitness/promocion/mostrar_promocion.html',{'promocion':promocion})
+def lista_promocion(request):
+    promociones = Promocion.objects.select_related('usuario')
+    return render(request,'fitness/promocion/lista_promocion.html',{'mostrar_promociones':promociones})
+
+
+def promocion_create(request):
+    datosFormulario = None
+    if request.method=='POST':
+        datosFormulario = request.POST
+    formulario = PromocionModelForm(datosFormulario)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            try:
+                #Guarda el libro en la base de datos:
+                formulario.save()
+                return redirect('lista_promocion')
+            except Exception as error:
+                print(error)
+    return render (request,'fitness/promocion/create.html',{'formulario':formulario})
+
+def promocion_eliminar(request,promocion_id):
+    promocion = Promocion.objects.get(id=promocion_id)
+    try:
+        promocion.delete()
+        messages.success(request, "Se ha eliminado el ejercicio "+ promocion.nombre+" correctamente")
+    except:
+        pass
+    return redirect ('lista_promocion')
+
+def promocion_editar(request,promocion_id):
+    promocion = Promocion.objects.get(id=promocion_id)
+    
+    datosFormulario = None
+    
+    if(request.method == 'POST'):
+        datosFormulario = request.POST
+        
+    formulario = PromocionModelForm(datosFormulario,instance= promocion)
+    
+    if(request.method=='POST'):
+        if(formulario.is_valid()):
+            formulario.save()
+            try:
+                formulario.save()
+                messages.success(request, 'Se ha editado la promocion'+formulario.cleaned_data.get('nombre')+" correctamente")
+                return redirect('lista_promocion')
+            except Exception as error:
+                print(error)
+    return render(request,'fitness/promocion/actualizar.html',{'formulario':formulario,'promocion':promocion})
+
+def promocion_busqueda_avanzada(request):
+    
+    #Vamos a verificar si tenemos datos o no, para procesar el formulario y validarlo.
+    if(len(request.GET)> 0):
+        formulario = BusquedaAvanzadaPromocionForm(request.GET)
+        if formulario.is_valid():
+            print('Es valido')
+            
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores: \n'
+            
+            QSEjercicios = Promocion.objects.prefetch_related('usuarios_votos')
+            
+            #OBTENEMOS LOS FILTROS:
+            textoBusqueda = formulario.cleaned_data['textoBusqueda']
+            descripcion = formulario.cleaned_data['descripcion']
+            #usuarios = formulario.cleaned_data.get['usuarios', []]
+            
+            #POR CADA FILTRO COMPROBAMOS SI TIENE UN VALOR Y LO AÑADIMOS A LA QUERYSET:
+            if textoBusqueda:
+                QSPromociones = QSPromociones.filter(Q(nombre__contains=textoBusqueda) | Q(descripcion__contains=textoBusqueda))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+textoBusqueda+"\n"
+            if descripcion:
+                QSPromociones = QSPromociones.filter(Q(nombre__contains=descripcion) | Q(descripcion__contains=descripcion))
+                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+descripcion+"\n"
+                
+            promociones = QSPromociones.all()
+            
+            print('Estamos aqui')
+            
+            return render(request,'fitness/ejercicio/lista_busqueda.html',{'ejercicios_mostrar':promociones,'texto_busqueda':mensaje_busqueda})
+    else:
+        #En el caso de que procesa desde una URL y no tenga datos, mostramos el formulario correspondiente.
+        formulario = BusquedaAvanzadaPromocionForm(None)
+        print('No hay nada')
+    return render(request,'fitness/ejercicio/busqueda_avanzada.html',{'formulario':formulario})
