@@ -5,20 +5,22 @@
 <br>
   <h2>RESULTADO DE BÚSQUEDA:</h2>
 {% endblock %}
-
 {% block contenido %}
 {% load bootstrap5 %}
-    <form action = "{% url 'comentario_busqueda_avanzada' %}" method = "GET"> 
+    <form action = "{% url 'suscripcion_busqueda_avanzada' %}" method = "GET"> 
         
         {% csrf_token %}
 
         <div class="mb-4">
             {% bootstrap_field formulario.texto_busqueda show_label=True %}
-        </div>   
+        </div>
+
+         
 
         <div class="mb-4">
-            {% bootstrap_field formulario.fecha%}
+            {% bootstrap_field formulario.titular%}
         </div>
+
 
 
         

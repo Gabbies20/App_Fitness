@@ -3,6 +3,7 @@ from django import forms
 from .models import *
 from django.forms import ModelForm
 import re 
+from datetime import datetime 
 
 """
 Los formularios en Django se crean mediante la definición de una clase que hereda de django.forms.Form. 
@@ -308,10 +309,10 @@ class BusquedaAvanzadaPlanForm(forms.Form):
     descripcion = forms.Textarea()
     fecha_desde = forms.DateField(label='Fecha Inicio',
                                   required=False,
-                                  widget=forms.SelectDateWidget(years=range(1990,2023)))
+                                  widget=forms.SelectDateWidget(years=range(1990,2021)))
     fecha_hasta = forms.DateField(label='Fecha hasta',
                                   required=False,
-                                  widget=forms.SelectDateWidget(years=range(1990,2024)))
+                                  widget=forms.SelectDateWidget(years=range(1990,2025)))
     
     def clean(self):
         
@@ -402,7 +403,7 @@ class BusquedaAvanzadaRutinaForm(forms.Form):
     texto_busqueda = forms.CharField(required=False)
     fecha = forms.DateField(label='Fecha',
                                   required=False,
-                                  widget=forms.SelectDateWidget(years=range(1900,2023)
+                                  widget=forms.SelectDateWidget(years=range(1900,2025)
                                   ))
     
     def clean(self):
@@ -485,42 +486,88 @@ class BusquedaComentarioForm(forms.Form):
     
 class BusquedaAvanzadaComentarioForm(forms.Form):
     texto_busqueda = forms.CharField(required=False)
-    fecha = forms.DateField(label='Fecha',
-                                  required=False,
-                                  widget=forms.SelectDateWidget(years=range(1900,2023)
-                                  ))
-    
+    fecha = forms.DateField(
+        label='Fecha',
+        required=False,
+        widget=forms.SelectDateWidget(years=range(1900, 2025))
+    )
+
     def clean(self):
-        
         super().clean()
-        
-        #Obtenemos los campos:
+
+        # Obtenemos los campos
         texto_busqueda = self.cleaned_data.get('texto_busqueda')
         fecha = self.cleaned_data.get('fecha')
-        
-        #Controlamos los campos:
-        if(texto_busqueda==0
-           and fecha is None):
-            self.add_error('texto_busqueda','Debe introducir al menos un valor')
-            self.add_error('fecha','Debe introducicar al menos un valor en un campo del formulario.')
+
+        # Controlamos los campos
+        if not texto_busqueda and not fecha:
+            self.add_error('texto_busqueda', 'Debe introducir al menos un valor')
+            self.add_error('fecha', 'Debe introducicar al menos un valor en un campo del formulario.')
         else:
-            if(texto_busqueda != '' and len(texto_busqueda)<3):
-                self.add_error('texto_busqueda','Debe introduciar al menos 3 caracteres.')
-                
-                
+            if texto_busqueda and len(texto_busqueda) < 3:
+                self.add_error('texto_busqueda', 'Debe introducir al menos 3 caracteres.')
+
             if fecha and fecha.year < 1900:
                 self.add_error('fecha', 'La fecha no puede ser anterior a 1900')
 
-                
-            
-        
         return self.cleaned_data
+
     
     
+"""
+
+"""
+class SuscripcionModelForm(ModelForm) :
+      class Meta:
+        model = Suscripcion
+        fields = ['banco', 'numero_cuenta', 'titular']
+        banco = forms.ChoiceField(
+        choices=Suscripcion.BANCOS,
+        widget=forms.RadioSelect,  # Opcional: Usa RadioSelect para mostrar botones de opción
+    )
     
+        def clean(self):
+            super().clean()
+            
+            numero_cuenta = self.cleaned_data.get('numero_cuenta')
+            titular = self.cleaned_data.get('titular')
+            
+            
+            if not re.match("^[0-9]+$", numero_cuenta):
+                self.add_error('numero_cuenta','El número de cuenta debe contener solo dígitos.')
+                # Validación: El titular no debe contener caracteres especiales ni números
+            if len(titular)< 10:
+                self.add_error('titular','El titular no debe contener caracteres menos de 10 caracteres.')
+
+            return self.cleaned_data
+
+
+class BusquedaSuscripcionForm(forms.Form):
+    textoBusqueda = forms.CharField(required=False)
     
-    
-    
+class BusquedaAvanzadaSuscripcionForm(forms.Form):
+    texto_busqueda = forms.CharField(required=False)
+    titular = forms.CharField(required=False)
+
+    def clean(self):
+        super().clean()
+
+        # Obtenemos los campos
+        texto_busqueda = self.cleaned_data.get('texto_busqueda')
+        titular = self.cleaned_data.get('titular')
+
+        # Controlamos los campos
+        if not texto_busqueda and not titular:
+            self.add_error('texto_busqueda', 'Debe introducir al menos un valor')
+            self.add_error('fecha', 'Debe introducicar al menos un valor en un campo del formulario.')
+        else:
+            if texto_busqueda and len(texto_busqueda) < 3:
+                self.add_error('texto_busqueda', 'Debe introducir al menos 3 caracteres.')
+
+            if re.search("[0-9]", titular):
+                self.add_error('titular', 'Solo letras, por favor')
+
+        return self.cleaned_data
     
     
     
@@ -694,12 +741,6 @@ class BusquedaAvanzadaPromocionForm(forms.Form):
     
     
     
-    
-    
-    
-    
-    
-    
-    
+
     
    

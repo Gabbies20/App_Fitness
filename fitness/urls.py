@@ -64,8 +64,20 @@ urlpatterns = [
     path('create-comentario',views.comentario_create,name='create-comentario'),
     path('comentario_buscar/',views.comentario_buscar,name='comentario_buscar'),
     path('comentario_busqueda_avanzada/',views.comentario_busqueda_avanzada,name='comentario_busqueda_avanzada'),
-    path('comentario/editar/<int:comentario_id>/',views.comentario_editar,name='comentario_editar'),
+    path('comentario/editar/<int:comentario_id>',views.comentario_editar,name='comentario_editar'),
+    path('comentario/<int:comentario_id>/',views.mostrar_comentario,name='mostrar_comentario'),
     path('comentario/eliminar/<int:comentario_id>/',views.comentario_eliminar,name='comentario_eliminar'),
+    
+    
+    #URL SUSCRIPCION:
+    path('suscripcion/listar',views.lista_suscripcion,name='lista_suscripcion'),
+    path('create-suscripcion',views.suscripcion_create,name='create-suscripcion'),
+    path('suscripcion<int:suscripcion_id>/',views.suscripcion_mostrar,name='mostrar_suscripcion'),
+    path('suscripcion_buscar/',views.suscripcion_buscar,name='suscripcion_buscar'),
+    path('suscripcion_busqueda_avanzada/',views.suscripcion_busqueda_avanzada,name='suscripcion_busqueda_avanzada'),
+    path('suscripcion/editar/<int:suscripcion_id>',views.suscripcion_editar,name='suscripcion_editar'),
+    path('suscripcion/eliminar/<int:suscripcion_id>/',views.suscripcion_eliminar,name='suscripcion_eliminar'),
+    
     
     #URL EXAMEN:
     path('promocion/<int:promocion_id>/',views.mostrar_promocion,name='promocion_mostrar'),

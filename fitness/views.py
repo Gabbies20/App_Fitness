@@ -554,7 +554,7 @@ def lista_rutina(request):
     return render(request,'fitness/rutina/lista_rutina.html',{'mostrar_rutinas':rutina})
     
 def mostrar_rutina(request, rutina_id):
-    rutina = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
+    rutina = RutinaDiaria.objects.select_related('usuario').prefetch_related('ejercicios')
     rutina = rutina.get(id=rutina_id)
     return render(request,'fitness/rutina/mostrar_rutina.html',{'rutina':rutina})
 
@@ -659,6 +659,11 @@ def lista_comentarios(request):
     comentarios = Comentario.objects.select_related('usuario','entrenamiento').all()
     return render(request,'fitness/comentario/lista_comentarios.html',{'mostrar_comentarios':comentarios})
 
+def mostrar_comentario(request, rutina_id):
+    rutina = Comentario.objects.select_related('usuario','entrenamiento').all()
+    rutina = rutina.get(id=rutina_id)
+    return render(request,'fitness/rutina/mostrar_rutina.html',{'rutina':rutina})
+
 def comentario_create(request):
     datosFormulario = None
     if request.method=='POST':
@@ -692,35 +697,32 @@ def comentario_buscar(request):
 
 
 def comentario_busqueda_avanzada(request):
-    
     if len(request.GET) > 0:
         formulario = BusquedaAvanzadaComentarioForm(request.GET)
         if formulario.is_valid():
-            
             mensaje_busqueda = 'Se ha buscado por los siguientes valores:\n'
-            
-            QSRutinas = RutinaDiaria.objects.select_related('usuario','ejercicios').all()
-            
+            QSRutinas = Comentario.objects.select_related('usuario','entrenamiento').all()
+
             # Obtenemos los filtros:
             texto_busqueda = formulario.cleaned_data.get('texto_busqueda')
             fecha = formulario.cleaned_data.get('fecha')
-            
+
             # Por cada filtro comprobamos si tienen un valor y lo añadimos a la QuerySet:
-            if texto_busqueda != 0:
-                QSRutinas = QSRutinas.filter(Q(descripcion__contains=texto_busqueda))
+            if texto_busqueda:
+                QSRutinas = QSRutinas.filter(Q(texto__contains=texto_busqueda))
                 mensaje_busqueda += f" Nombre o contenido que contengan la palabra {texto_busqueda}\n"
-            
-    
+
             if fecha:
-                fecha_limite = datetime.datetime(2023, 1, 1).date()
+                fecha_limite = datetime(2023, 1, 1).date()
                 mensaje_busqueda += f" La fecha sea mayor a {datetime.strftime(fecha, '%d-%m-%Y')}\n"
                 QSRutinas = QSRutinas.filter(fecha__gte=fecha_limite)
 
-            rutinas = QSRutinas.all()
-            
-            return render(request, 'fitness/comentario/lista_busqueda.html', {'comentarios_mostrar': rutinas, 'texto_busqueda': mensaje_busqueda})
+            comentarios = QSRutinas.all()
+
+            return render(request, 'fitness/comentario/lista_busqueda.html', {'comentarios_mostrar': comentarios, 'texto_busqueda': mensaje_busqueda})
     else:
         formulario = BusquedaAvanzadaRutinaForm(None)
+
     return render(request, 'fitness/comentario/busqueda_avanzada.html', {'formulario': formulario})
 
 
@@ -755,13 +757,117 @@ def comentario_eliminar(request,comentario_id):
 
 
 
+"""
+CRUD SUSCRIPCIÓN
+"""
+
+def suscripcion_mostrar(request,suscripcion_id):
+    suscripcion = Suscripcion.objects.select_related('titular')
+    suscripcion = suscripcion.get(id=suscripcion_id)
+    return render(request,'fitness/suscripcion/suscripcion_mostrar.html',{'suscripcion':suscripcion})
+
+def suscripcion_create(request):
+    
+    datosFormulario = None
+    
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = SuscripcionModelForm(datosFormulario)
+    if(request.method=='POST'):
+        if(formulario.is_valid()):
+            try:
+                #Gurada el entrenamiento en la base de datos.
+                formulario.save()
+                #print(formulario)
+                return redirect('lista_suscripcion')
+            except Exception as error:
+                print(error)
+    else:
+        print(formulario.errors)
+    return render(request,'fitness/suscripcion/create.html',{'formulario':formulario})
+
+
+def lista_suscripcion(request):
+    suscripciones = Suscripcion.objects.select_related('titular')
+    return render(request,'fitness/suscripcion/lista_suscripcion.html',{'mostrar_suscripcion':suscripciones})
+
+from .models import Suscripcion
+
+def suscripcion_buscar(request):
+    formulario = BusquedaSuscripcionForm(request.GET)
+    
+    if formulario.is_valid():
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        suscripciones = Suscripcion.objects.filter(banco__icontains=texto)
+        return render(request, 'fitness/suscripcion/lista_busqueda.html', {'suscripcion_mostrar': suscripciones, 'texto_busqueda': texto})
+    
+    # Manejo del caso en que el formulario no es válido
+    if 'HTTP_REFERER' in request.META:
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        print(formulario.errors)
+        return redirect('index')
 
 
 
 
+def suscripcion_busqueda_avanzada(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaSuscripcionForm(request.GET)
+        if formulario.is_valid():
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores:\n'
+            QSRutinas = Comentario.objects.select_related('usuario','entrenamiento').all()
+
+            # Obtenemos los filtros:
+            texto_busqueda = formulario.cleaned_data.get('texto_busqueda')
+            fecha = formulario.cleaned_data.get('fecha')
+
+            # Por cada filtro comprobamos si tienen un valor y lo añadimos a la QuerySet:
+            if texto_busqueda:
+                QSRutinas = QSRutinas.filter(Q(texto__contains=texto_busqueda))
+                mensaje_busqueda += f" Nombre o contenido que contengan la palabra {texto_busqueda}\n"
+
+            if fecha:
+                fecha_limite = datetime(2023, 1, 1).date()
+                mensaje_busqueda += f" La fecha sea mayor a {datetime.strftime(fecha, '%d-%m-%Y')}\n"
+                QSRutinas = QSRutinas.filter(fecha__gte=fecha_limite)
+
+            comentarios = QSRutinas.all()
+
+            return render(request, 'fitness/comentario/lista_busqueda.html', {'comentarios_mostrar': comentarios, 'texto_busqueda': mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaRutinaForm(None)
+
+    return render(request, 'fitness/comentario/busqueda_avanzada.html', {'formulario': formulario})
 
 
+def suscripcion_editar(request,suscripcion_id):
+    suscripcion =  Suscripcion.objects.get(id=suscripcion_id)
+    
+    datosFormulario = None
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = SuscripcionModelForm(datosFormulario,instance=suscripcion)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_suscripcion')
+            except Exception as e:
+                pass
+    return render(request,'fitness/suscripcion/actualizar.html',{'formulario':formulario,'suscripcion':suscripcion})
+        
 
+def suscripcion_eliminar(request,suscripcion_id):
+    rutina = Suscripcion.objects.get(id=suscripcion_id)
+    try:
+        rutina.delete()
+    except:
+        pass
+    return redirect ('lista_suscripcion')
 
 
 

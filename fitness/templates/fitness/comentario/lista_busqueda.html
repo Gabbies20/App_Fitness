@@ -12,9 +12,9 @@
 {% block contenido %}
  <b>{{texto_busqueda}}</b> 
  <br>
-<p>La cantidad de comentarios que contiene son: {{ comentarios_mostrar|length }}</p>
+<p>La cantidad de comentarios que  contiene  <b>{{texto_busqueda}}</b> son: {{ comentarios_mostrar|length }}</p>
 
-      {% for comentarios in comentarios_mostrar%}
+      {% for comentario in comentarios_mostrar%}
         {% include 'fitness/comentario/comentario.html'%}
       {% endfor %}
 
