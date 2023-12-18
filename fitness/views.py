@@ -12,7 +12,9 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-    return render (request,'fitness/index.html',{})
+    if(not "fecha_inicio" in request.session):
+        request.session["fecha_inicio"] = datetime.now().strftime('%d/%m/%Y %H:%M')
+    return render(request, 'fitness/index.html')
 
 #1.Vista que muestra todos los ejercicios y sus datos, incluidos los relcionados.
 def lista_ejercicios(request):
