@@ -4,6 +4,7 @@ from .models import *
 from django.forms import ModelForm
 import re 
 from datetime import datetime 
+from django.contrib.auth.forms import UserCreationForm
 
 """
 Los formularios en Django se crean mediante la definición de una clase que hereda de django.forms.Form. 
@@ -572,7 +573,18 @@ class BusquedaAvanzadaSuscripcionForm(forms.Form):
     
     
     
-    
+"""
+    FORMULARIO AUTENTICACIÓN:
+"""
+class RegistroForm(UserCreationForm): 
+    roles = (
+                                (Usuario.CLIENTE, 'cliente'),
+                                (Usuario.ENTRENADOR, 'entrenador'),
+            )   
+    rol = forms.ChoiceField(choices=roles)  
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'password1', 'password2','rol')
     
     
     

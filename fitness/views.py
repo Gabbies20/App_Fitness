@@ -6,7 +6,8 @@ from .models import Ejercicio,Usuario,Perfil_de_Usuario,Entrenamiento,RutinaDiar
 from django.db.models import Q,F
 from .forms import *
 from datetime import datetime
-
+from django.contrib.auth.models import Group
+from django.contrib.auth import login
 
 
 
@@ -154,7 +155,7 @@ def cuentas_bancarias(request,texto):
 #Obtener todos los modelos principales que tengan una media de votaciones mayor del 2,5.
 
 """
-    CRUDS
+    CRUD EJERCICIO:
 """
 
 
@@ -295,29 +296,6 @@ def ejercicio_eliminar(request,ejercicio_id):
     except:
         pass
     return redirect ('lista_ejercicios')
-
-
-
-    """
-    
-    CRUD ENTRENAMIENTO:
-    def entrenamiento_create(request):
-    formulario = EntrenamientoForm() 
-    
-    datosFormulario = {
-    'nombre': 'Entrenamiento de prueba',
-    'duracion': 60,
-    # Otros datos...
-}
-    if(request.method=='POST'):
-        datosFormulario = request.POST
-    #La variable formulario es un objeto que va a contener los datos de mi Formulario
-    formulario = EntrenamientoForm(datosFormulario)
-    
-    return render(request,'fitness/entrenamiento/create.html',{'formulario':formulario})
-    """
-
-
     return entrenamiento
 
 def entrenamiento_mostrar(request,entrenamiento_id):
@@ -872,6 +850,137 @@ def suscripcion_eliminar(request,suscripcion_id):
     return redirect ('lista_suscripcion')
 
 
+#VISTA DE REGISTRAR USUARIO:
+def registrar_usuario(request):
+    if request.method == 'POST':
+        formulario = RegistroForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            rol = int(formulario.cleaned_data.get('rol'))
+            if(rol == Usuario.CLIENTE):
+                grupo = Group.objects.get(name='Clientes') 
+                grupo.user_set.add(user)
+                cliente = Cliente.objects.create( usuario = user)
+                cliente.save()
+            elif(rol == Usuario.ENTRENADOR):
+                grupo = Group.objects.get(name='Bibliotecarios') 
+                grupo.user_set.add(user)
+                entrenador = Entrenador.objects.create(usuario = user)
+                entrenador.save()
+            
+            login(request, user)
+            return redirect('index')
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -976,3 +1085,6 @@ def promocion_busqueda_avanzada(request):
         formulario = BusquedaAvanzadaPromocionForm(None)
         print('No hay nada')
     return render(request,'fitness/ejercicio/busqueda_avanzada.html',{'formulario':formulario})
+
+
+

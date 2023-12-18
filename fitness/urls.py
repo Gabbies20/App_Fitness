@@ -78,6 +78,7 @@ urlpatterns = [
     path('suscripcion/editar/<int:suscripcion_id>',views.suscripcion_editar,name='suscripcion_editar'),
     path('suscripcion/eliminar/<int:suscripcion_id>/',views.suscripcion_eliminar,name='suscripcion_eliminar'),
     
+    path('registrar',views.registrar_usuario,name='registrar_usuario'),
     
     #URL EXAMEN:
     path('promocion/<int:promocion_id>/',views.mostrar_promocion,name='promocion_mostrar'),

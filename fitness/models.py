@@ -67,7 +67,7 @@ class Ejercicio(models.Model):
     descripcion = models.TextField()
     tipo_ejercicio = models.CharField(max_length=20)
     usuarios = models.ManyToManyField(Usuario, through='HistorialEjercicio')
-    usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
+    #usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
 
     def __str__(self) -> str:
         return self.nombre
@@ -165,13 +165,9 @@ class Voto(models.Model):
                                             ])
     comentario = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
-    ejercicio = models.ForeignKey(Ejercicio,on_delete=models.CASCADE)
+    #ejercicio = models.ForeignKey(Ejercicio,on_delete=models.CASCADE)
     
 
-
-    
-    numero_cuenta = models.CharField(max_length=20)
-    titular = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     
 class Promocion(models.Model):
     nombre = models.CharField(max_length=50)

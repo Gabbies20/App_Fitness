@@ -24,5 +24,7 @@ handler500 = 'fitness.views.mi_error_500'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('',include('fitness.urls')),
+   
 ]
