@@ -588,8 +588,8 @@ class RegistroForm(UserCreationForm):
     
     
     
-    
-    
+class Inscripcion(ModelForm):
+
     
     
     
