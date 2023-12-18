@@ -191,7 +191,7 @@ def ejercicio_crear(request):
         if(ejercicio_creado):
             messages.success(request, 'Se ha creado el ejercicio'+formulario.cleaned_data.get('nombre')+" correctamente.")
             return redirect("lista_ejercicios")
-    return render(request, 'fitness/create.html',{"formulario":formulario})
+    return render(request, 'fitness/ejercicio/create.html',{"formulario":formulario})
 
 def crear_ejercicio_modelo(formulario):
     ejercicio_creado = False
@@ -343,13 +343,69 @@ def entrenamiento_create(request):
     else:
         print(formulario.errors)
     return render(request,'fitness/entrenamiento/create.html',{'formulario':formulario})
-  
 
 
 def lista_entrenamientos(request):
     entrenamientos = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
     return render(request,'fitness/entrenamiento/lista_entrenamientos.html',{'mostrar_entrenamientos':entrenamientos})
 
+#Vista de buscar:
+def entrenamiento_buscar(request,):
+    formulario = BusquedaEntrenamientoForm(request.GET)
+    
+    if(formulario.is_valid()):
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        entrenamientos = Entrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
+        entrenamientos = entrenamientos.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
+        return render (request,'fitness/entrenamiento/lista_busqueda.html',{'entrenamientos_mostrar':entrenamientos,'texto_busqueda':texto})
+    if('HTPP_REFERER' in request.META):
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        print(formulario.error)
+        return redirect('index')
+
+#VISTA BUESQUEDA AVANZADA - ENTRENAMIENTO:
+def entrenamiento_buscar_avanzado(request):
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaEntrenamientoForm(request.GET)
+        if formulario.is_valid():
+            mensaje_busqueda = "Se ha buscado por los siguientes valores:\n"
+            
+            QSEntrenamientos = Entrenamiento.objects.select_related("usuario").prefetch_related("ejercicios")
+            
+            # Obtención de los filtros
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            tipos = formulario.cleaned_data.get('tipos')
+            duracion = formulario.cleaned_data.get('duracion')
+            
+            # Por cada filtro, comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if textoBusqueda:
+                QSEntrenamientos = QSEntrenamientos.filter(Q(nombre__contains=textoBusqueda) | Q(descripcion__contains=textoBusqueda))
+                mensaje_busqueda += f"Nombre o contenido que contengan la palabra {textoBusqueda}\n"
+            
+            if tipos:
+                mensaje_busqueda += f"El tipo sea {tipos[0]}"
+                filtroOR = Q(tipo=tipos[0])
+                for tipo in tipos[1:]:
+                    mensaje_busqueda += f" o {tipo}"
+                    filtroOR |= Q(tipo=tipo)
+                mensaje_busqueda += "\n"
+                QSEntrenamientos = QSEntrenamientos.filter(filtroOR)
+            
+            if duracion:
+                QSEntrenamientos = QSEntrenamientos.filter(duracion=duracion)
+                mensaje_busqueda += f"Duración sea igual a {duracion} minutos\n"
+            
+            entrenamientos = QSEntrenamientos.all()
+
+            return render(request, 'fitness/entrenamiento/lista_busqueda.html',
+                          {"entrenamientos_mostrar": entrenamientos,
+                           "texto_busqueda": mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaEntrenamientoForm(None)
+    return render(request, 'fitness/entrenamiento/busqueda_avanzada.html', {"formulario": formulario})
+
+#VISTA DE EDITAR - ENTRENAMIENTO:
 def entrenamiento_editar(request,entrenamiento_id):
     entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
     
@@ -375,7 +431,7 @@ def entrenamiento_eliminar(request,entrenamiento_id):
         entrenamiento.delete()
     except:
         pass
-    return redirect ('lista_ejercicios')
+    return redirect ('lista_entrenamientos')
 
 
     """CRUD PLAN DE ENTRENAMIENTO
@@ -440,14 +496,9 @@ def plan_busqueda_avanzada(request):
                 QSPlanes = QSPlanes.filter(Q(nombre__contains=texto_busqueda) | Q(descripcion__contains=texto_busqueda))
                 mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+texto_busqueda+"\n"
                 
+    
             
-            if(descripcion!= None):
-                QSPlanes = QSPlanes.filter(Q(nombre__contains=descripcion) | Q(descripcion__contains=descripcion))
-                mensaje_busqueda +=" Nombre o contenido que contengan la palabra "+descripcion+"\n"
-                
-            
-            #Comprobamos fechas
-            #Obtenemos los libros con fecha publicacion mayor a la fecha desde
+            #Comprobamos fechas #Obtenemos los libros con fecha publicacion mayor a la fecha desde
             if(not fecha_desde is None):
                 mensaje_busqueda +=" La fecha sea mayor a "+datetime.strftime(fecha_desde,'%d-%m-%Y')+"\n"
                 QSPlanes = QSPlanes.filter(fecha_inicio__gte=fecha_desde)
@@ -458,6 +509,7 @@ def plan_busqueda_avanzada(request):
                 QSPlanes = QSPlanes.filter(fecha_fin__lte=fecha_hasta)
             
             planes = QSPlanes.all()
+           
             
             
             return render(request,'fitness/plan/lista_busqueda.html',{'planes_mostrar':planes,'texto_busqueda':mensaje_busqueda})
@@ -465,8 +517,263 @@ def plan_busqueda_avanzada(request):
         formulario =BusquedaAvanzadaPlanForm(None)
     return render(request,'fitness/plan/busqueda_avanzada.html',{'formulario':formulario})
 
+def plan_editar(request,plan_id):
+    plan = PlanEntrenamiento.objects.get(id=plan_id)
+    
+    datosFormulario = None
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = PlanEntrenamientoModelForm(datosFormulario,instance=plan)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_plan')
+            except Exception as e:
+                pass
+    return render(request,'fitness/plan/actualizar.html',{'formulario':formulario,'plan':plan})
+        
 
-    """
+def plan_eliminar(request,plan_id):
+    plan = PlanEntrenamiento.objects.get(id=plan_id)
+    try:
+        plan.delete()
+    except:
+        pass
+    return redirect ('lista_plan')
+
+
+
+
+""" CRUD RUTINA DIARIA"""
+
+def lista_rutina(request):
+    rutina = RutinaDiaria.objects.select_related('usuario').prefetch_related('ejercicios')
+    return render(request,'fitness/rutina/lista_rutina.html',{'mostrar_rutinas':rutina})
+    
+def mostrar_rutina(request, rutina_id):
+    rutina = PlanEntrenamiento.objects.select_related('usuario').prefetch_related('ejercicios')
+    rutina = rutina.get(id=rutina_id)
+    return render(request,'fitness/rutina/mostrar_rutina.html',{'rutina':rutina})
+
+def rutina_create(request):
+    datosFormulario = None
+    if request.method=='POST':
+        datosFormulario = request.POST
+    formulario = RutinaModelForm(datosFormulario)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            try:
+                #Guarda el libro en la base de datos:
+                formulario.save()
+                return redirect('lista_rutina')
+            except Exception as error:
+                print(error)
+    return render (request,'fitness/rutina/create.html',{'formulario':formulario})
+                
+def rutina_buscar(request):
+    formulario = BusquedaRutinaForm(request.GET)
+    
+    if formulario.is_valid():
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        rutinas = RutinaDiaria.objects.select_related('usuario').prefetch_related('ejercicios')
+        rutinas = rutinas.filter(descripcion__contains=texto).all()
+
+        return render(request, 'fitness/rutina/lista_busqueda.html', {'rutinas_mostrar': rutinas, 'texto_busqueda': texto})
+
+    if 'HTPP_REFERER' in request.META:
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        return redirect('index')
+
+    
+def rutina_busqueda_avanzada(request):
+    
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaRutinaForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores:\n'
+            
+            QSRutinas = RutinaDiaria.objects.select_related('usuario').prefetch_related('ejercicios')
+            
+            # Obtenemos los filtros:
+            texto_busqueda = formulario.cleaned_data.get('texto_busqueda')
+            fecha = formulario.cleaned_data.get('fecha')
+            
+            # Por cada filtro comprobamos si tienen un valor y lo añadimos a la QuerySet:
+            if texto_busqueda != 0:
+                QSRutinas = QSRutinas.filter(Q(descripcion__contains=texto_busqueda))
+                mensaje_busqueda += f" Nombre o contenido que contengan la palabra {texto_busqueda}\n"
+            
+    
+            if fecha:
+                fecha_limite = datetime.datetime(2023, 1, 1).date()
+                mensaje_busqueda += f" La fecha sea mayor a {datetime.strftime(fecha, '%d-%m-%Y')}\n"
+                QSRutinas = QSRutinas.filter(fecha__gte=fecha_limite)
+
+            rutinas = QSRutinas.all()
+            
+            return render(request, 'fitness/rutina/lista_busqueda.html', {'rutinas_mostrar': rutinas, 'texto_busqueda': mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaRutinaForm(None)
+    return render(request, 'fitness/rutina/busqueda_avanzada.html', {'formulario': formulario})
+
+
+def rutina_editar(request,rutina_id):
+    rutina = RutinaDiaria.objects.get(id=rutina_id)
+    
+    datosFormulario = None
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = RutinaModelForm(datosFormulario,instance=rutina)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_rutina')
+            except Exception as e:
+                pass
+    return render(request,'fitness/rutina/actualizar.html',{'formulario':formulario,'rutina':rutina})
+        
+
+def rutina_eliminar(request,rutina_id):
+    rutina = RutinaDiaria.objects.get(id=rutina_id)
+    try:
+        rutina.delete()
+    except:
+        pass
+    return redirect ('lista_rutina')
+
+
+"""
+
+CRUD DE COMENTARIOS:
+
+"""
+def lista_comentarios(request):
+    comentarios = Comentario.objects.select_related('usuario','entrenamiento').all()
+    return render(request,'fitness/comentario/lista_comentarios.html',{'mostrar_comentarios':comentarios})
+
+def comentario_create(request):
+    datosFormulario = None
+    if request.method=='POST':
+        datosFormulario = request.POST
+    formulario = ComentarioModelForm(datosFormulario)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            try:
+                #Guarda el libro en la base de datos:
+                formulario.save()
+                return redirect('lista_comentarios')
+            except Exception as error:
+                print(error)
+    return render (request,'fitness/comentario/create.html',{'formulario':formulario})
+
+
+def comentario_buscar(request):
+    formulario = BusquedaComentarioForm(request.GET)
+    
+    if formulario.is_valid():
+        texto = formulario.cleaned_data.get('textoBusqueda')
+        comentarios = Comentario.objects.select_related('usuario', 'entrenamiento').all()
+        comentarios = comentarios.filter(texto__contains=texto).all()
+        return render(request, 'fitness/comentario/lista_busqueda.html', {'comentarios_mostrar': comentarios, 'texto_busqueda': texto})
+    if 'HTTP_REFERER' in request.META:
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        print(formulario.errors)  # Aquí corregí el atributo errors
+        return redirect('index')
+
+
+
+def comentario_busqueda_avanzada(request):
+    
+    if len(request.GET) > 0:
+        formulario = BusquedaAvanzadaComentarioForm(request.GET)
+        if formulario.is_valid():
+            
+            mensaje_busqueda = 'Se ha buscado por los siguientes valores:\n'
+            
+            QSRutinas = RutinaDiaria.objects.select_related('usuario','ejercicios').all()
+            
+            # Obtenemos los filtros:
+            texto_busqueda = formulario.cleaned_data.get('texto_busqueda')
+            fecha = formulario.cleaned_data.get('fecha')
+            
+            # Por cada filtro comprobamos si tienen un valor y lo añadimos a la QuerySet:
+            if texto_busqueda != 0:
+                QSRutinas = QSRutinas.filter(Q(descripcion__contains=texto_busqueda))
+                mensaje_busqueda += f" Nombre o contenido que contengan la palabra {texto_busqueda}\n"
+            
+    
+            if fecha:
+                fecha_limite = datetime.datetime(2023, 1, 1).date()
+                mensaje_busqueda += f" La fecha sea mayor a {datetime.strftime(fecha, '%d-%m-%Y')}\n"
+                QSRutinas = QSRutinas.filter(fecha__gte=fecha_limite)
+
+            rutinas = QSRutinas.all()
+            
+            return render(request, 'fitness/comentario/lista_busqueda.html', {'comentarios_mostrar': rutinas, 'texto_busqueda': mensaje_busqueda})
+    else:
+        formulario = BusquedaAvanzadaRutinaForm(None)
+    return render(request, 'fitness/comentario/busqueda_avanzada.html', {'formulario': formulario})
+
+
+
+def comentario_editar(request,comentario_id):
+    comentario =  Comentario.objects.get(id=comentario_id)
+    
+    datosFormulario = None
+    if(request.method=='POST'):
+        datosFormulario = request.POST
+    
+    formulario = ComentarioModelForm(datosFormulario,instance=comentario)
+    if(request.method=='POST'):
+        if formulario.is_valid():
+            formulario.save()
+            try:
+                formulario.save()
+                return redirect('lista_comentarios')
+            except Exception as e:
+                pass
+    return render(request,'fitness/comentario/actualizar.html',{'formulario':formulario,'comentario':comentario})
+        
+
+def comentario_eliminar(request,comentario_id):
+    rutina = Comentario.objects.get(id=comentario_id)
+    try:
+        rutina.delete()
+    except:
+        pass
+    return redirect ('lista_comentarios')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
     
         VIEWS DEL EXAMEN
     

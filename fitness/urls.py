@@ -3,7 +3,7 @@ from .import views
 
 urlpatterns = [
     path('',views.index,name='index'),
-    path('ejercicios/listar',views.lista_ejercicios,name='lista_ejercicios'),
+    
     path('informacion_usuario/',views.informacion_usuario,name='informacion_usuario'),
     path('perfil_usuario/<int:id_usuario>/',views.perfil_usuario,name='perfil_usuario'),
     path('entrenamientos',views.entrenamiento_aerobico,name='entrenamientos'),
@@ -19,25 +19,53 @@ urlpatterns = [
     path('banco_tipo/<str:texto>',views.cuentas_bancarias,name='banco_tipo'),
     path('puntuacion_tres/<int:id_usuario>',views.puntuacion_tres,name='puntuacion_tres'),
     path('usuarios_sin_votos',views.usuarios_sin_votos,name='usuarios_sin_votos'),
+    
     #URL DE EJERCICIO:
     path('create',views.ejercicio_crear,name='create'),
     path('ejercicio_buscar/',views.ejercicio_buscar,name='ejercicio_buscar'),
     path('ejercicio_busqueda_avanzada/',views.ejercicio_busqueda_avanzada,name='ejercicio_busqueda_avanzada'),
+    path('ejercicios/listar',views.lista_ejercicios,name='lista_ejercicios'),
     path('ejercicio/editar/<int:ejercicio_id>/',views.ejercicio_editar,name='ejercicio_editar'),
     path('ejercicio/eliminar/<int:ejercicio_id>/',views.ejercicio_eliminar,name='ejercicio_eliminar'),
     path('ejercicio/<int:ejercicio_id>/',views.ejercicio_mostrar,name='ejercicio_mostrar'),
+    
     #URL DE ENTRENAMIENTOS:
     path('create_entrenamiento',views.entrenamiento_create,name='create_entrenamiento'),
+    path('entrenamiento_buscar/',views.entrenamiento_buscar,name='entrenamiento_buscar'),
+    path('entrenamiento_busqueda_avanzada/',views.entrenamiento_buscar_avanzado,name='entrenamiento_busqueda_avanzada'),
     path('listar_entrenamiento',views.lista_entrenamientos,name='listar_entrenamientos'),
      path('entrenamiento/<int:entrenamiento_id>/',views.entrenamiento_mostrar,name='entrenamiento_mostrar'),
      path('entrenamiento/editar/<int:entrenamiento_id>/',views.entrenamiento_editar,name='entrenamiento_editar'),
      path('entrenamiento/eliminar/<int:entrenamiento_id>/',views.entrenamiento_eliminar,name='entrenamiento_eliminar'),
+     
+     
      #URL PLAN_ENTRENAMIENTO:
     path('plan/listar',views.lista_plan,name='lista_plan'),
      path('create-plan',views.plan_create,name='create-plan'),
      path('plan_buscar/',views.plan_buscar,name='plan_buscar'),
     path('plan_busqueda_avanzada/',views.plan_busqueda_avanzada,name='plan_busqueda_avanzada'),
     path('plan/<int:plan_id>/',views.mostrar_plan,name='mostrar_plan'),
+    path('plan/editar/<int:plan_id>/',views.plan_editar,name='plan_editar'),
+    path('plan/eliminar/<int:plan_id>/',views.plan_eliminar,name='plan_eliminar'),
+    
+    
+    
+    #URL RUTINA:
+    path('rutina/listar',views.lista_rutina,name='lista_rutina'),
+    path('create-rutina',views.rutina_create,name='create-rutina'),
+    path('rutina_buscar/',views.rutina_buscar,name='rutina_buscar'),
+    path('rutina_busqueda_avanzada/',views.rutina_busqueda_avanzada,name='rutina_busqueda_avanzada'),
+    path('rutina/<int:rutina_id>/',views.mostrar_rutina,name='mostrar_rutina'),
+    path('rutina/editar/<int:rutina_id>/',views.rutina_editar,name='rutina_editar'),
+    path('rutina/eliminar/<int:rutina_id>/',views.rutina_eliminar,name='rutina_eliminar'),
+    
+    #URL COMENTARIOS:
+    path('comentario/listar',views.lista_comentarios,name='lista_comentarios'),
+    path('create-comentario',views.comentario_create,name='create-comentario'),
+    path('comentario_buscar/',views.comentario_buscar,name='comentario_buscar'),
+    path('comentario_busqueda_avanzada/',views.comentario_busqueda_avanzada,name='comentario_busqueda_avanzada'),
+    path('comentario/editar/<int:comentario_id>/',views.comentario_editar,name='comentario_editar'),
+    path('comentario/eliminar/<int:comentario_id>/',views.comentario_eliminar,name='comentario_eliminar'),
     
     #URL EXAMEN:
     path('promocion/<int:promocion_id>/',views.mostrar_promocion,name='promocion_mostrar'),

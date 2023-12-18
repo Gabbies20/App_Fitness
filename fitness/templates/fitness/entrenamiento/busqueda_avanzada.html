@@ -5,25 +5,24 @@
 <br>
   <h2>RESULTADO DE BÚSQUEDA:</h2>
 {% endblock %}
+
 {% block contenido %}
 {% load bootstrap5 %}
-    <form action = "{% url 'plan_busqueda_avanzada' %}" method = "GET"> 
+    <form action = "{% url 'entrenamiento_busqueda_avanzada' %}" method = "GET"> 
         
         {% csrf_token %}
 
         <div class="mb-4">
-            {% bootstrap_field formulario.texto_busqueda show_label=True %}
-        </div>
-
-         
-
+            {% bootstrap_field formulario.textoBusqueda show_label=True %}
+        </div>   
         <div class="mb-4">
-            {% bootstrap_field formulario.fecha_hasta%}
-        </div>
-
+            {% bootstrap_field formulario.tipos show_label=True %}
+        </div> 
         <div class="mb-4">
-            {% bootstrap_field formulario.fecha_desde %}
-        </div>
+            {% bootstrap_field formulario.duracion show_label=True %}
+        </div> 
+
+        
 
 
         
