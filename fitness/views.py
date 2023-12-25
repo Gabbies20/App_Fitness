@@ -538,16 +538,27 @@ def mostrar_rutina(request, rutina_id):
     rutina = rutina.get(id=rutina_id)
     return render(request,'fitness/rutina/mostrar_rutina.html',{'rutina':rutina})
 
+#Incluir permiso
 def rutina_create(request):
     datosFormulario = None
     if request.method=='POST':
         datosFormulario = request.POST
-    formulario = RutinaModelForm(datosFormulario)
+    formulario = RutinaModelForm(datosFormulario,initial={"usuario":request.user})
     if(request.method=='POST'):
         if formulario.is_valid():
             try:
                 #Guarda el libro en la base de datos:
                 formulario.save()
+                
+                #Si no usamos campo oculto
+                '''rutina = RutinaDiaria.objects.create(
+                    usuario = request.user,
+                    fecha = formulario.cleaned_data.get("fecha"),
+                    descripcion = formulario.cleaned_data.get("descripcion"),
+                    duracion = formulario.cleaned_data.get("duracion"),
+                    ejercicios = formulario.cleaned_data.get("ejercicios"),
+                )
+                rutina.save()'''
                 return redirect('lista_rutina')
             except Exception as error:
                 print(error)

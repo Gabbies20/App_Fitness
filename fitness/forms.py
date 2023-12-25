@@ -360,6 +360,7 @@ class RutinaModelForm(ModelForm):
             'ejercicios' : ('Mantén pulsada la tecla control para seleccionar varios elementos.')
         }
         widgets = {
+            'usuario':forms.HiddenInput(),
             'fecha':forms.SelectDateWidget(),
             'duracion': forms.NumberInput(attrs={'min': 0}),  # Agregando el widget NumberInput
         }
@@ -380,7 +381,7 @@ class RutinaModelForm(ModelForm):
         if not usuario:
             self.add_error('usuario','El campo usuario es obligatorio.')
         
-        if fecha and fecha > timezone.now().date():
+        if fecha and fecha > timezone.now():
             self.add_error('fecha','La fecha no puede ser en el futuro.')
 
         if len(descripcion) < 10:
@@ -589,85 +590,21 @@ class RegistroForm(UserCreationForm):
     
     
 class Inscripcion(ModelForm):
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-"""FORMULARIOS DEL EXAMEN:"""                 
-
 class PromocionModelForm(ModelForm):
     class Meta:
         model = Promocion
@@ -695,13 +632,6 @@ class PromocionModelForm(ModelForm):
         fecha = self.cleaned_data.get('fecha')
         usuario = self.cleaned_data.get('usuario')
         
-        """
-        Nombre de la promoción: el nombre tiene que ser único.
-        Descripción de la promoción: Debe tener al menos 100 caracteres
-        Usuario al que se le aplica la promoción: Un usuario no puede usar la misma promoción dos veces
-        Descuento que se le aplica: Tiene que ser un valor entero entre 0 y 100
-        Fecha fin de la promoción: Esta fecha no puede inferior a la fecha actual
-        """
         promocionNombre = Promocion.objects.filter(nombre=nombre).first()
         if(not promocionNombre is None):
             self.add_error('nombre','Ya existe una promoción con ese nombre.')
@@ -750,9 +680,3 @@ class BusquedaAvanzadaPromocionForm(forms.Form):
         #Siempre devolvemos el conjunto de datos.
         return self.cleaned_data
     
-    
-    
-    
-
-    
-   
