@@ -4,15 +4,13 @@
 
 {% block cabecera %}
 <br>
-  <h2 class="display-5">PLANES DE ENTRENAMIENTO:</h2>
+  <h2 class="display-5">LISTA DE COMENTARIOS:</h2>
 {% endblock %}
 
 {% block contenido %}
 
-    <h6 class="">{{plan.descripcion|upper}}</h6>
+    <h1 class="display-6">{{comentario.usuario.nombre|upper}}</h1>
     <div class="col-sm-12 mb-2">
-        {% include 'fitness/plan/plan.html'%}
+        {% include 'fitness/comentario/comentario.html'%}
     </div>
-    <br>
-    <br>
 {% endblock %}

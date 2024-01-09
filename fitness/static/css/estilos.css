@@ -91,3 +91,20 @@ a.btn.btn-outline-dangerous {
 .custom-card:hover {
     transform: none; /* Esto restablecerá la transformación a su valor predeterminado */
 }
+
+
+/* Estilos para el campo 'tipo' */
+.tu-clase-css {
+    /* Estilos específicos para el campo 'tipo' */
+    width: 200px;
+    /* Agrega más estilos según sea necesario */
+}
+
+/* Estilos para el campo 'duracion' */
+.otra-clase-css {
+    /* Estilos específicos para el campo 'duracion' */
+    width: 100px;
+    /* Agrega más estilos según sea necesario */
+}
+
+/* Puedes agregar estilos adicionales para otros campos si es necesario */

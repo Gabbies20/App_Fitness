@@ -36,9 +36,9 @@
                       <li><a href="{% url 'create' %}" class="dropdown-item">Crear-Ejercicio</a></li>
                       <li><a href="{% url 'create_entrenamiento' %}" class="dropdown-item">Crear Entrenamiento</a></li>
                       <li><a href="{% url 'create-plan' %}" class="dropdown-item">Crear-Plan de Entrenamiento</a></li>
-                      <li><a href="3" class="dropdown-item">Crear Rutina Diaria</a></li>
-                      <li><a href="3" class="dropdown-item">Crear Comentario</a></li>
-                      <li><a href="3" class="dropdown-item">Crear Usuario</a></li>
+                      <li><a href="{% url 'create-rutina' %}" class="dropdown-item">Crear Rutina Diaria</a></li>
+                      <li><a href="{% url 'create-comentario' %}" class="dropdown-item">Crear Comentario</a></li>
+                      <li><a href="{% url 'create-suscripcion'%}" class="dropdown-item">Crear Suscripción</a></li>
                       <li><a href="{% url  'create-promocion' %}" class="dropdown-item">Crear PROMOCIÓN</a></li>
                   </ul>
 
@@ -54,6 +54,27 @@
               <input type="search" class="form-control me-2" placeholder="Buscar..." aria-label="Buscar">
               <button class="btn btn-outline-primary" type="button">Buscar</button>
           </form>
+
+          <div class="ml-2">
+            {% if not request.user.is_authenticated %}
+                <a class="btn btn-outline-warning" href="{% url 'login' %}">
+                    Login
+                </a>
+            {% endif %}
+        
+            {% if not request.user.is_authenticated %}
+                <a class="btn btn-outline-warning" href="{% url 'registrar_usuario' %}">
+                    Registrarse
+                </a>
+            {% endif %}
+        
+            {% if request.user.is_authenticated %}
+                <a class="btn btn-outline-warning" href="{% url 'logout' %}">
+                    Desconectarse
+                </a>
+            {% endif %}
+        </div>
+        
       </div>
   </div>
 </nav>

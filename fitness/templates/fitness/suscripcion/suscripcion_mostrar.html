@@ -4,14 +4,14 @@
 
 {% block cabecera %}
 <br>
-  <h2 class="display-5">PLANES DE ENTRENAMIENTO:</h2>
+  <h2 class="display-5">SUSCRIPCIONES:</h2>
 {% endblock %}
 
 {% block contenido %}
 
-    <h6 class="">{{plan.descripcion|upper}}</h6>
+    <h6 class="">{{suscripcion.titular|upper}}</h6>
     <div class="col-sm-12 mb-2">
-        {% include 'fitness/plan/plan.html'%}
+        {% include 'fitness/suscripcion/suscripcion.html'%}
     </div>
     <br>
     <br>

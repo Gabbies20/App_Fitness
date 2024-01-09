@@ -3,11 +3,11 @@
 {% block contenido %}
 
 {% load bootstrap5 %}
-<h6 class="display-6 text-primary">VAMOS A EDITAR EL ENTRENAMIENTO Nro:{{entrenamiento.id}}</h6>
+<h6 class="display-6 text-primary">VAMOS A EDITAR LA SUSCRIPCION Nro:{{plan.id}}</h6>
 <br>
 <hr>
 <br>
-<form action="{% url 'entrenamiento_editar' entrenamiento.id %}" method="post" class="mb-4">
+<form action="{% url 'suscripcion_editar' suscripcion.id %}" method="post" class="mb-4">
     {% csrf_token %}
     
     <div class="container">

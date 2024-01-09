@@ -1,38 +1,24 @@
 {% load static %}
 <div class="card custom-card">
     <div class="custom-card-body">
-        <h5 class="card-title"><a href="{% url 'mostrar_plan' plan.id  %}"> {{ plan.nombre|capfirst }}</a></h5>
-        <h6 class="card-subtitle mb-2 text-muted">Nombre:{{ plan.nombre }}</h6>
-        <p class="card-text">Descripción:{{ plan.descripcion }}</p>
-        <p class="card-text">Descripción:{{ plan.duracion_estimada}}</p>
-        <p class="card-text">Dificultad:{{ plan.dificultad }}</p>
-        <p class="card-text">Usuario:{{ plan.usuario }}</p>
+        <h5 class="card-title"><a href="{% url 'mostrar_comentario' comentario.id %}"> {{ comentario.texto|capfirst }}</a></h5>
+        <h6 class="card-subtitle mb-2 text-muted">Usuario:{{ comentario.usuario }}</h6>
+        <p class="card-text">Entrenamiento:{{comentario.entrenamiento }}</p>
+        <p class="card-text">Texto:{{ comentario.texto}}</p>
+        <p class="card-text">Fecha:{{ comentario.fecha }}</p>
+       
         <div>
-            <p class="card-text">Entrenamientos:</p>
-            <ul >
-                {% for entrenamiento in plan.entrenamientos.all %}
-                    <li class="card-text" >{{ entrenamiento.nombre }}</li>
-                {% empty %}
-                    <li class="card-text">No hay ejercicios asociados a este plan.</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <p class="card-text" >Ejercicios:</p>
-            <ul >
-                
-            </ul>
         </div>
         {% load bootstrap_icons %}
         <div class="btn-group custom-btn-group">
             <button type="button" class="btn btn-outline-primary">
-                <a href="{% url 'plan_editar' plan.id %}">
+                <a href="{% url 'comentario_editar' comentario.id %}">
                     <span>{% bs_icon 'pencil' %}</span> 
                 </a>
             </button>
             
             
-            <form action="{% url 'plan_eliminar' plan.id %}" method="post">
+            <form action="{% url 'comentario_eliminar' comentario.id %}" method="post">
                 {% csrf_token %}
                 <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" type="button">
                     <span>{% bs_icon 'trash' %}</span> 
@@ -48,7 +34,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>¿Estás seguro de que deseas eliminar este plan?</p>
+                                <p>¿Estás seguro de que deseas eliminar este comentario?</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

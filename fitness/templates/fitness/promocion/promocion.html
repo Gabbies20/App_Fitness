@@ -6,9 +6,8 @@
         <p class="card-text">Descripción:{{ promocion.descripcion }}</p>
         <p class="card-text">Descuento:{{ promocion.descuento}}</p>
         <p class="card-text">Fecha:{{ promocion.fecha }}</p>
-        <div>
-            <p class="card-text">Usuarios:{{promocion.nombre}}</p>
-        </div>
+        <p class="card-text">Usuario:{{ promocion.usuario.nombre }}</p>
+
         {% load bootstrap_icons %}
         <div class="btn-group custom-btn-group">
             <button type="button" class="btn btn-outline-primary">

@@ -3,6 +3,8 @@ from django import forms
 from .models import *
 from django.forms import ModelForm
 import re 
+from datetime import datetime 
+from django.contrib.auth.forms import UserCreationForm
 
 """
 Los formularios en Django se crean mediante la definición de una clase que hereda de django.forms.Form. 
@@ -130,42 +132,94 @@ querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan
                             choices=TIPOS,
                             default='HIT',
                             )
-    ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio')
-    
- 
- 
- class EntrenamientoForm(forms.Form):
-    nombre = forms.CharField(label = 'Nombre', max_length=200, required=False)
-    descripcion = forms.CharField(label='Descripcion',required=False,widget=forms.Textarea())
-    duracion = forms.IntegerField()
-    tipo = forms.ChoiceField(choices=Entrenamiento.TIPOS,
-                             initial='AER')
-    #Campo SelectMultiple para sellecionar los ejercicios que es una relación ManytoMany
-    ejerciciosDisponibles = Ejercicio.objects.all()
-    ejercicios = forms.ModelMultipleChoiceField(
-        queryset=ejerciciosDisponibles,
-        required=True,
-        help_text='Selecciona varios ejercicios'
-    )
-    #Campo para selelcionar un usuario que es una relación ManytoOne:
-    usuariosDisponibles= Usuario.objects.all()
-    usuario = forms.ModelChoiceField(
-    queryset=usuariosDisponibles,
-    widget=forms.Select,
-    required=True,
-    empty_label='Ninguna'
-    )
-        
+    ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio'    
         """
-
-    
-class EntrenamientoForm(forms.ModelForm):
+class EntrenamientoForm(ModelForm):
     class Meta:
         model = Entrenamiento
-        fields = ['nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios', 'usuario']
-   
+        fields = ['nombre','descripcion','duracion','tipo','usuario','ejercicios']
+        labels = {
+            'nombre':('Nombre del entrenamiento'),
+            
+        }
+        help_texts = {
+            'nombre':('200 caracteres como máximo'),
+            'ejercicios':('Mantén pulasada la tecla control paar seleccionar varios elementos.')
+        }
+        widgets = {
+            'tipo': forms.Select(attrs={'class': 'tu-clase-css'}),
+    'duracion': forms.NumberInput(attrs={'class': 'otra-clase-css', 'min': 0}),
+        }
+
+
+    def clean(self):
+        super().clean()
+        
+        nombre = self.cleaned_data.get('nombre')
+        descripcion = self.cleaned_data.get('descripcion')
+        duracion = self.cleaned_data.get('duracion')
+        tipo = self.cleaned_data.get('tipo')
+        usuario = self.cleaned_data.get('usuario')
+        ejercicios = self.cleaned_data.get('ejercicios')
+        
+
+        if len(nombre) < 3:
+            self.add_error('nombre','El nombre debe tener al menos 3 caracteres.')
+            
+        if tipo == 'HIT' and duracion > 30:
+            self.add_error('tipo','La duración para entrenamientos HIT no debe ser mayor a 30 minutos.')
+
+        if ejercicios and len(ejercicios) < 2 :
+            self.add_error('ejercicios','Selecciona al menos 2 ejercicios.')
+        
+        return self.cleaned_data
+
+class BusquedaEntrenamientoForm(forms.Form):
+    textoBusqueda = forms.CharField(required=True)
+
+
+class BusquedaAvanzadaEntrenamientoForm(forms.Form):
+    textoBusqueda = forms.CharField(required=False)
+    tipos = forms.MultipleChoiceField(choices =Entrenamiento.TIPOS,
+                                      required=False,
+                                      widget=forms.CheckboxSelectMultiple())
+    duracion = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={'min': 1, 'max': 100, 'class': 'tu-clase-css'})
+    )
     
-        """
+    def clean(self):
+        super().clean()
+
+        textoBusqueda = self.cleaned_data.get('textoBusqueda')
+        tipos = self.cleaned_data.get('tipos')
+        duracion = self.cleaned_data.get('duracion')
+        
+
+        # Si introduce un texto, debe tener 3 caracteres o más
+        if textoBusqueda and len(textoBusqueda) < 3:
+            self.add_error('textoBusqueda', 'Debe introducir al menos 3 caracteres')
+
+        # La duración debe estar en el rango de 1 a 100
+        if duracion is not None and (duracion < 1 or duracion > 100):
+            self.add_error('duracion', 'La duración debe estar en el rango de 1 a 100.')
+
+        # Validación de tipos (puedes ajustar según tus necesidades)
+        #'issubset es un método en Python que pertenece al tipo de datos set. Este método se utiliza para comprobar si todos los elementos de un conjunto están presentes en otro conjunto.
+        #En otras palabras, estamos asegurándonos de que todas las claves seleccionadas por el usuario (tipos) estén presentes en la lista de claves definidas en Entrenamiento.TIPOS. 
+        if tipos and not set(tipos).issubset(dict(Entrenamiento.TIPOS).keys()):
+            self.add_error('tipos', 'Selecciona tipos válidos.')
+
+        # Siempre devolvemos el conjunto de datos
+        return self.cleaned_data    
+
+
+
+
+
+
+    
+"""
         FORMULARIOS DE PLAN DE ENTRENAMIENTO:
         class PlanEntrenamiento(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
@@ -180,6 +234,9 @@ class EntrenamientoForm(forms.ModelForm):
     def __str__(self):
         return self.nombre
         """
+    
+    
+
 class PlanEntrenamientoModelForm(ModelForm):
     class Meta:
         model = PlanEntrenamiento
@@ -236,9 +293,12 @@ class PlanEntrenamientoModelForm(ModelForm):
         # Validación de fechas
         if fecha_inicio and fecha_fin:
             if fecha_fin < fecha_inicio:
-                self.add_error('fecha_inicio','fecha_fin',"La fecha de fin debe ser posterior a la fecha de inicio.")
+                self.add_error('fecha_inicio', "La fecha de fin debe ser posterior a la fecha de inicio.")
+                self.add_error('fecha_fin', "La fecha de fin debe ser posterior a la fecha de inicio.")
+
             
         return self.cleaned_data
+    
     
 class BusquedaPlanForm(forms.Form):
     textoBusqueda = forms.CharField(required=True)  
@@ -250,10 +310,10 @@ class BusquedaAvanzadaPlanForm(forms.Form):
     descripcion = forms.Textarea()
     fecha_desde = forms.DateField(label='Fecha Inicio',
                                   required=False,
-                                  widget=forms.SelectDateWidget(years=range(1990,2023)))
+                                  widget=forms.SelectDateWidget(years=range(1990,2021)))
     fecha_hasta = forms.DateField(label='Fecha hasta',
                                   required=False,
-                                  widget=forms.SelectDateWidget(years=range(1990,2024)))
+                                  widget=forms.SelectDateWidget(years=range(1990,2025)))
     
     def clean(self):
         
@@ -272,7 +332,7 @@ class BusquedaAvanzadaPlanForm(forms.Form):
            and fecha_hasta is None):
             self.add_error('texto_busqueda','Debe introducir al menos un valor')
             self.add_error('descripcion','Debe introduciar al menos un valor.')
-            self.add_error('fecha_desde','Debe introduicar al menos un valor en un campo del formulario.')
+            self.add_error('fecha_desde','Debe introducicar al menos un valor en un campo del formulario.')
             self.add_error('fecha_hasta','Debe introducir al menos un valor de un campo del formulario.')
         else:
             if(texto_busqueda != '' and len(texto_busqueda)<3):
@@ -285,13 +345,266 @@ class BusquedaAvanzadaPlanForm(forms.Form):
         return self.cleaned_data
     
     
-        """
-        
-                                    FORMULARIOS DEL EXAMEN:
-   
-        
-        """                 
+    
+"""
+FORMULARIO: RUTINA DIARIA
 
+"""
+class RutinaModelForm(ModelForm):
+    class Meta:
+        model = RutinaDiaria
+        fields = ['usuario','fecha','descripcion','duracion','ejercicios']
+    
+        help_texts ={
+            'usuario':('500 caracteres como máximo.'),
+            'ejercicios' : ('Mantén pulsada la tecla control para seleccionar varios elementos.')
+        }
+        widgets = {
+            'usuario':forms.HiddenInput(),
+            'fecha':forms.SelectDateWidget(),
+            'duracion': forms.NumberInput(attrs={'min': 0}),  # Agregando el widget NumberInput
+        }
+        localized_fields = ['fecha']
+    
+    
+    def clean(self):
+        super().clean()
+        #Obtenemos los campos:
+        usuario = self.cleaned_data.get('usuario')
+        fecha = self.cleaned_data.get('fecha')
+        descripcion = self.cleaned_data.get('descripcion')
+        duracion = self.cleaned_data.get('duracion')
+        ejercicios = self.cleaned_data.get('ejercicios')
+        
+        
+        #Empezamos con las validaciones:
+        if not usuario:
+            self.add_error('usuario','El campo usuario es obligatorio.')
+        
+        if fecha and fecha > timezone.now():
+            self.add_error('fecha','La fecha no puede ser en el futuro.')
+
+        if len(descripcion) < 10:
+            self.add_error('descripcion','La descripción debe tener al menos 10 caracteres.')
+
+
+        if duracion is not None and duracion <= 0:
+            self.add_error('duracion','La duración debe ser un número positivo mayor que cero.')
+
+    
+        if not ejercicios:
+            self.add_error('ejercicios','Selecciona al menos un ejercicio.')
+
+        return self.cleaned_data
+    
+class BusquedaRutinaForm(forms.Form):
+    textoBusqueda = forms.CharField(required=True)
+    
+    
+class BusquedaAvanzadaRutinaForm(forms.Form):
+    texto_busqueda = forms.CharField(required=False)
+    fecha = forms.DateField(label='Fecha',
+                                  required=False,
+                                  widget=forms.SelectDateWidget(years=range(1900,2025)
+                                  ))
+    
+    def clean(self):
+        
+        super().clean()
+        
+        #Obtenemos los campos:
+        texto_busqueda = self.cleaned_data.get('texto_busqueda')
+        descripcion = self.cleaned_data.get('descripcion')
+        fecha = self.cleaned_data.get('fecha')
+        
+        #Controlamos los campos:
+        if(texto_busqueda==0
+           and descripcion == ''
+           and fecha is None):
+            self.add_error('texto_busqueda','Debe introducir al menos un valor')
+            self.add_error('fecha','Debe introducicar al menos un valor en un campo del formulario.')
+        else:
+            if(texto_busqueda != '' and len(texto_busqueda)<3):
+                self.add_error('texto_busqueda','Debe introduciar al menos 3 caracteres.')
+                
+                
+            if fecha and fecha.year < 1900:
+                self.add_error('fecha', 'La fecha no puede ser anterior a 1900')
+
+                
+            
+        
+        return self.cleaned_data
+    
+    
+    
+    
+"""
+FORMULARIOS DE COMENATRIO:
+
+"""
+class ComentarioModelForm(ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['usuario', 'entrenamiento', 'texto', 'fecha']
+        widgets = {
+            'entrenamiento': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    def clean(self):
+        super().clean()
+        # Obtenemos los campos
+        usuario = self.cleaned_data.get('usuario')
+        entrenamiento = self.cleaned_data.get('entrenamiento')
+        texto = self.cleaned_data.get('texto')
+        fecha = self.cleaned_data.get('fecha')
+
+        # Empezamos con las validaciones
+        if not usuario:
+            self.add_error('usuario', 'El campo usuario es obligatorio.')
+
+        if not texto:
+            self.add_error('texto', 'El campo texto es obligatorio.')
+
+        # Validación específica para el campo entrenamiento
+        if not entrenamiento:
+            self.add_error('entrenamiento', 'El campo entrenamiento es obligatorio.')
+
+        # Validación de longitud mínima para el texto
+        if texto and len(texto) < 10:
+            self.add_error('texto', 'El texto debe tener al menos 10 caracteres.')
+
+        # Validación de fecha
+        if fecha and fecha > timezone.now():
+            self.add_error('fecha', 'La fecha no puede ser en el futuro.')
+
+        # Puedes agregar más validaciones según tus necesidades.
+
+        return self.cleaned_data
+    
+class BusquedaComentarioForm(forms.Form):
+    textoBusqueda = forms.CharField(required=True)
+    
+    
+class BusquedaAvanzadaComentarioForm(forms.Form):
+    texto_busqueda = forms.CharField(required=False)
+    fecha = forms.DateField(
+        label='Fecha',
+        required=False,
+        widget=forms.SelectDateWidget(years=range(1900, 2025))
+    )
+
+    def clean(self):
+        super().clean()
+
+        # Obtenemos los campos
+        texto_busqueda = self.cleaned_data.get('texto_busqueda')
+        fecha = self.cleaned_data.get('fecha')
+
+        # Controlamos los campos
+        if not texto_busqueda and not fecha:
+            self.add_error('texto_busqueda', 'Debe introducir al menos un valor')
+            self.add_error('fecha', 'Debe introducicar al menos un valor en un campo del formulario.')
+        else:
+            if texto_busqueda and len(texto_busqueda) < 3:
+                self.add_error('texto_busqueda', 'Debe introducir al menos 3 caracteres.')
+
+            if fecha and fecha.year < 1900:
+                self.add_error('fecha', 'La fecha no puede ser anterior a 1900')
+
+        return self.cleaned_data
+
+    
+    
+"""
+
+"""
+class SuscripcionModelForm(ModelForm) :
+      class Meta:
+        model = Suscripcion
+        fields = ['banco', 'numero_cuenta', 'titular']
+        banco = forms.ChoiceField(
+        choices=Suscripcion.BANCOS,
+        widget=forms.RadioSelect,  # Opcional: Usa RadioSelect para mostrar botones de opción
+    )
+    
+        def clean(self):
+            super().clean()
+            
+            numero_cuenta = self.cleaned_data.get('numero_cuenta')
+            titular = self.cleaned_data.get('titular')
+            
+            
+            if not re.match("^[0-9]+$", numero_cuenta):
+                self.add_error('numero_cuenta','El número de cuenta debe contener solo dígitos.')
+                # Validación: El titular no debe contener caracteres especiales ni números
+            if len(titular)< 10:
+                self.add_error('titular','El titular no debe contener caracteres menos de 10 caracteres.')
+
+            return self.cleaned_data
+
+
+class BusquedaSuscripcionForm(forms.Form):
+    textoBusqueda = forms.CharField(required=False)
+    
+class BusquedaAvanzadaSuscripcionForm(forms.Form):
+    texto_busqueda = forms.CharField(required=False)
+    titular = forms.CharField(required=False)
+
+    def clean(self):
+        super().clean()
+
+        # Obtenemos los campos
+        texto_busqueda = self.cleaned_data.get('texto_busqueda')
+        titular = self.cleaned_data.get('titular')
+
+        # Controlamos los campos
+        if not texto_busqueda and not titular:
+            self.add_error('texto_busqueda', 'Debe introducir al menos un valor')
+            self.add_error('fecha', 'Debe introducicar al menos un valor en un campo del formulario.')
+        else:
+            if texto_busqueda and len(texto_busqueda) < 3:
+                self.add_error('texto_busqueda', 'Debe introducir al menos 3 caracteres.')
+
+            if re.search("[0-9]", titular):
+                self.add_error('titular', 'Solo letras, por favor')
+
+        return self.cleaned_data
+    
+    
+    
+    
+"""
+    FORMULARIO AUTENTICACIÓN:
+"""
+class RegistroForm(UserCreationForm): 
+    roles = (
+                                (Usuario.CLIENTE, 'cliente'),
+                                (Usuario.ENTRENADOR, 'entrenador'),
+            )   
+    rol = forms.ChoiceField(choices=roles)  
+    class Meta:
+        model = Usuario
+        fields = ('username', 'email', 'password1', 'password2','rol')
+    
+    
+    
+class Inscripcion(ModelForm):
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 class PromocionModelForm(ModelForm):
     class Meta:
         model = Promocion
@@ -319,13 +632,6 @@ class PromocionModelForm(ModelForm):
         fecha = self.cleaned_data.get('fecha')
         usuario = self.cleaned_data.get('usuario')
         
-        """
-        Nombre de la promoción: el nombre tiene que ser único.
-        Descripción de la promoción: Debe tener al menos 100 caracteres
-        Usuario al que se le aplica la promoción: Un usuario no puede usar la misma promoción dos veces
-        Descuento que se le aplica: Tiene que ser un valor entero entre 0 y 100
-        Fecha fin de la promoción: Esta fecha no puede inferior a la fecha actual
-        """
         promocionNombre = Promocion.objects.filter(nombre=nombre).first()
         if(not promocionNombre is None):
             self.add_error('nombre','Ya existe una promoción con ese nombre.')
@@ -374,15 +680,3 @@ class BusquedaAvanzadaPromocionForm(forms.Form):
         #Siempre devolvemos el conjunto de datos.
         return self.cleaned_data
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-   
