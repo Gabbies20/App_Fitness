@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('',include('fitness.urls'))
+    path('',include('fitness.urls')),
+    path('api/v1/',include('fitness.api_urls'))
    
 ]
 handler404 = 'fitness.views.mi_error_404'
