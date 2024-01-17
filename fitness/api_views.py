@@ -10,5 +10,5 @@ from .forms import *
 def ejercicio_list(request):
     
     ejercicios = Ejercicio.objects.all()
-    serializer = EjercicioSerializer(ejercicios, many=True)
+    serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
     return Response(serializer.data)
