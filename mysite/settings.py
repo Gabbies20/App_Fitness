@@ -145,7 +145,8 @@ LOGOUT_REDIRECT_URL = 'index'
 
 #SEGURIDAD APIS:
 OAUTH2_PROVIDER = {
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},
+    "ACCESS_TOKEN_EXPIRE_SECONDS":36000000000000000000000000000009
 }
 
 #Comentar la linea que contiene cada parentesis para poder desactivar la seguridad y logra ver los datos de mi api.
