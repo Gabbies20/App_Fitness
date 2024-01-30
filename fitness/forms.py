@@ -113,7 +113,7 @@ querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan
     
     
     
-#------------------ENTRENAMIOENTO----------------------
+#------------------ENTRENAMIENTO----------------------
         """
         
        class Entrenamiento(models.Model):
