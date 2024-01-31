@@ -149,13 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'fitness.Usuario'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
-<<<<<<< HEAD
-=======
+
 
 #SEGURIDAD APIS:
 OAUTH2_PROVIDER = {
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Acceso a los grupos'},
-    "ACCESS_TOKEN_EXPIRE_SECONDS":36000000000000000000000000000009
+    "ACCESS_TOKEN_EXPIRE_SECONDS":3600000000
 }
 
 #Comentar la linea que contiene cada parentesis para poder desactivar la seguridad y logra ver los datos de mi api.
@@ -168,4 +167,4 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
->>>>>>> b30e1600d217addfae1265d1df882644f58a9e76
+
