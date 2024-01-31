@@ -25,14 +25,14 @@ import os
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY =  env("SECRET_KEY")
+#SECRET_KEY =  env("SECRET_KEY")
 
-#SECRET_KEY = 'django-insecure-^ba-8#l&&drikop-!%vb)vy91t-u7^dyt&b4b_139&x%#6$mky'
+SECRET_KEY = 'django-insecure-^ba-8#l&&drikop-!%vb)vy91t-u7^dyt&b4b_139&x%#6$mky'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gabrielapinzon.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1','gabrielapinzon.pythonanywhere.com','0.0.0.0']
 
 
 # Application definition
