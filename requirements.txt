@@ -13,7 +13,3 @@ django-debug-toolbar~=4.2.0
 django-environ~=0.11.2
 djangorestframework~=3.14.0
 django-oauth-toolkit~=2.3.0
-<<<<<<< HEAD
-
-=======
->>>>>>> 02f75532ba09a82c7b69fa3e4382ec774643e968
