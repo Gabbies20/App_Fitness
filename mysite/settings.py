@@ -149,8 +149,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'fitness.Usuario'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
-<<<<<<< HEAD
-=======
+
 
 #SEGURIDAD APIS:
 OAUTH2_PROVIDER = {
@@ -168,4 +167,3 @@ REST_FRAMEWORK = {
         #'rest_framework.permissions.IsAuthenticated',
     ),
 }
->>>>>>> b30e1600d217addfae1265d1df882644f58a9e76
