@@ -22,15 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 import environ
 import os
-#env = environ.Env()
-#environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-#SECRET_KEY =  env("SECRET_KEY")
+SECRET_KEY =  env("SECRET_KEY")
 
 #SECRET_KEY = 'django-insecure-^ba-8#l&&drikop-!%vb)vy91t-u7^dyt&b4b_139&x%#6$mky'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['gabrielapinzon.pythonanywhere.com']
 
@@ -166,9 +166,4 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         #'rest_framework.permissions.IsAuthenticated',
     ),
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> 02f75532ba09a82c7b69fa3e4382ec774643e968

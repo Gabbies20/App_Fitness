@@ -1,0 +1,1485 @@
+[
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 4,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 4,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 4,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 4,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 5,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 5,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 5,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 5,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 6,
+        "codename": "add_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 6,
+        "codename": "change_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 6,
+        "codename": "delete_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 6,
+        "codename": "view_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add ejercicio",
+        "content_type": 7,
+        "codename": "add_ejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change ejercicio",
+        "content_type": 7,
+        "codename": "change_ejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete ejercicio",
+        "content_type": 7,
+        "codename": "delete_ejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view ejercicio",
+        "content_type": 7,
+        "codename": "view_ejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add entrenamiento",
+        "content_type": 8,
+        "codename": "add_entrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change entrenamiento",
+        "content_type": 8,
+        "codename": "change_entrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete entrenamiento",
+        "content_type": 8,
+        "codename": "delete_entrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view entrenamiento",
+        "content_type": 8,
+        "codename": "view_entrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add entrenamiento plan",
+        "content_type": 9,
+        "codename": "add_entrenamientoplan"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change entrenamiento plan",
+        "content_type": 9,
+        "codename": "change_entrenamientoplan"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete entrenamiento plan",
+        "content_type": 9,
+        "codename": "delete_entrenamientoplan"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view entrenamiento plan",
+        "content_type": 9,
+        "codename": "view_entrenamientoplan"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add plan entrenamiento",
+        "content_type": 10,
+        "codename": "add_planentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change plan entrenamiento",
+        "content_type": 10,
+        "codename": "change_planentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete plan entrenamiento",
+        "content_type": 10,
+        "codename": "delete_planentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view plan entrenamiento",
+        "content_type": 10,
+        "codename": "view_planentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add rutina diaria",
+        "content_type": 11,
+        "codename": "add_rutinadiaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change rutina diaria",
+        "content_type": 11,
+        "codename": "change_rutinadiaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete rutina diaria",
+        "content_type": 11,
+        "codename": "delete_rutinadiaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view rutina diaria",
+        "content_type": 11,
+        "codename": "view_rutinadiaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add voto",
+        "content_type": 12,
+        "codename": "add_voto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change voto",
+        "content_type": 12,
+        "codename": "change_voto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete voto",
+        "content_type": 12,
+        "codename": "delete_voto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view voto",
+        "content_type": 12,
+        "codename": "view_voto"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add suscripcion",
+        "content_type": 13,
+        "codename": "add_suscripcion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change suscripcion",
+        "content_type": 13,
+        "codename": "change_suscripcion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete suscripcion",
+        "content_type": 13,
+        "codename": "delete_suscripcion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view suscripcion",
+        "content_type": 13,
+        "codename": "view_suscripcion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add seguimiento plan entrenamiento",
+        "content_type": 14,
+        "codename": "add_seguimientoplanentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change seguimiento plan entrenamiento",
+        "content_type": 14,
+        "codename": "change_seguimientoplanentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete seguimiento plan entrenamiento",
+        "content_type": 14,
+        "codename": "delete_seguimientoplanentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view seguimiento plan entrenamiento",
+        "content_type": 14,
+        "codename": "view_seguimientoplanentrenamiento"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can add rutina ejercicio",
+        "content_type": 15,
+        "codename": "add_rutinaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can change rutina ejercicio",
+        "content_type": 15,
+        "codename": "change_rutinaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can delete rutina ejercicio",
+        "content_type": 15,
+        "codename": "delete_rutinaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can view rutina ejercicio",
+        "content_type": 15,
+        "codename": "view_rutinaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add promocion",
+        "content_type": 16,
+        "codename": "add_promocion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change promocion",
+        "content_type": 16,
+        "codename": "change_promocion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete promocion",
+        "content_type": 16,
+        "codename": "delete_promocion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can view promocion",
+        "content_type": 16,
+        "codename": "view_promocion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can add perfil_de_ usuario",
+        "content_type": 17,
+        "codename": "add_perfil_de_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can change perfil_de_ usuario",
+        "content_type": 17,
+        "codename": "change_perfil_de_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+        "name": "Can delete perfil_de_ usuario",
+        "content_type": 17,
+        "codename": "delete_perfil_de_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+        "name": "Can view perfil_de_ usuario",
+        "content_type": 17,
+        "codename": "view_perfil_de_usuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+        "name": "Can add historial ejercicio",
+        "content_type": 18,
+        "codename": "add_historialejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+        "name": "Can change historial ejercicio",
+        "content_type": 18,
+        "codename": "change_historialejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+        "name": "Can delete historial ejercicio",
+        "content_type": 18,
+        "codename": "delete_historialejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+        "name": "Can view historial ejercicio",
+        "content_type": 18,
+        "codename": "view_historialejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 73,
+    "fields": {
+        "name": "Can add entrenamiento ejercicio",
+        "content_type": 19,
+        "codename": "add_entrenamientoejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 74,
+    "fields": {
+        "name": "Can change entrenamiento ejercicio",
+        "content_type": 19,
+        "codename": "change_entrenamientoejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 75,
+    "fields": {
+        "name": "Can delete entrenamiento ejercicio",
+        "content_type": 19,
+        "codename": "delete_entrenamientoejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 76,
+    "fields": {
+        "name": "Can view entrenamiento ejercicio",
+        "content_type": 19,
+        "codename": "view_entrenamientoejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 77,
+    "fields": {
+        "name": "Can add entrenador",
+        "content_type": 20,
+        "codename": "add_entrenador"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 78,
+    "fields": {
+        "name": "Can change entrenador",
+        "content_type": 20,
+        "codename": "change_entrenador"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 79,
+    "fields": {
+        "name": "Can delete entrenador",
+        "content_type": 20,
+        "codename": "delete_entrenador"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 80,
+    "fields": {
+        "name": "Can view entrenador",
+        "content_type": 20,
+        "codename": "view_entrenador"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+        "name": "Can add comentario",
+        "content_type": 21,
+        "codename": "add_comentario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+        "name": "Can change comentario",
+        "content_type": 21,
+        "codename": "change_comentario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+        "name": "Can delete comentario",
+        "content_type": 21,
+        "codename": "delete_comentario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+        "name": "Can view comentario",
+        "content_type": 21,
+        "codename": "view_comentario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 85,
+    "fields": {
+        "name": "Can add cliente",
+        "content_type": 22,
+        "codename": "add_cliente"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 86,
+    "fields": {
+        "name": "Can change cliente",
+        "content_type": 22,
+        "codename": "change_cliente"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 87,
+    "fields": {
+        "name": "Can delete cliente",
+        "content_type": 22,
+        "codename": "delete_cliente"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 88,
+    "fields": {
+        "name": "Can view cliente",
+        "content_type": 22,
+        "codename": "view_cliente"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 89,
+    "fields": {
+        "name": "Can add categoria ejercicio",
+        "content_type": 23,
+        "codename": "add_categoriaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 90,
+    "fields": {
+        "name": "Can change categoria ejercicio",
+        "content_type": 23,
+        "codename": "change_categoriaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 91,
+    "fields": {
+        "name": "Can delete categoria ejercicio",
+        "content_type": 23,
+        "codename": "delete_categoriaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 92,
+    "fields": {
+        "name": "Can view categoria ejercicio",
+        "content_type": 23,
+        "codename": "view_categoriaejercicio"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 93,
+    "fields": {
+        "name": "Can add application",
+        "content_type": 24,
+        "codename": "add_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 94,
+    "fields": {
+        "name": "Can change application",
+        "content_type": 24,
+        "codename": "change_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 95,
+    "fields": {
+        "name": "Can delete application",
+        "content_type": 24,
+        "codename": "delete_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 96,
+    "fields": {
+        "name": "Can view application",
+        "content_type": 24,
+        "codename": "view_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 97,
+    "fields": {
+        "name": "Can add access token",
+        "content_type": 25,
+        "codename": "add_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 98,
+    "fields": {
+        "name": "Can change access token",
+        "content_type": 25,
+        "codename": "change_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 99,
+    "fields": {
+        "name": "Can delete access token",
+        "content_type": 25,
+        "codename": "delete_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 100,
+    "fields": {
+        "name": "Can view access token",
+        "content_type": 25,
+        "codename": "view_accesstoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 101,
+    "fields": {
+        "name": "Can add grant",
+        "content_type": 26,
+        "codename": "add_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 102,
+    "fields": {
+        "name": "Can change grant",
+        "content_type": 26,
+        "codename": "change_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 103,
+    "fields": {
+        "name": "Can delete grant",
+        "content_type": 26,
+        "codename": "delete_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 104,
+    "fields": {
+        "name": "Can view grant",
+        "content_type": 26,
+        "codename": "view_grant"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 105,
+    "fields": {
+        "name": "Can add refresh token",
+        "content_type": 27,
+        "codename": "add_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 106,
+    "fields": {
+        "name": "Can change refresh token",
+        "content_type": 27,
+        "codename": "change_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 107,
+    "fields": {
+        "name": "Can delete refresh token",
+        "content_type": 27,
+        "codename": "delete_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 108,
+    "fields": {
+        "name": "Can view refresh token",
+        "content_type": 27,
+        "codename": "view_refreshtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 109,
+    "fields": {
+        "name": "Can add id token",
+        "content_type": 28,
+        "codename": "add_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 110,
+    "fields": {
+        "name": "Can change id token",
+        "content_type": 28,
+        "codename": "change_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 111,
+    "fields": {
+        "name": "Can delete id token",
+        "content_type": 28,
+        "codename": "delete_idtoken"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 112,
+    "fields": {
+        "name": "Can view id token",
+        "content_type": 28,
+        "codename": "view_idtoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "fitness",
+        "model": "usuario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "fitness",
+        "model": "ejercicio"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "fitness",
+        "model": "entrenamiento"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "fitness",
+        "model": "entrenamientoplan"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "fitness",
+        "model": "planentrenamiento"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "fitness",
+        "model": "rutinadiaria"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "fitness",
+        "model": "voto"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "fitness",
+        "model": "suscripcion"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "fitness",
+        "model": "seguimientoplanentrenamiento"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "fitness",
+        "model": "rutinaejercicio"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "fitness",
+        "model": "promocion"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+        "app_label": "fitness",
+        "model": "perfil_de_usuario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+        "app_label": "fitness",
+        "model": "historialejercicio"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+        "app_label": "fitness",
+        "model": "entrenamientoejercicio"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+        "app_label": "fitness",
+        "model": "entrenador"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+        "app_label": "fitness",
+        "model": "comentario"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 22,
+    "fields": {
+        "app_label": "fitness",
+        "model": "cliente"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 23,
+    "fields": {
+        "app_label": "fitness",
+        "model": "categoriaejercicio"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 24,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "application"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 25,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "accesstoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 26,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "grant"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 27,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "refreshtoken"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 28,
+    "fields": {
+        "app_label": "oauth2_provider",
+        "model": "idtoken"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "cq033qvfcxp8ur8wv8ak8c6hv43s6c2y",
+    "fields": {
+        "session_data": "eyJmZWNoYV9pbmljaW8iOiIzMS8wMS8yMDI0IDAzOjE0In0:1rV07q:dtS-5LkacddOkugjHUALZKYiwEE4mRYfiLyMXzmLvBs",
+        "expire_date": "2024-02-14T02:14:54.916Z"
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$tajSRg1JVmQCc1gRtZPUqi$dvWVivLUR3qtus5wziXjEcpsAoBdo3A+YK7tAzNbbcA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Alvaro",
+        "first_name": "",
+        "last_name": "",
+        "email": "alvaro@gmail.es",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:11:29.050Z",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$7d0R0JFDHm0stAmeWUzjlx$SPjgs7v+FOjLeKDpm2aCkD9N/6Ou+lyQMnTi7qWGkdc=",
+        "last_login": "2024-01-31T02:13:49.239Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@gmail.es",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:13:39.727Z",
+        "rol": 1,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$7kYGvZ4rA8pR5knuakcs6G$Kpx2PxM9iY9/Vq+IG9SjOQW9sxiAw+XitgRS1PUNpR0=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Maria",
+        "first_name": "",
+        "last_name": "",
+        "email": "maria@gmail.es",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:15:31.489Z",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$3ffU1ciCGQqhbB5KmjE5Wj$dU90YuW4nFq5JpVpiShBSpAPd23UvHcPNjhPpoASqgc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Manuel",
+        "first_name": "",
+        "last_name": "",
+        "email": "manuel@gmail.es",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:15:58.102Z",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$m4qjHmOCBnr0mqdese3VkQ$SfMDPl5L3YQG8F/EaOQIdMINMHBk8uQdO7G6X9Vpb6E=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Luis",
+        "first_name": "",
+        "last_name": "",
+        "email": "luis@gmail.es",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:16:26.401Z",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.usuario",
+    "pk": 6,
+    "fields": {
+        "password": "pbkdf2_sha256$600000$CMe8oJ1k163HeXgPqVKBzy$TGDmFMdEFhm2V7GiQa6cMO7sUd16UkZeeMlljMbJq8U=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Ivan",
+        "first_name": "",
+        "last_name": "",
+        "email": "ivan@gmail.es",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-01-31T02:16:52.641Z",
+        "rol": 2,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "fitness.ejercicio",
+    "pk": 1,
+    "fields": {
+        "nombre": "HIIT (entrenamiento interválico de alta intensidad)",
+        "descripcion": "El HIIT está recomendado cuando tienes muy poco tiempo al día para realizar deporte, y es una de las clases de gimnasio que más calorías queman. Se trata de dar el máximo en intervalos de tiempo muy cortos. Cuando se programa bien, es útil para mejorar nuestra capacidad cardiorrespiratoria, oxidar grasa, mejorar nuestra fuerza e incluso ganar masa muscular sin necesidad de máquinas dependiendo de nuestro nivel.",
+        "tipo_ejercicio": "Avanzado"
+    }
+},
+{
+    "model": "fitness.ejercicio",
+    "pk": 2,
+    "fields": {
+        "nombre": "Saltar a la comba",
+        "descripcion": "Los beneficios de saltar a la comba son muchos y, además, es un ejercicio que se puede realizar sin problema todos los días, no te aburrirá y que te ayudará a conseguir un buen nivel de actividad teniendo que invertir poco tiempo.",
+        "tipo_ejercicio": "Básico"
+    }
+},
+{
+    "model": "fitness.ejercicio",
+    "pk": 3,
+    "fields": {
+        "nombre": "Elíptica",
+        "descripcion": "Para aquellos a los que os gusta el running, pero no podéis recibir mucho impacto por algún motivo. Sensaciones peculiares, pero os aseguro que le acabaréis cogiendo el gusto.",
+        "tipo_ejercicio": "Medio"
+    }
+},
+{
+    "model": "fitness.ejercicio",
+    "pk": 4,
+    "fields": {
+        "nombre": "Pilates",
+        "descripcion": "El método pilates combina eficaces ejercicios de fuerza para la espalda, el abdomen y el suelo pélvico con estiramientos y ejercicios relajantes de respiración.",
+        "tipo_ejercicio": "Medio"
+    }
+},
+{
+    "model": "fitness.entrenamiento",
+    "pk": 1,
+    "fields": {
+        "usuario": 1,
+        "nombre": "Yoga",
+        "descripcion": "Con secuencias suaves de movimiento y ejercicios relajantes de respiración, el yoga se ha convertido en una de las técnicas de ejercicio en casa más populares. Una práctica regular puede ayudarte a fortalecer tu musculatura y mejorar tu postura y flexibilidad. Además, refuerza la conciencia corporal y permite abstraerte de la rutina diaria.",
+        "duracion": 50,
+        "tipo": "AER"
+    }
+},
+{
+    "model": "fitness.entrenamiento",
+    "pk": 2,
+    "fields": {
+        "usuario": 3,
+        "nombre": "Musculación",
+        "descripcion": "Son especialmente populares los ejercicios para trabajar la espalda, los músculos de brazos y hombros, el abdomen, las piernas y los glúteos, así como los entrenamientos que sirven para ejercitar todo el cuerpo.",
+        "duracion": 30,
+        "tipo": "HIT"
+    }
+},
+{
+    "model": "fitness.entrenamientoejercicio",
+    "pk": 1,
+    "fields": {
+        "entrenamiento": 1,
+        "ejercicio": 1,
+        "repeticiones": 0,
+        "peso_utilizado": 0.0
+    }
+},
+{
+    "model": "fitness.entrenamientoejercicio",
+    "pk": 2,
+    "fields": {
+        "entrenamiento": 1,
+        "ejercicio": 2,
+        "repeticiones": 0,
+        "peso_utilizado": 0.0
+    }
+},
+{
+    "model": "fitness.entrenamientoejercicio",
+    "pk": 3,
+    "fields": {
+        "entrenamiento": 2,
+        "ejercicio": 1,
+        "repeticiones": 0,
+        "peso_utilizado": 0.0
+    }
+},
+{
+    "model": "fitness.entrenamientoejercicio",
+    "pk": 4,
+    "fields": {
+        "entrenamiento": 2,
+        "ejercicio": 2,
+        "repeticiones": 0,
+        "peso_utilizado": 0.0
+    }
+},
+{
+    "model": "fitness.comentario",
+    "pk": 1,
+    "fields": {
+        "usuario": 5,
+        "entrenamiento": 1,
+        "texto": "Me gusta mucho y estoy notando grandes cambios.",
+        "fecha": "2024-01-31T02:25:27Z"
+    }
+},
+{
+    "model": "fitness.planentrenamiento",
+    "pk": 1,
+    "fields": {
+        "usuario": 4,
+        "nombre": "Ta­ba­ta en casa: en­tre­na­mien­to por in­ter­va­los se­gún el mé­to­do ja­po­nés",
+        "descripcion": "Tabata es uno de los métodos de entrenamiento por intervalos más eficaces y, por lo tanto, se ha convertido en uno de los más populares. Se originó como una variante del HIIT, por ello incluye también fases activas de carga completa combinadas con breves descansos. Cada intervalo consiste en 20 segundos de rendimiento máximo y 10 segundos de recuperación, lo que lleva a tu cuerpo a su máximo rendimiento. En total, una sesión de Tabata consta de ocho intervalos y dura tan solo cuatro minutos.",
+        "duracion_estimada": 30,
+        "dificultad": "Normal",
+        "fecha_inicio": "2024-01-30T23:00:00Z",
+        "fecha_fin": "2024-01-30T23:00:00Z"
+    }
+},
+{
+    "model": "fitness.entrenamientoplan",
+    "pk": 1,
+    "fields": {
+        "plan_entrenamiento": 1,
+        "entrenamiento": 1
+    }
+}
+]
