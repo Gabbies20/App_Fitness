@@ -25,3 +25,10 @@ class EjercicioMejoradoSerializer(serializers.ModelSerializer):
         model = Ejercicio
         fields =('nombre','descripcion','tipo_ejercicio','pepe')
         #fields = '__all__'
+        
+class EntrenamientoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entrenamiento
+        fields = '__all__'
+        
+        

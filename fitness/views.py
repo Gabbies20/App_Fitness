@@ -874,7 +874,7 @@ def registrar_usuario(request):
                 cliente = Cliente.objects.create( usuario = user)
                 cliente.save()
             elif(rol == Usuario.ENTRENADOR):
-                grupo = Group.objects.get(name='Bibliotecarios') 
+                grupo = Group.objects.get(name='Entrenadores') 
                 grupo.user_set.add(user)
                 entrenador = Entrenador.objects.create(usuario = user)
                 entrenador.save()

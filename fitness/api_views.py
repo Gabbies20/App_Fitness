@@ -29,3 +29,17 @@ def ejercicio_buscar(request):
             return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
     #else:
      #   return Response({"Sin permisos"}, status=status.HTTP_400_BAD_REQUEST)
+     
+     
+
+
+"""
+SUSCRIPCION    
+"""
+@api_view(['GET'])
+def entrenamiento_list(request):
+    entrenamientos = Entrenamiento.objects.all()
+    #many=True -> para indicar que serializamos muchos valores.
+    serializer = EntrenamientoSerializer(entrenamientos, many=True)
+    #serializer.data es un atributo que contiene los datos serializados.
+    return Response(serializer.data)
