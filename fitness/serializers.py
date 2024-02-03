@@ -20,10 +20,10 @@ class HistorialEjercicioSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class EjercicioMejoradoSerializer(serializers.ModelSerializer):
-    pepe = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
+    usuario = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
     class Meta:
         model = Ejercicio
-        fields =('nombre','descripcion','tipo_ejercicio','pepe')
+        fields =('nombre','descripcion','tipo_ejercicio','usuario')
         #fields = '__all__'
         
 class EntrenamientoSerializer(serializers.ModelSerializer):
@@ -31,4 +31,18 @@ class EntrenamientoSerializer(serializers.ModelSerializer):
         model = Entrenamiento
         fields = '__all__'
         
+class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
+    
+    #Para relaciones OnetoOne y Foraneas(ManytoOne).
+    usuario = UsuarioSerializer()
+    
+    #Para las relaciones ManytoMany.
+    ejercicios = EjercicioMejoradoSerializer(read_only=True,many=True)
+    
+    #Para obtener el valor de un choice.
+    tipos = serializers.CharField(source='get_tipo_display')
+    
+    class Meta:
+        fields = ['usuario','nombre','descripcion','duracion','tipos','ejercicios']
         
+        model = Entrenamiento

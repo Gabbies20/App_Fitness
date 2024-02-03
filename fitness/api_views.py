@@ -40,6 +40,6 @@ SUSCRIPCION
 def entrenamiento_list(request):
     entrenamientos = Entrenamiento.objects.all()
     #many=True -> para indicar que serializamos muchos valores.
-    serializer = EntrenamientoSerializer(entrenamientos, many=True)
+    serializer = EntrenamientoMejoradoSerializer(entrenamientos, many=True)
     #serializer.data es un atributo que contiene los datos serializados.
     return Response(serializer.data)
