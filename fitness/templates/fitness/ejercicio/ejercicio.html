@@ -11,7 +11,7 @@
             <p class="card-text" >Usuarios:</p>
             <ul >
                 {% for usuario in ejercicio.usuarios.all %}
-                    <li class="card-text" >{{ usuario.nombre }}</li>
+                    <li class="card-text" >{{ usuario.username }}</li>
                 {% endfor%}
             </ul>
         </div>
