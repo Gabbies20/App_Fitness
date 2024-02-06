@@ -20,11 +20,11 @@ class HistorialEjercicioSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class EjercicioMejoradoSerializer(serializers.ModelSerializer):
-    usuario = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
+    usuarios = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
     class Meta:
         model = Ejercicio
-        #fields =('nombre','descripcion','tipo_ejercicio','usuario')
-        fields = '__all__'
+        fields =('nombre','descripcion','tipo_ejercicio','usuarios')
+        #fields = '__all__'
         
 class EntrenamientoSerializer(serializers.ModelSerializer):
     class Meta:

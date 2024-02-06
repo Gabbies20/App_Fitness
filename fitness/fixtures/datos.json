@@ -39,6 +39,136 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2024-02-06T08:28:57.323Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "1",
+        "object_repr": "HistorialEjercicio object (1)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2024-02-06T08:29:13.862Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "2",
+        "object_repr": "HistorialEjercicio object (2)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+        "action_time": "2024-02-06T08:30:05.853Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "3",
+        "object_repr": "HistorialEjercicio object (3)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+        "action_time": "2024-02-06T08:30:19.777Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "4",
+        "object_repr": "HistorialEjercicio object (4)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+        "action_time": "2024-02-06T08:30:30.503Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "5",
+        "object_repr": "HistorialEjercicio object (5)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+        "action_time": "2024-02-06T08:30:46.599Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "6",
+        "object_repr": "HistorialEjercicio object (6)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+        "action_time": "2024-02-06T08:30:59.938Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "7",
+        "object_repr": "HistorialEjercicio object (7)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+        "action_time": "2024-02-06T08:31:10.972Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "8",
+        "object_repr": "HistorialEjercicio object (8)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+        "action_time": "2024-02-06T08:31:24.151Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "9",
+        "object_repr": "HistorialEjercicio object (9)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+        "action_time": "2024-02-06T08:31:38.082Z",
+        "user": 2,
+        "content_type": 18,
+        "object_id": "10",
+        "object_repr": "HistorialEjercicio object (10)",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -1301,6 +1431,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "35zllq1920ninm8i9nx04ctu0m0ev5w0",
+    "fields": {
+        "session_data": ".eJxVjDkOwyAURK8SUUcYPmCMy_Q5A_psgSQCyUsV5e4hkhs3U8y8Nx-Sos9oSy2-NDITNg4MBmAgL8zMoMiVWNy3bPc1LraEjsC5c-hfsf6H8MT6aNS3ui3F0T9Cj3Wl9xbi-3awp4OMa-424jRhkFpyFlHyxMOoRAoGVRI-GheN5jDpUYLpoYVISnUHgLvIeNDk-wOIBEBR:1rXGod:4KTYgKTVQoOggx2RFDhWj12HUQHt20GlkLp5XWvVE5c",
+        "expire_date": "2024-02-20T08:28:27.156Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "cg6btkyzhgxad57q21a3xl9wgoht9wmc",
     "fields": {
         "session_data": ".eJxVjs0OwiAQhF_FcDaUBba2PXr3GZqFBUENJP05Gd_dNulBr_PNfJm3GGld0rjOYRozi0GAOP9mjvwzlB3wg8q9Sl_LMmUn94o86CxvlcPrenT_BInmtK1JhUhKs4YOHUbu2ThtVcAOjfeu7WxEdO0FvLWRGfgSe6M8Uq8DmLC_isEnGnPJPtfNaKBR0Gil7QnMYFF8vhEVQPg:1rV9xe:w8un_SncvLBM1vJb5Tnse7jZFpk6Sa9Zz4JIRE0hcZU",
@@ -1319,8 +1457,8 @@
     "model": "sessions.session",
     "pk": "gzamgjo6hpvsd240s5s3c35lu9ahp24h",
     "fields": {
-        "session_data": ".eJxVjDsOwyAQRO9CHSHzM5Ayvc-AFnYJTiIsGbuKcvdgyUXSTDHz3rxZgH0rYW-0hhnZlUl2-e0ipCfVY8AH1PvC01K3dY78QPi5Nj4tSK_byf4dFGil2wDOAWqrxUCgRRY4GpXRg8kqkY_krZDOjlr6HlapbEx3pBSRBoGWfb7lSDd6:1rVrbs:tWSLfuHBv07llNC5VJZhKt3f2xgDc0MRtdcy1mcr2OE",
-        "expire_date": "2024-02-16T11:21:28.745Z"
+        "session_data": ".eJxVjEkOAiEURK9iWBuEDzRNL917BvKZBDWQ9LAy3l066YUmlVrU8N7E4rZmuy1xtiWQiQA5_2YO_TPWvQgPrPdGfavrXBzdJ_RoF3prIb6ux_YPkHHJ_Y04jhiklpxFlDzxMCiRgkGVhI_GRaM5jHqQYLppIZJS_QPAXWQ86A5N0We0pRZfWicyuHQBA3niMElBPl_r4kBH:1rVrxN:xzxwp5_s6Vl0AjPlWXoTOJYDpWGBvTKNNTh8N0OkrGg",
+        "expire_date": "2024-02-16T11:43:41.022Z"
     }
 },
 {
@@ -1347,7 +1485,7 @@
     "pk": 2,
     "fields": {
         "password": "pbkdf2_sha256$600000$7d0R0JFDHm0stAmeWUzjlx$SPjgs7v+FOjLeKDpm2aCkD9N/6Ou+lyQMnTi7qWGkdc=",
-        "last_login": "2024-02-02T11:21:28.741Z",
+        "last_login": "2024-02-06T08:28:27.151Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -1627,6 +1765,126 @@
         "ejercicio": 2,
         "repeticiones": 0,
         "peso_utilizado": 0.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 1,
+    "fields": {
+        "usuario": 1,
+        "ejercicio": 2,
+        "fecha": "2024-02-06T08:28:32Z",
+        "duracion": 50,
+        "repeticiones": 5,
+        "peso": 25.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 2,
+    "fields": {
+        "usuario": 3,
+        "ejercicio": 3,
+        "fecha": "2024-02-06T08:28:57Z",
+        "duracion": 50,
+        "repeticiones": 25,
+        "peso": 25.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 3,
+    "fields": {
+        "usuario": 4,
+        "ejercicio": 3,
+        "fecha": "2024-02-06T08:29:52Z",
+        "duracion": 50,
+        "repeticiones": 30,
+        "peso": 40.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 4,
+    "fields": {
+        "usuario": 5,
+        "ejercicio": 4,
+        "fecha": "2024-02-06T08:30:05Z",
+        "duracion": 60,
+        "repeticiones": 10,
+        "peso": 25.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 5,
+    "fields": {
+        "usuario": 6,
+        "ejercicio": 2,
+        "fecha": "2024-02-06T08:30:19Z",
+        "duracion": 60,
+        "repeticiones": 5,
+        "peso": 5.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 6,
+    "fields": {
+        "usuario": 7,
+        "ejercicio": 3,
+        "fecha": "2024-02-06T08:30:30Z",
+        "duracion": 60,
+        "repeticiones": 2,
+        "peso": 25.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 7,
+    "fields": {
+        "usuario": 8,
+        "ejercicio": 4,
+        "fecha": "2024-02-06T08:30:46Z",
+        "duracion": 60,
+        "repeticiones": 15,
+        "peso": 20.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 8,
+    "fields": {
+        "usuario": 8,
+        "ejercicio": 2,
+        "fecha": "2024-02-06T08:30:59Z",
+        "duracion": 60,
+        "repeticiones": 10,
+        "peso": 20.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 9,
+    "fields": {
+        "usuario": 9,
+        "ejercicio": 3,
+        "fecha": "2024-02-06T08:31:10Z",
+        "duracion": 60,
+        "repeticiones": 10,
+        "peso": 20.0
+    }
+},
+{
+    "model": "fitness.historialejercicio",
+    "pk": 10,
+    "fields": {
+        "usuario": 10,
+        "ejercicio": 2,
+        "fecha": "2024-02-06T08:31:24Z",
+        "duracion": 60,
+        "repeticiones": 5,
+        "peso": 10.0
     }
 },
 {
