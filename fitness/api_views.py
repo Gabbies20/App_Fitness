@@ -1,10 +1,13 @@
 from .models import *
 from .serializers import *
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from rest_framework import status
 from .forms import *
 from django.db.models import Q,Prefetch
+from django.contrib.auth.models import Group
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
@@ -31,7 +34,32 @@ def ejercicio_buscar(request):
      #   return Response({"Sin permisos"}, status=status.HTTP_400_BAD_REQUEST)
      
      
+@api_view(['GET'])
+def ejercicio_buscar_avanzado(request):
+    if(len(request.query_params) > 0):
+        formulario = BusquedaAvanzadaEjercicioForm(request.query_params)
+        if formulario.is_valid():
+            texto = formulario.cleaned_data.get('textoBusqueda')
+            QSEjercicios = Ejercicio.objects.prefetch_related('usuarios')
+            #Obtenemos los filtros:
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            descripcion = formulario.cleaned_data.get('descripcion')
+            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la qryset:
+            if(textoBusqueda != ''):
+                QSEjercicios = QSEjercicios.filter(Q(nombre__contains=textoBusqueda) | Q(descripcion__contains=textoBusqueda))
+            
+            if(descripcion != ''):
+                QSEjercicios = QSEjercicios.filter(descripcion__contains=descripcion)
 
+            
+            ejercicios = QSEjercicios.all()
+            serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 """
 SUSCRIPCION    
