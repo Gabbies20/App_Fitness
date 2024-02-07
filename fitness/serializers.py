@@ -41,7 +41,7 @@ class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
     
     # No es necesario especificar source para el campo 'ejercicios'.
-    ejercicios = EntrenamientoEjercicioSerializer(read_only=True,source='entrenamientoejercicio_set',many=True)
+    ejercicios = EjercicioSerializer(read_only=True,many=True)
     
     tipo = serializers.CharField(source='get_tipo_display')
     

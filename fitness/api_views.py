@@ -62,7 +62,7 @@ def ejercicio_buscar_avanzado(request):
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 """
-SUSCRIPCION    
+ENTRENAMIENTOS:    
 """
 @api_view(['GET'])
 def entrenamiento_list(request):
@@ -71,3 +71,15 @@ def entrenamiento_list(request):
     serializer = EntrenamientoMejoradoSerializer(entrenamientos, many=True)
     #serializer.data es un atributo que contiene los datos serializados.
     return Response(serializer.data)
+
+@api_view(['GET'])
+def entrenamiento_buscar(request):
+    formulario = BusquedaEntrenamientoForm(request.query_params)
+    if(formulario.is_valid()):
+        texto = formulario.data.get('textoBusqueda')
+        entrenamientos = Entrenamiento.objects.prefetch_related('ejercicios')
+        entrenamientos = entrenamientos.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
+        serializer = EntrenamientoMejoradoSerializer(entrenamientos,many=True)
+        return Response(serializer.data)
+    else:
+        return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
