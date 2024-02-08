@@ -108,3 +108,10 @@ a.btn.btn-outline-dangerous {
 }
 
 /* Puedes agregar estilos adicionales para otros campos si es necesario */
+
+
+/*Color verde menu*/
+.bg-lightgreen {
+    background-color: lightgreen;
+}
+

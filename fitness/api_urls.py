@@ -9,5 +9,6 @@ urlpatterns = [
     #ENTRENAMIENTOS:
     path('entrenamientos',entrenamiento_list),
     path('entrenamientos/busqueda_simple',entrenamiento_buscar),
+    path('entrenamientos/busqueda_avanzada',entrenamiento_buscar_avanzado),
 ]
 

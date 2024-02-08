@@ -83,3 +83,46 @@ def entrenamiento_buscar(request):
         return Response(serializer.data)
     else:
         return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def entrenamiento_buscar_avanzado(request):
+
+    if(len(request.query_params) > 0):
+        formulario = BusquedaAvanzadaEntrenamientoForm(request.query_params)
+        if formulario.is_valid():
+            texto = formulario.cleaned_data.get('textoBusqueda')
+            QSEntrenamientos = Entrenamiento.objects.select_related("usuario").prefetch_related("ejercicios")
+            
+            #obtenemos los filtros
+            textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
+            tipos = formulario.cleaned_data.get('tipos')
+            nombre = formulario.cleaned_data.get('nombre')
+            descripcion = formulario.cleaned_data.get('descripcion')
+            duracion = formulario.cleaned_data.get('duracion')
+            
+            #Por cada filtro comprobamos si tiene un valor y lo añadimos a la QuerySet
+            if(textoBusqueda != ""):
+                QSEntrenamientos = QSEntrenamientos.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto))
+                
+            #Si hay idiomas, iteramos por ellos, creamos la queryOR y le aplicamos el filtro
+            if(len(idiomas) > 0):
+                filtroOR = Q(idioma=idiomas[0])
+                for idioma in idiomas[1:]:
+                    mensaje_busqueda += " o "+idiomas[1]
+                    filtroOR |= Q(idioma=idioma)
+                QSEntrenamientos =  QSEntrenamientos.filter(filtroOR)
+            
+            #Comprobamos fechas
+            #Obtenemos los libros con fecha publicacion mayor a la fecha desde
+            
+            
+             #Obtenemos los libros con fecha publicacion menor a la fecha desde
+            
+            
+            libros = QSEntrenamientos.all()
+            serializer = LibroSerializerMejorado(libros, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
