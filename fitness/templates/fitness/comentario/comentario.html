@@ -3,7 +3,7 @@
     <div class="custom-card-body">
         <h5 class="card-title"><a href="{% url 'mostrar_comentario' comentario.id %}"> {{ comentario.texto|capfirst }}</a></h5>
         <h6 class="card-subtitle mb-2 text-muted">Usuario:{{ comentario.usuario }}</h6>
-        <p class="card-text">Entrenamiento:{{comentario.entrenamiento }}</p>
+        <p class="card-text">Entrenamiento:{{comentario.entrenamiento.nombre}}</p>
         <p class="card-text">Texto:{{ comentario.texto}}</p>
         <p class="card-text">Fecha:{{ comentario.fecha }}</p>
        

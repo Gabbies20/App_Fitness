@@ -51,4 +51,16 @@ class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
 
 
         
-        
+class ComentarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentario
+        fields = '__all__'
+
+
+class ComentarioMejoradoSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
+    entrenamiento = EntrenamientoSerializer()
+    
+    class Meta:
+        model = Comentario
+        fields = ['texto','fecha','usuario','entrenamiento']

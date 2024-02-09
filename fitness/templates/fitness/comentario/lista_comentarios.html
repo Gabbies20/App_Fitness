@@ -41,7 +41,9 @@
         {% for comentario in mostrar_comentarios%}
             <div class="col-sm-4 mb-2">
                 {% include 'fitness/comentario/comentario.html' %}
+                <br>
             </div>
+            <br>
         {% empty %}
             <h1 class="display-6">Lo sentimos pero no hay comentarios</h1>
         {% endfor %}
