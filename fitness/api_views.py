@@ -14,12 +14,17 @@ from rest_framework.permissions import IsAuthenticated
 """EJERCICIOS"""
 @api_view(['GET'])
 def ejercicio_list(request):
-    
     ejercicios = Ejercicio.objects.all()
     serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
     return Response(serializer.data)
 
-
+@api_view(['GET'])
+def usuarios_list(request):
+    usuarios = Usuario.objects.all()
+    serializer = UsuarioSerializer(usuarios, many=True)
+    return Response(serializer.data)
+    
+    
 @api_view(['GET'])
 def ejercicio_buscar(request):
     #if(request.user.has_perm("biblioteca.view_libro")):
