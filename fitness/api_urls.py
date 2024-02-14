@@ -7,6 +7,7 @@ urlpatterns = [
     path('ejercicios/busqueda_simple',ejercicio_buscar),
     path('ejercicios/busqueda_avanzada',ejercicio_buscar_avanzado),
     path('usuarios',usuarios_list),
+    path('ejercicios/crear',ejercicio_create),
     #ENTRENAMIENTOS:
     path('entrenamientos',entrenamiento_list),
     path('entrenamientos/busqueda_simple',entrenamiento_buscar),

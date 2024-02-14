@@ -25,7 +25,91 @@ class EjercicioMejoradoSerializer(serializers.ModelSerializer):
         model = Ejercicio
         fields =('nombre','descripcion','tipo_ejercicio','usuarios')
         #fields = '__all__'
+    
+    
+class EjercicioSerializerCreate(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Ejercicio
+        fields = ['nombre','descripcion','tipo_ejercicio',
+                  'usuarios']
+    
+    def validate_nombre(self,nombre):
+        ejercicioNombre = Ejercicio.objects.filter(nombre=nombre).first()
+        if(not ejercicioNombre is None
+           ):
+             if(not self.instance is None and ejercicioNombre.id == self.instance.id):
+                 pass
+             else:
+                raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
+            
         
+        return nombre
+    
+    def validate_descripcion(self,descripcion):
+        if len(descripcion) < 10:
+             raise serializers.ValidationError('Al menos debes indicar 10 caracteres')
+        return descripcion
+    
+    def validate_tipo_ejercicio(self, tipo_ejercicio):
+        # Verifica si el campo tipo_ejercicio está vacío
+        if not tipo_ejercicio:
+            raise serializers.ValidationError('El campo tipo_ejercicio no puede estar vacío')
+
+        # Verifica si el campo tipo_ejercicio contiene solo letras
+        if not tipo_ejercicio.isalpha():
+            raise serializers.ValidationError('El campo tipo_ejercicio solo puede contener letras')
+
+        return tipo_ejercicio
+    #def validate_fecha_publicacion(self,fecha_publicacion):
+     #   fechaHoy = date.today()
+      #  if fechaHoy >= fecha_publicacion:
+       #     raise serializers.ValidationError('La fecha de publicacion debe ser mayor a Hoy')
+       # return fecha_publicacion
+    
+    
+    def create(self, validated_data):
+        usuarios = self.initial_data['usuarios']
+        if len(usuarios) < 1:
+            raise serializers.ValidationError(
+                    {'usuarios':
+                    ['Debe seleccionar al menos un usuarios.']
+                    })
+        
+        ejercicio = Ejercicio.objects.create(
+            nombre = validated_data["nombre"],
+            descripcion = validated_data["descripcion"],
+            tipo_ejercicio = validated_data["tipo_ejercicio"]
+        )
+        #libro.autores.set(validated_data["autores"])
+       
+        for usuario in usuarios:
+            modeloUsuario = Usuario.objects.get(id=usuario)
+            HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=ejercicio)
+        return ejercicio
+    
+    def update(self, instance, validated_data):
+        usuarios = self.initial_data['usuarios']
+        if len(usuarios) < 2:
+            raise serializers.ValidationError(
+                    {'usuarios':
+                    ['Debe seleccionar al menos dos usuarios']
+                    })
+        
+        instance.nombre = validated_data["nombre"]
+        instance.descripcion = validated_data["descripcion"]
+        instance.tipo_ejercicio = validated_data["tipo_ejercicio"]
+        instance.save()
+        
+        #instance.autores.set(validated_data["autores"])
+
+        instance.usuarios.clear()
+        for usuario in usuarios:
+            modeloUsuario = Usuario.objects.get(id=usuario)
+            HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=instance)
+        return instance
+
+
 class EntrenamientoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrenamiento

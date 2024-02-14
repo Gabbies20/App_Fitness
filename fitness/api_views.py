@@ -68,6 +68,53 @@ def ejercicio_buscar_avanzado(request):
     else:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+@api_view(['POST'])
+def ejercicio_create(request):
+    # Imprime los datos recibidos en la solicitud para depurar
+    print(request.data)
+    
+    # Intenta crear un nuevo libro utilizando el serializador
+    ejercicio_create_serializer = EjercicioSerializerCreate(data=request.data)
+    
+    # Verifica si los datos son válidos según el serializador
+    if ejercicio_create_serializer.is_valid():
+        # Intenta guardar el libro
+        try:
+            ejercicio_create_serializer.save()
+            # Si se guarda correctamente, devuelve una respuesta exitosa
+            return Response("EJERCICIO CREADO", status=status.HTTP_201_CREATED)
+        except serializers.ValidationError as error:
+            # Si hay un error de validación, devuelve los detalles del error
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            # Si hay un error inesperado, imprime el error y devuelve un error interno del servidor
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        # Si los datos no son válidos según el serializador, devuelve los errores de validación
+        return Response(ejercicio_create_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 ENTRENAMIENTOS:    
 """
