@@ -84,7 +84,7 @@ def ejercicio_create(request):
         try:
             ejercicio_create_serializer.save()
             # Si se guarda correctamente, devuelve una respuesta exitosa
-            return Response("EJERCICIO CREADO", status=status.HTTP_201_CREATED)
+            return Response("EJERCICIO CREADO", status=status.HTTP_200_OK)
         except serializers.ValidationError as error:
             # Si hay un error de validación, devuelve los detalles del error
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
