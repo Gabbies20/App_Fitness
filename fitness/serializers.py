@@ -4,7 +4,7 @@ from .models import *
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ejercicio
-        fields = ['nombre','descripcion','tipo_ejercicio','usuarios']
+        fields = ['id','nombre','descripcion','tipo_ejercicio','usuarios']
 
 class UsuarioSerializer(serializers.ModelSerializer):
     
@@ -23,7 +23,7 @@ class EjercicioMejoradoSerializer(serializers.ModelSerializer):
     usuarios = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
     class Meta:
         model = Ejercicio
-        fields =('nombre','descripcion','tipo_ejercicio','usuarios')
+        fields =('id','nombre','descripcion','tipo_ejercicio','usuarios')
         #fields = '__all__'
     
     
@@ -108,6 +108,7 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
             modeloUsuario = Usuario.objects.get(id=usuario)
             HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=instance)
         return instance
+
 
 
 class EntrenamientoSerializer(serializers.ModelSerializer):

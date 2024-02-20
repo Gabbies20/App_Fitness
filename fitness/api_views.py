@@ -97,7 +97,30 @@ def ejercicio_create(request):
         return Response(ejercicio_create_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET']) 
+def ejercicio_obtener(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.prefetch_related("usuarios")
+    ejercicio = ejercicio.get(id=ejercicio_id)
+    serializer = EjercicioMejoradoSerializer(ejercicio)
+    return Response(serializer.data)
 
+api_view(['PUT'])
+def ejercicio_editar(request, ejercicio_id):
+    ejercicio = Ejercicio.objects.get(id=ejercicio_id)
+    ejercicioCreateSerializer = EjercicioSerializerCreate(data=request.data,instance=ejercicio)
+    if ejercicioCreateSerializer.is_valid():
+        try:
+            ejercicioCreateSerializer.save()
+            return Response('ejercicio EDITADO')
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(ejercicioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def ejercicio_actualizar_nombre(request):
+    pass
 
 
 
