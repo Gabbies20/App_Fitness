@@ -104,7 +104,7 @@ def ejercicio_obtener(request,ejercicio_id):
     serializer = EjercicioMejoradoSerializer(ejercicio)
     return Response(serializer.data)
 
-api_view(['PUT'])
+@api_view(['PUT'])
 def ejercicio_editar(request, ejercicio_id):
     ejercicio = Ejercicio.objects.get(id=ejercicio_id)
     ejercicioCreateSerializer = EjercicioSerializerCreate(data=request.data,instance=ejercicio)
@@ -119,6 +119,7 @@ def ejercicio_editar(request, ejercicio_id):
     else:
         return Response(ejercicioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PATCH'])
 def ejercicio_actualizar_nombre(request,ejercicio_id):
     ejercicio = Ejercicio.objects.get(id=ejercicio_id)
     serializers = EjercicioSerializerActualizarNombre(data=request.data,instance=ejercicio)
@@ -135,6 +136,7 @@ def ejercicio_actualizar_nombre(request,ejercicio_id):
 
 @api_view(['DELETE'])
 def ejercicio_eliminar(request,ejercicio_id):
+
     ejercicio = Ejercicio.objects.get(id=ejercicio_id)
     try:
         ejercicio.delete()
