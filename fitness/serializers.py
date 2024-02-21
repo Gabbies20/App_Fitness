@@ -4,7 +4,7 @@ from .models import *
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ejercicio
-        fields = ['id','nombre','descripcion','tipo_ejercicio','usuarios']
+        fields = ['nombre','descripcion','tipo_ejercicio','usuarios']
 
 class UsuarioSerializer(serializers.ModelSerializer):
     
@@ -109,7 +109,17 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
             HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=instance)
         return instance
 
-
+class EjercicioSerializerActualizarNombre(serializers.ModelSerializer):
+ 
+    class Meta:
+        model = Ejercicio
+        fields = ['nombre']
+    
+    def validate_nombre(self,nombre):
+        ejercicioNombre = Ejercicio.objects.filter(nombre=nombre).first()
+        if(not ejercicioNombre is None and ejercicioNombre.id != self.instance.id):
+            raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
+        return nombre
 
 class EntrenamientoSerializer(serializers.ModelSerializer):
     class Meta:

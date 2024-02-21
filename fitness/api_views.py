@@ -119,11 +119,28 @@ def ejercicio_editar(request, ejercicio_id):
     else:
         return Response(ejercicioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def ejercicio_actualizar_nombre(request):
-    pass
+def ejercicio_actualizar_nombre(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.get(id=ejercicio_id)
+    serializers = EjercicioSerializerActualizarNombre(data=request.data,instance=ejercicio)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("Ejercicio EDITADO")
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+@api_view(['DELETE'])
+def ejercicio_eliminar(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.get(id=ejercicio_id)
+    try:
+        ejercicio.delete()
+        return Response("Ejercicio ELIMINADO")
+    except Exception as error:
+        return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 

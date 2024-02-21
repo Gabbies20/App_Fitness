@@ -11,6 +11,7 @@ urlpatterns = [
     path('ejercicios/crear',ejercicio_create),
     path('ejercicios/editar/<int:ejercicio_id>',ejercicio_editar),
     path('ejercicios/actualizar/nombre/<int:ejercicio_id>',ejercicio_actualizar_nombre),
+    path('ejercicios/eliminar/<int:ejercicio_id>',ejercicio_eliminar,name='libro_eliminar'),
     #ENTRENAMIENTOS:
     path('entrenamientos',entrenamiento_list),
     path('entrenamientos/busqueda_simple',entrenamiento_buscar),
