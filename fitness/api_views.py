@@ -259,7 +259,7 @@ def comentario_buscar_avanzado(request):
             texto = formulario.cleaned_data.get('textoBusqueda')
             QSComentarios = Comentario.objects.select_related('usuario','entrenamiento')
             
-            #obtenemos los filtros
+            #obtenemos los comentarios
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
             fecha = formulario.cleaned_data.get('fecha')
             
@@ -270,8 +270,8 @@ def comentario_buscar_avanzado(request):
             if(not fecha is None):
                 QSComentarios = QSComentarios.filter(fecha__gte=fecha)
             
-            libros = QSComentarios.all()
-            serializer = ComentarioMejoradoSerializer(libros, many=True)
+            comentarios = QSComentarios.all()
+            serializer = ComentarioMejoradoSerializer(comentarios, many=True)
             return Response(serializer.data)
         else:
             return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
