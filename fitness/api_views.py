@@ -145,27 +145,23 @@ def ejercicio_eliminar(request,ejercicio_id):
         return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 """
 ENTRENAMIENTOS:    
 """
+
 @api_view(['GET'])
 def entrenamiento_list(request):
     entrenamientos = Entrenamiento.objects.all()
     #many=True -> para indicar que serializamos muchos valores.
     serializer = EntrenamientoMejoradoSerializer(entrenamientos, many=True)
     #serializer.data es un atributo que contiene los datos serializados.
+    return Response(serializer.data)
+
+@api_view(['GET']) 
+def entrenamiento_obtener(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.select_related('usuario').prefetch_related("ejercicios")
+    entrenamiento = entrenamiento.get(id=entrenamiento_id)
+    serializer = EntrenamientoMejoradoSerializer(entrenamiento)
     return Response(serializer.data)
 
 @api_view(['GET'])
@@ -223,13 +219,83 @@ def entrenamiento_buscar_avanzado(request):
             return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def usuario_list(request):
+    usuarios = Usuario.objects.all()
+    serializer =UsuarioSerializer(usuarios, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def entrenamiento_create(request): 
+    print(request.data)
+    entrenamientoCreateSerializer = EntrenamientoSerializerCreate(data=request.data)
+    if entrenamientoCreateSerializer.is_valid():
+        try:
+            entrenamientoCreateSerializer.save()
+            return Response("entrenamiento CREADO")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(entrenamientoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def entrenamiento_editar(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    entrenamientoCreateSerializer = EntrenamientoSerializerCreate(data=request.data,instance=entrenamiento)
+    if entrenamientoCreateSerializer.is_valid():
+        try:
+            entrenamientoCreateSerializer.save()
+            return Response("Entrenamiento EDITADO")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(entrenamientoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['PATCH'])
+def entrenamiento_actualizar_nombre(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    serializers = EntrenamientoSerializerActualizarNombre(data=request.data,instance=entrenamiento)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("entrenamiento EDITADO")
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def entrenamiento_eliminar(request,entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    try:
+        entrenamiento.delete()
+        return Response("entrenamiento ELIMINADO")
+    except Exception as error:
+        return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 """COMENTARIOS"""
+
 @api_view(['GET'])
 def comentario_list(request):
     ejercicios = Comentario.objects.all()
     serializer = ComentarioMejoradoSerializer(ejercicios, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET']) 
+def comentario_obtener(request,comentario_id):
+    comentario = Entrenamiento.objects.select_related('usuario')
+    comentario = comentario.get(id=comentario_id)
+    serializer = ComentarioMejoradoSerializer(comentario)
     return Response(serializer.data)
 
 
@@ -277,3 +343,58 @@ def comentario_buscar_avanzado(request):
             return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+@api_view(['POST'])
+def comentario_create(request): 
+    print(request.data)
+    comentarioCreateSerializer = ComentarioSerializerCreate(data=request.data)
+    if comentarioCreateSerializer.is_valid():
+        try:
+            comentarioCreateSerializer.save()
+            return Response("comentario CREADO")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(comentarioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['PUT'])
+def comentario_editar(request,comentario_id):
+    comentario = Comentario.objects.get(id=comentario_id)
+    comentarioCreateSerializer = ComentarioSerializerCreate(data=request.data,instance=comentario)
+    if comentarioCreateSerializer.is_valid():
+        try:
+            comentarioCreateSerializer.save()
+            return Response("comentario EDITADO")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(comentarioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def comentario_actualizar_nombre(request,comentario_id):
+    comentario = Comentario.objects.get(id=comentario_id)
+    serializers = ComentarioSerializerActualizarTexto(data=request.data,instance=comentario)
+    if serializers.is_valid():
+        try:
+            serializers.save()
+            return Response("comentario EDITADO")
+        except Exception as error:
+            print(repr(error))
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def comentario_eliminar(request,comentario_id):
+    comentario = Comentario.objects.get(id=comentario_id)
+    try:
+        comentario.delete()
+        return Response("comentario ELIMINADO")
+    except Exception as error:
+        return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

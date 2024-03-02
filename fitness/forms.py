@@ -6,10 +6,6 @@ import re
 from datetime import datetime 
 from django.contrib.auth.forms import UserCreationForm
 
-"""
-Los formularios en Django se crean mediante la definición de una clase que hereda de django.forms.Form. 
-    """
-
 class EjercicioModelForm(ModelForm):
     class Meta:
         model = Ejercicio
@@ -58,30 +54,6 @@ class BusquedaEjercicioForm(forms.Form):
     
     
 class BusquedaAvanzadaEjercicioForm(forms.Form):
-
-        
-        
-    """
-    forms.CharField: Sería como un InputText en HTML y los usaremos para los campos tipo Char y Text
-forms.DateField: Sería como input tipo Date en HTML y lo usaremos para los campos tipo Fecha
-forms.ChoiceField: Sería como un select en HTML y lo usaremos para los campos tipo Char con opciones
-forms.ModelChoiceField: Sería como un Select en HTML y lo usaremos para las relaciones OneToOne o ManyToOne
-forms.ModelMultipleChoiceField: Sería como un Select Múltiple en HTML y lo usaremos para las relaciones ManyToMany o OneToMany 
-Existen más tipos de campos que podemos encontrar en la documentación
-    
-    """
-    
-    """
-    Los campos anteriormente especificados pueden tener una serie de parámetros para personalizarlos. :
-required: Para indicar si el campo es obligatorio en el formulario.
-max_length: Para indicar el tamaño máximo de caracteres del campo
-help_text: Texto de ayuda que aparecerá al lado del campo del formulario para facilitar la introducción de datos al usuario
-label: La etiqueta label que queremos que aparezca en el formulario asociada al campo
-initial: Valor por defecto en el campo
-choices: Para especificar los valores que aparecerán para seleccionar en el Select
-empty_label: Cuando hay que seleccionar en un Select
-querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan las opciones correspondientes. """
-    
     textoBusqueda = forms.CharField(required=False)
     descripcion = forms.CharField(widget=forms.Textarea, required=False)
 
@@ -114,26 +86,7 @@ querySet: QuerySet del Modelo correspondiente a la relación. Para que aparezcan
     
     
 #------------------ENTRENAMIENTO----------------------
-        """
-        
-       class Entrenamiento(models.Model):
-    TIPOS = [
-        ('AER','Aeróbico'),
-        ('FUE','Fuerza o anaeróbico'),
-        ('FUN','Funcional'),
-        ('HIT','Hit'),
-        ('POT','Potencia'),
-    ]
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=200)
-    descripcion= models.TextField()
-    duracion = models.IntegerField()
-    tipo = models.CharField(max_length=3,
-                            choices=TIPOS,
-                            default='HIT',
-                            )
-    ejercicios = models.ManyToManyField(Ejercicio,through='EntrenamientoEjercicio'    
-        """
+
 class EntrenamientoForm(ModelForm):
     class Meta:
         model = Entrenamiento
@@ -213,30 +166,11 @@ class BusquedaAvanzadaEntrenamientoForm(forms.Form):
         # Siempre devolvemos el conjunto de datos
         return self.cleaned_data    
 
-
-
-
-
-
     
 """
         FORMULARIOS DE PLAN DE ENTRENAMIENTO:
-        class PlanEntrenamiento(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=100)
-    descripcion = models.TextField()
-    duracion_estimada = models.IntegerField()
-    dificultad = models.CharField(max_length=20)
-    entrenamientos = models.ManyToManyField('Entrenamiento', through='EntrenamientoPlan')
-    fecha_inicio = models.DateTimeField(default=timezone.now)
-    fecha_fin = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return self.nombre
         """
     
-    
-
 class PlanEntrenamientoModelForm(ModelForm):
     class Meta:
         model = PlanEntrenamiento

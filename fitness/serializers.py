@@ -121,6 +121,9 @@ class EjercicioSerializerActualizarNombre(serializers.ModelSerializer):
             raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
         return nombre
 
+
+#ENTRENAMIENTO:
+
 class EntrenamientoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrenamiento
@@ -145,7 +148,18 @@ class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
         fields = ['usuario', 'nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios']
 
 
-        
+
+class EntrenamientoSerializerCreate(serializers.ModelSerializer):
+    class Meta:
+        model = Entrenamiento
+        fields = [
+            'usuario','nombre','descripcion','duracion','tipo','ejercicios'
+        ]
+class EntrenamientoSerializerActualizarNombre():
+    pass
+
+
+#COMENTARIOS:        
 class ComentarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
@@ -159,3 +173,9 @@ class ComentarioMejoradoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = ['texto','fecha','usuario','entrenamiento']
+        
+class ComentarioSerializerCreate():
+    pass
+
+class ComentarioSerializerActualizarTexto():
+    pass
