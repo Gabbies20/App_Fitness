@@ -124,6 +124,12 @@ class EjercicioSerializerActualizarNombre(serializers.ModelSerializer):
 
 #ENTRENAMIENTO:
 
+class EntrenamientoEjercicioSerializer(serializers.ModelSerializer):
+    ejercicio = EjercicioSerializer()
+    class MEta:
+        model = EntrenamientoEjercicio
+        fields = '__all__'
+
 class EntrenamientoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entrenamiento
@@ -145,7 +151,7 @@ class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Entrenamiento
-        fields = ['usuario', 'nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios']
+        fields = ['id','usuario', 'nombre', 'descripcion', 'duracion', 'tipo', 'ejercicios']
 
 
 
@@ -155,6 +161,72 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         fields = [
             'usuario','nombre','descripcion','duracion','tipo','ejercicios'
         ]
+        
+        def validate_usuario(self, usuario):
+            # Validar el campo 'usuario' aquí
+            # Por ejemplo, podrías comprobar si el usuario existe en tu base de datos
+            if not Usuario.objects.filter(id=usuario).exists():
+                raise serializers.ValidationError("El usuario especificado no existe.")
+            return usuario
+        
+        def validate_nombre(self, nombre):
+        # Validar el campo 'nombre' aquí
+            if len(nombre) < 2:
+                raise serializers.ValidationError("El nombre debe tener al menos 3 caracteres.")
+            return nombre
+        
+        def validate_descripcion(self, descripcion):
+        # Validar el campo 'descripcion' aquí
+            if len(descripcion) < 2:
+                raise serializers.ValidationError("El descripcion debe tener al menos 3 caracteres.")
+            return descripcion
+        
+        
+        def validate_duracion(self, duracion):
+        # Validar el campo 'duracion' aquí
+            if duracion <= 0:
+                raise serializers.ValidationError("La duración debe ser un número positivo.")
+            return duracion
+        
+        def validate_tipo(self, tipo):
+            # Validar el campo 'tipo' aquí
+            # Por ejemplo, podrías comprobar si el tipo es uno de los valores permitidos
+            tipos_permitidos = ['AER', 'FUE', 'FUN', 'HIT', 'POT']
+            if tipo not in tipos_permitidos:
+                raise serializers.ValidationError("El tipo especificado no es válido.")
+            return tipo
+        
+        #def validate_ejercicios(self, ejercicios):
+            # Validar el campo 'ejercicios' aquí
+            # Por ejemplo, podrías comprobar si todos los ejercicios existen en tu base de datos
+         #   for ejercicio_id in ejercicios:
+          #      if not Ejercicio.objects.filter(id=ejercicio_id).exists():
+           #         raise serializers.ValidationError(f"El ejercicio con ID {ejercicio_id} no existe.")
+            #return ejercicios
+        
+        
+        def create(self, validated_data):
+            ejercicios= self.initial_data['ejercicios']
+            if len(ejercicios) < 2:
+                raise serializers.DjangoValidationError(
+                    {'ejercicios':
+                        ['Debe seleccionar al menos 2 ejercicios']}
+                )
+                
+            entrenamiento = Entrenamiento.objects.create(
+                nombre = validated_data['nombre'],
+                descripcion = validated_data['descripcion'],
+                duracion = validated_data['duracion'],
+                tipo = validated_data['tipo']
+            )
+            entrenamiento.usuarios.set(validated_data['usuarios'])
+            
+            for ejercicio in ejercicios:
+                modeloEntrenamientoEjercicio = EntrenamientoEjercicio.objects.get(id=ejercicio)
+                EntrenamientoEjercicio.objects.create(ejercicio=modeloEntrenamientoEjercicio,entrenamiento=entrenamiento)
+            return ejercicio
+        
+        
 class EntrenamientoSerializerActualizarNombre():
     pass
 
@@ -174,8 +246,49 @@ class ComentarioMejoradoSerializer(serializers.ModelSerializer):
         model = Comentario
         fields = ['texto','fecha','usuario','entrenamiento']
         
-class ComentarioSerializerCreate():
-    pass
+class ComentarioSerializerCreate(serializers.Serializer):
+    
+    class Meta:
+        model = Comentario
+        fields = ['usuario','entrenamiento','texto','fecha'] 
+        
+    def validate_usuario(self,usuario ):
+        # Validar que el usuario exista en tu sistema o en tu base de datos
+        # Aquí puedes agregar la lógica de validación que necesites
+        if not Usuario.objects.filter(id=usuario).exists():
+            raise serializers.ValidationError("El usuario no existe.")
+        return usuario
+
+    def validate_entrenamiento(self, entrenamiento):
+        # Validar que el entrenamiento exista en tu sistema o en tu base de datos
+        # Aquí puedes agregar la lógica de validación que necesites
+        if not Entrenamiento.objects.filter(id=entrenamiento).exists():
+            raise serializers.ValidationError("El entrenamiento no existe.")
+        return entrenamiento
+
+    def validate_texto(self, texto):
+        # Validar que el texto no esté vacío o tenga una longitud mínima requerida
+        # Aquí puedes agregar la lógica de validación que necesites
+        if not texto.strip():
+            raise serializers.ValidationError("El texto no puede estar vacío.")
+        return texto
+
+    def validate_fecha(self, fecha):
+        # Validar que la fecha sea válida según tus requisitos
+        # Aquí puedes agregar la lógica de validación que necesites
+        if fecha is not None and fecha < timezone.now():
+            raise serializers.ValidationError("La fecha no puede ser en el pasado.")
+        return fecha
+
+    def create(self, validated_data):
+        comentario = Comentario.objects.create(
+            usuario = validated_data['usuario'],
+            entrenamiento = validated_data['entrenamiento'],
+            texto = validated_data['texto'],
+            fecha = validated_data['fecha']
+        )
+        
+        return comentario
 
 class ComentarioSerializerActualizarTexto():
     pass

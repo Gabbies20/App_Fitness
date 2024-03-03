@@ -352,7 +352,7 @@ def comentario_create(request):
     if comentarioCreateSerializer.is_valid():
         try:
             comentarioCreateSerializer.save()
-            return Response("comentario CREADO")
+            return Response("comentario CREADO", status=status.HTTP_200_OK)
         except serializers.ValidationError as error:
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
@@ -360,6 +360,7 @@ def comentario_create(request):
             return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(comentarioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['PUT'])
 def comentario_editar(request,comentario_id):
     comentario = Comentario.objects.get(id=comentario_id)
