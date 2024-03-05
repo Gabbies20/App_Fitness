@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import *
+from django.utils import timezone
+
 
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -207,10 +209,10 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         
         def create(self, validated_data):
             ejercicios= self.initial_data['ejercicios']
-            if len(ejercicios) < 2:
+            if len(ejercicios) < 1:
                 raise serializers.DjangoValidationError(
                     {'ejercicios':
-                        ['Debe seleccionar al menos 2 ejercicios']}
+                        ['Debe seleccionar al menos 1 ejercicio']}
                 )
                 
             entrenamiento = Entrenamiento.objects.create(
@@ -246,7 +248,7 @@ class ComentarioMejoradoSerializer(serializers.ModelSerializer):
         model = Comentario
         fields = ['texto','fecha','usuario','entrenamiento']
         
-class ComentarioSerializerCreate(serializers.Serializer):
+class ComentarioSerializerCreate(serializers.ModelSerializer):
     
     class Meta:
         model = Comentario
@@ -255,16 +257,19 @@ class ComentarioSerializerCreate(serializers.Serializer):
     def validate_usuario(self,usuario ):
         # Validar que el usuario exista en tu sistema o en tu base de datos
         # Aquí puedes agregar la lógica de validación que necesites
-        if not Usuario.objects.filter(id=usuario).exists():
+        if not Usuario.objects.filter(username=usuario).exists():
             raise serializers.ValidationError("El usuario no existe.")
         return usuario
 
     def validate_entrenamiento(self, entrenamiento):
         # Validar que el entrenamiento exista en tu sistema o en tu base de datos
         # Aquí puedes agregar la lógica de validación que necesites
-        if not Entrenamiento.objects.filter(id=entrenamiento).exists():
+        nombre_entrenamiento = entrenamiento.nombre
+        if not Entrenamiento.objects.filter(nombre=nombre_entrenamiento).exists():
+            print(nombre_entrenamiento)
             raise serializers.ValidationError("El entrenamiento no existe.")
         return entrenamiento
+
 
     def validate_texto(self, texto):
         # Validar que el texto no esté vacío o tenga una longitud mínima requerida
@@ -273,22 +278,27 @@ class ComentarioSerializerCreate(serializers.Serializer):
             raise serializers.ValidationError("El texto no puede estar vacío.")
         return texto
 
+    from datetime import datetime
+
     def validate_fecha(self, fecha):
-        # Validar que la fecha sea válida según tus requisitos
-        # Aquí puedes agregar la lógica de validación que necesites
-        if fecha is not None and fecha < timezone.now():
+        # Convertir fecha a datetime.date
+        fecha_actual = timezone.now().date()
+
+        # Comparar la fecha recibida con la fecha actual
+        if fecha.date() < fecha_actual:
             raise serializers.ValidationError("La fecha no puede ser en el pasado.")
         return fecha
 
+
     def create(self, validated_data):
         comentario = Comentario.objects.create(
-            usuario = validated_data['usuario'],
-            entrenamiento = validated_data['entrenamiento'],
-            texto = validated_data['texto'],
-            fecha = validated_data['fecha']
+            texto=validated_data['texto'],
+            fecha=validated_data['fecha'],
+            usuario=validated_data['usuario'],  # Asignar el ID del usuario
+            entrenamiento=validated_data['entrenamiento']  # Asignar el ID del entrenamiento
         )
-        
         return comentario
+
 
 class ComentarioSerializerActualizarTexto():
     pass
