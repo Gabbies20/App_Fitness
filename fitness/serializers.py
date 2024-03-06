@@ -230,7 +230,15 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         
         
 class EntrenamientoSerializerActualizarNombre():
-    pass
+    class Meta:
+        model = Entrenamiento
+        fields = ['nombre']
+    
+    def validate_nombre(self,nombre):
+        entrenamientoNombre = Entrenamiento.objects.filter(nombre=nombre).first()
+        if(not entrenamientoNombre is None and entrenamientoNombre.id != self.instance.id):
+            raise serializers.ValidationError('Ya existe un entrenamiento con ese nombre')
+        return nombre
 
 
 #COMENTARIOS:        
@@ -301,7 +309,15 @@ class ComentarioSerializerCreate(serializers.ModelSerializer):
 
 
 class ComentarioSerializerActualizarTexto():
-    pass
+    class Meta:
+        model = Ejercicio
+        fields = ['texto']
+    
+    def validate_texto(self,texto):
+        comentarioNombre = Ejercicio.objects.filter(texto=texto).first()
+        if(not comentarioNombre is None and comentarioNombre.id != self.instance.id):
+            raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
+        return texto
 
 
 class UsuarioSerializerRegistro(serializers.Serializer):

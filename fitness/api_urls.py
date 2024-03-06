@@ -27,8 +27,8 @@ urlpatterns = [
     path('comentarios/busqueda_simple',comentario_buscar),
     path('comentarios/busqueda_avanzada',comentario_buscar_avanzado),
     path('comentarios/crear',comentario_create),
-    path('comenatrios/editar/<int:comentario_id>',comentario_editar),
-    path('comentarios/actualizar/nombre/<int:comentarios_id>',comentario_actualizar_nombre),
+    path('comentarios/editar/<int:comentario_id>',comentario_editar),
+    path('comentarios/actualizar/nombre/<int:comentario_id>',comentario_actualizar_nombre),
     path('comentarios/eliminar/<int:comentario_id>',comentario_eliminar,name='comentario_eliminar'),
     #REGISTRO:
     path('registrar/usuario',registrar_usuario.as_view()),
