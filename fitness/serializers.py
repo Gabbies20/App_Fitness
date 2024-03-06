@@ -227,8 +227,33 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
                 modeloEntrenamientoEjercicio = EntrenamientoEjercicio.objects.get(id=ejercicio)
                 EntrenamientoEjercicio.objects.create(ejercicio=modeloEntrenamientoEjercicio,entrenamiento=entrenamiento)
             return ejercicio
-        
-        
+        def update(self,instance, validated_data):
+            ejercicios = self.initial_dta['ejercicios']
+            if len(ejercicios)< 1:
+                raise serializers.ValidationError(
+                    {'ejercicios':'Debe seleccionar al menos un ejercico'
+                     
+                    })
+                
+            instance.nombre = validated_data['nombre']
+            instance.descripcion = validated_data['descripcion']
+            instance.duracion = validated_data['duracion']
+            instance.tipo = validated_data['tipo']
+            instance.save()
+            
+            #Actualizamos los usuarios asociados al entrenamiento:
+            instance.usuarios.set(validated_data['usuarios'])
+
+            #Actualizamos los ejercicios que es una relación ManytoMany y tabla intermedia, se eliminan clear():
+            instance.ejercicios.clear()
+            for ejercicio in ejercicios:
+                modeloEntrenamientoEjercicio =EntrenamientoEjercicio.objects.get(id=ejercicio)
+                EntrenamientoEjercicio.objects.create(categoria=modeloEntrenamientoEjercicio,ejercicio=instance) 
+            
+            return instance
+                
+                
+            
 class EntrenamientoSerializerActualizarDescripcion():
     class Meta:
         model = Entrenamiento
@@ -317,13 +342,13 @@ class ComentarioSerializerCreate(serializers.ModelSerializer):
             
 class ComentarioSerializerActualizarTexto():
     class Meta:
-        model = Ejercicio
+        model = Comentario
         fields = ['texto']
     
     def validate_texto(self,texto):
         comentarioNombre = Ejercicio.objects.filter(texto=texto).first()
         if(not comentarioNombre is None and comentarioNombre.id != self.instance.id):
-            raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
+            raise serializers.ValidationError('Texto fallido')
         return texto
 
 
