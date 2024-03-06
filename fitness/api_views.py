@@ -260,9 +260,9 @@ def entrenamiento_editar(request,entrenamiento_id):
         return Response(entrenamientoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PATCH'])
-def entrenamiento_actualizar_nombre(request,entrenamiento_id):
+def entrenamiento_actualizar_descripcion(request,entrenamiento_id):
     entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
-    serializers = EntrenamientoSerializerActualizarNombre(data=request.data,instance=entrenamiento)
+    serializers = EntrenamientoSerializerActualizarDescripcion(data=request.data,instance=entrenamiento)
     if serializers.is_valid():
         try:
             serializers.save()

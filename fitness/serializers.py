@@ -229,16 +229,16 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
             return ejercicio
         
         
-class EntrenamientoSerializerActualizarNombre():
+class EntrenamientoSerializerActualizarDescripcion():
     class Meta:
         model = Entrenamiento
-        fields = ['nombre']
+        fields = ['descripcion']
     
-    def validate_nombre(self,nombre):
-        entrenamientoNombre = Entrenamiento.objects.filter(nombre=nombre).first()
-        if(not entrenamientoNombre is None and entrenamientoNombre.id != self.instance.id):
-            raise serializers.ValidationError('Ya existe un entrenamiento con ese nombre')
-        return nombre
+    def validate_descripcion(self,descripcion):
+        entrenamientoDescripcion = Entrenamiento.objects.filter(descripcion=descripcion).first()
+        if(not entrenamientoDescripcion is None and entrenamientoDescripcion.id != self.instance.id):
+            raise serializers.ValidationError('No se ha modificado la descripcion.')
+        return descripcion
 
 
 #COMENTARIOS:        
@@ -306,8 +306,15 @@ class ComentarioSerializerCreate(serializers.ModelSerializer):
             entrenamiento=validated_data['entrenamiento']  # Asignar el ID del entrenamiento
         )
         return comentario
-
-
+    def update(self,instance,validated_data):
+        instance.usuario = validated_data['usuario']
+        instance.entrenamiento = validated_data['entrenamiento']
+        instance.texto = validated_data['texto']
+        instance.fecha = validated_data['fecha']
+        instance.save()
+        return instance
+    
+            
 class ComentarioSerializerActualizarTexto():
     class Meta:
         model = Ejercicio
