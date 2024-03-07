@@ -113,6 +113,7 @@ class HistorialEjercicio(models.Model):
     duracion = models.IntegerField(default=0)
     repeticiones = models.IntegerField(default=0)
     peso = models.FloatField(default=0)
+    #calorias = models.FloatField(default=0)
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

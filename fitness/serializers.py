@@ -152,99 +152,102 @@ class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
 
 
 class EntrenamientoSerializerCreate(serializers.ModelSerializer):
+    
     class Meta:
         model = Entrenamiento
         fields = [
             'usuario','nombre','descripcion','duracion','tipo','ejercicios'
         ]
         
-        def validate_usuario(self, usuario):
-            # Validar el campo 'usuario' aquí
-            # Por ejemplo, podrías comprobar si el usuario existe en tu base de datos
-            if not Usuario.objects.filter(id=usuario).exists():
-                raise serializers.ValidationError("El usuario especificado no existe.")
-            return usuario
-        
-        def validate_nombre(self, nombre):
-        # Validar el campo 'nombre' aquí
-            if len(nombre) < 2:
-                raise serializers.ValidationError("El nombre debe tener al menos 3 caracteres.")
-            return nombre
-        
-        def validate_descripcion(self, descripcion):
-        # Validar el campo 'descripcion' aquí
-            if len(descripcion) < 2:
-                raise serializers.ValidationError("El descripcion debe tener al menos 3 caracteres.")
-            return descripcion
-        
-        
-        def validate_duracion(self, duracion):
-        # Validar el campo 'duracion' aquí
-            if duracion <= 0:
-                raise serializers.ValidationError("La duración debe ser un número positivo.")
-            return duracion
-        
-        def validate_tipo(self, tipo):
-            # Validar el campo 'tipo' aquí
-            # Por ejemplo, podrías comprobar si el tipo es uno de los valores permitidos
-            tipos_permitidos = ['AER', 'FUE', 'FUN', 'HIT', 'POT']
-            if tipo not in tipos_permitidos:
-                raise serializers.ValidationError("El tipo especificado no es válido.")
-            return tipo
-        
-        #def validate_ejercicios(self, ejercicios):
-            # Validar el campo 'ejercicios' aquí
-            # Por ejemplo, podrías comprobar si todos los ejercicios existen en tu base de datos
-         #   for ejercicio_id in ejercicios:
-          #      if not Ejercicio.objects.filter(id=ejercicio_id).exists():
-           #         raise serializers.ValidationError(f"El ejercicio con ID {ejercicio_id} no existe.")
-            #return ejercicios
-        
-        
-        def create(self, validated_data):
-            ejercicios= self.initial_data['ejercicios']
-            if len(ejercicios) < 1:
-                raise serializers.DjangoValidationError(
-                    {'ejercicios':
-                        ['Debe seleccionar al menos 1 ejercicio']}
-                )
-                
-            entrenamiento = Entrenamiento.objects.create(
-                nombre = validated_data['nombre'],
-                descripcion = validated_data['descripcion'],
-                duracion = validated_data['duracion'],
-                tipo = validated_data['tipo']
+    def validate_usuario(self, usuario):
+        # Validar el campo 'usuario' aquí
+        # Por ejemplo, podrías comprobar si el usuario existe en tu base de datos
+        if not Usuario.objects.filter(id=usuario.id).exists():
+            raise serializers.ValidationError("El usuario especificado no existe.")
+        return usuario
+    
+    def validate_nombre(self, nombre):
+    # Validar el campo 'nombre' aquí
+        if len(nombre) < 2:
+            raise serializers.ValidationError("El nombre debe tener al menos 3 caracteres.")
+        return nombre
+    
+    def validate_descripcion(self, descripcion):
+    # Validar el campo 'descripcion' aquí
+        if len(descripcion) < 2:
+            raise serializers.ValidationError("El descripcion debe tener al menos 3 caracteres.")
+        return descripcion
+    
+    
+    def validate_duracion(self, duracion):
+    # Validar el campo 'duracion' aquí
+        if duracion <= 0:
+            raise serializers.ValidationError("La duración debe ser un número positivo.")
+        return duracion
+    
+    def validate_tipo(self, tipo):
+        # Validar el campo 'tipo' aquí
+        # Por ejemplo, podrías comprobar si el tipo es uno de los valores permitidos
+        tipos_permitidos = ['AER', 'FUE', 'FUN', 'HIT', 'POT']
+        if tipo not in tipos_permitidos:
+            raise serializers.ValidationError("El tipo especificado no es válido.")
+        return tipo
+    
+    #def validate_ejercicios(self, ejercicios):
+        # Validar el campo 'ejercicios' aquí
+        # Por ejemplo, podrías comprobar si todos los ejercicios existen en tu base de datos
+        #   for ejercicio_id in ejercicios:
+        #      if not Ejercicio.objects.filter(id=ejercicio_id).exists():
+        #         raise serializers.ValidationError(f"El ejercicio con ID {ejercicio_id} no existe.")
+        #return ejercicios
+    
+    
+    def create(self, validated_data):
+        ejercicios= self.initial_data['ejercicios']
+        if len(ejercicios) < 1:
+            raise serializers.DjangoValidationError(
+                {'ejercicios':
+                    ['Debe seleccionar al menos 1 ejercicio']}
             )
-            entrenamiento.usuarios.set(validated_data['usuarios'])
             
-            for ejercicio in ejercicios:
-                modeloEntrenamientoEjercicio = EntrenamientoEjercicio.objects.get(id=ejercicio)
-                EntrenamientoEjercicio.objects.create(ejercicio=modeloEntrenamientoEjercicio,entrenamiento=entrenamiento)
-            return ejercicio
-        def update(self,instance, validated_data):
-            ejercicios = self.initial_dta['ejercicios']
-            if len(ejercicios)< 1:
-                raise serializers.ValidationError(
-                    {'ejercicios':'Debe seleccionar al menos un ejercico'
-                     
-                    })
-                
-            instance.nombre = validated_data['nombre']
-            instance.descripcion = validated_data['descripcion']
-            instance.duracion = validated_data['duracion']
-            instance.tipo = validated_data['tipo']
-            instance.save()
-            
-            #Actualizamos los usuarios asociados al entrenamiento:
-            instance.usuarios.set(validated_data['usuarios'])
+        entrenamiento = Entrenamiento.objects.create(
+            nombre = validated_data['nombre'],
+            descripcion = validated_data['descripcion'],
+            duracion = validated_data['duracion'],
+            tipo = validated_data['tipo'],
+            usuario =  validated_data["usuario"]
+        )
 
-            #Actualizamos los ejercicios que es una relación ManytoMany y tabla intermedia, se eliminan clear():
-            instance.ejercicios.clear()
-            for ejercicio in ejercicios:
-                modeloEntrenamientoEjercicio =EntrenamientoEjercicio.objects.get(id=ejercicio)
-                EntrenamientoEjercicio.objects.create(categoria=modeloEntrenamientoEjercicio,ejercicio=instance) 
+        
+        for ejercicio in ejercicios:
+            ejercicio = Ejercicio.objects.get(id=ejercicio)
+            EntrenamientoEjercicio.objects.create(ejercicio=ejercicio,entrenamiento=entrenamiento)
+        return ejercicio
+    
+    def update(self,instance, validated_data):
+        ejercicios = self.initial_dta['ejercicios']
+        if len(ejercicios)< 1:
+            raise serializers.ValidationError(
+                {'ejercicios':'Debe seleccionar al menos un ejercico'
+                    
+                })
             
-            return instance
+        instance.nombre = validated_data['nombre']
+        instance.descripcion = validated_data['descripcion']
+        instance.duracion = validated_data['duracion']
+        instance.tipo = validated_data['tipo']
+        instance.save()
+        
+        #Actualizamos los usuarios asociados al entrenamiento:
+        instance.usuarios.set(validated_data['usuarios'])
+
+        #Actualizamos los ejercicios que es una relación ManytoMany y tabla intermedia, se eliminan clear():
+        instance.ejercicios.clear()
+        for ejercicio in ejercicios:
+            modeloEntrenamientoEjercicio =EntrenamientoEjercicio.objects.get(id=ejercicio)
+            EntrenamientoEjercicio.objects.create(categoria=modeloEntrenamientoEjercicio,ejercicio=instance) 
+        
+        return instance
                 
                 
             
@@ -273,7 +276,7 @@ class ComentarioMejoradoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Comentario
-        fields = ['texto','fecha','usuario','entrenamiento']
+        fields = ['id','texto','fecha','usuario','entrenamiento']
         
 class ComentarioSerializerCreate(serializers.ModelSerializer):
     class Meta:
@@ -335,7 +338,7 @@ class ComentarioSerializerCreate(serializers.ModelSerializer):
         return instance
     
             
-class ComentarioSerializerActualizarTexto():
+class ComentarioSerializerActualizarTexto(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = ['texto']

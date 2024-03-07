@@ -346,20 +346,22 @@ def comentario_buscar_avanzado(request):
     
     
 @api_view(['POST'])
-def comentario_create(request): 
-    print(request.data)
-    comentarioCreateSerializer = ComentarioSerializerCreate(data=request.data)
-    if comentarioCreateSerializer.is_valid():
-        try:
-            comentarioCreateSerializer.save()
-            return Response("comentario CREADO", status=status.HTTP_200_OK)
-        except serializers.ValidationError as error:
-            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as error:
-            print(repr(error))
-            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+def comentario_create(request):
+    if(request.user.has_perm("fitness.add_comentario")):
+        comentarioCreateSerializer = ComentarioSerializerCreate(data=request.data)
+        if comentarioCreateSerializer.is_valid():
+            try:
+                comentarioCreateSerializer.save()
+                return Response("comentario CREADO", status=status.HTTP_200_OK)
+            except serializers.ValidationError as error:
+                return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as error:
+                print(repr(error))
+                return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(comentarioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(comentarioCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response("NO TIENE PERMISO", status=status.HTTP_401_UNAUTHORIZED)
     
 @api_view(['PUT'])
 def comentario_editar(request,comentario_id):
@@ -446,3 +448,11 @@ def obtener_usuario_token(request,token):
     usuario = Usuario.objects.get(id=ModeloToken.user_id)
     serializer = UsuarioSerializer(usuario)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def obtener_calorias_usuario(request):
+    if(request.user.has_perm("fitness.view_historialejercicio")):
+        sumatorio = HistorialEjercicio.objects
+        return Response(sumatorio)
+    else:
+        return Response("NO TIENE PERMISO", status=status.HTTP_401_UNAUTHORIZED)
