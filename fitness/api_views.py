@@ -287,13 +287,13 @@ def entrenamiento_eliminar(request,entrenamiento_id):
 
 @api_view(['GET'])
 def comentario_list(request):
-    ejercicios = Comentario.objects.all()
-    serializer = ComentarioMejoradoSerializer(ejercicios, many=True)
+    comentarios = Comentario.objects.select_related('usuario','entrenamiento')
+    serializer = ComentarioMejoradoSerializer(comentarios, many=True)
     return Response(serializer.data)
 
 @api_view(['GET']) 
 def comentario_obtener(request,comentario_id):
-    comentario = Entrenamiento.objects.select_related('usuario')
+    comentario = Comentario.objects.select_related('usuario','entrenamiento')
     comentario = comentario.get(id=comentario_id)
     serializer = ComentarioMejoradoSerializer(comentario)
     return Response(serializer.data)
@@ -400,6 +400,8 @@ def comentario_eliminar(request,comentario_id):
         return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
+#REGISTRO:
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 

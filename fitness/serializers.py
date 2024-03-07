@@ -128,7 +128,7 @@ class EjercicioSerializerActualizarNombre(serializers.ModelSerializer):
 
 class EntrenamientoEjercicioSerializer(serializers.ModelSerializer):
     ejercicio = EjercicioSerializer()
-    class MEta:
+    class Meta:
         model = EntrenamientoEjercicio
         fields = '__all__'
 
@@ -137,17 +137,11 @@ class EntrenamientoSerializer(serializers.ModelSerializer):
         model = Entrenamiento
         fields = '__all__'
         
-class EntrenamientoEjercicioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EntrenamientoEjercicio
-        fields = '__all__'
-        
 class EntrenamientoMejoradoSerializer(serializers.ModelSerializer):
     
     usuario = UsuarioSerializer()
     
-    # No es necesario especificar source para el campo 'ejercicios'.
-    ejercicios = EjercicioSerializer(read_only=True,many=True)
+    ejercicios = EntrenamientoEjercicioSerializer(read_only=True,source='entrenamientoejercicio_set',many=True)
     
     tipo = serializers.CharField(source='get_tipo_display')
     
@@ -254,7 +248,7 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
                 
                 
             
-class EntrenamientoSerializerActualizarDescripcion():
+class EntrenamientoSerializerActualizarDescripcion(serializers.ModelSerializer):
     class Meta:
         model = Entrenamiento
         fields = ['descripcion']
@@ -282,7 +276,6 @@ class ComentarioMejoradoSerializer(serializers.ModelSerializer):
         fields = ['texto','fecha','usuario','entrenamiento']
         
 class ComentarioSerializerCreate(serializers.ModelSerializer):
-    
     class Meta:
         model = Comentario
         fields = ['usuario','entrenamiento','texto','fecha'] 
@@ -325,13 +318,15 @@ class ComentarioSerializerCreate(serializers.ModelSerializer):
 
     def create(self, validated_data):
         comentario = Comentario.objects.create(
-            texto=validated_data['texto'],
-            fecha=validated_data['fecha'],
+            
             usuario=validated_data['usuario'],  # Asignar el ID del usuario
-            entrenamiento=validated_data['entrenamiento']  # Asignar el ID del entrenamiento
+            entrenamiento=validated_data['entrenamiento'], # Asignar el ID del entrenamiento
+            texto=validated_data['texto'],
+            fecha=validated_data['fecha']
         )
         return comentario
     def update(self,instance,validated_data):
+        
         instance.usuario = validated_data['usuario']
         instance.entrenamiento = validated_data['entrenamiento']
         instance.texto = validated_data['texto']
@@ -346,7 +341,7 @@ class ComentarioSerializerActualizarTexto():
         fields = ['texto']
     
     def validate_texto(self,texto):
-        comentarioNombre = Ejercicio.objects.filter(texto=texto).first()
+        comentarioNombre = Comentario.objects.filter(texto=texto).first()
         if(not comentarioNombre is None and comentarioNombre.id != self.instance.id):
             raise serializers.ValidationError('Texto fallido')
         return texto
