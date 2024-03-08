@@ -225,7 +225,7 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         return ejercicio
     
     def update(self,instance, validated_data):
-        ejercicios = self.initial_dta['ejercicios']
+        ejercicios = self.initial_data['ejercicios']
         if len(ejercicios)< 1:
             raise serializers.ValidationError(
                 {'ejercicios':'Debe seleccionar al menos un ejercico'
@@ -236,16 +236,14 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         instance.descripcion = validated_data['descripcion']
         instance.duracion = validated_data['duracion']
         instance.tipo = validated_data['tipo']
+        instance.usuario = validated_data['usuario']
         instance.save()
         
-        #Actualizamos los usuarios asociados al entrenamiento:
-        instance.usuarios.set(validated_data['usuarios'])
-
         #Actualizamos los ejercicios que es una relación ManytoMany y tabla intermedia, se eliminan clear():
         instance.ejercicios.clear()
         for ejercicio in ejercicios:
-            modeloEntrenamientoEjercicio =EntrenamientoEjercicio.objects.get(id=ejercicio)
-            EntrenamientoEjercicio.objects.create(categoria=modeloEntrenamientoEjercicio,ejercicio=instance) 
+            modeloEjercicio =Ejercicio.objects.get(id=ejercicio)
+            EntrenamientoEjercicio.objects.create(entrenamiento=instance,ejercicio=modeloEjercicio) 
         
         return instance
                 

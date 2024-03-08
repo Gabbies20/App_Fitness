@@ -241,6 +241,7 @@ def entrenamiento_create(request):
             print(repr(error))
             return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
+        print(repr(entrenamientoCreateSerializer.errors))
         return Response(entrenamientoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -253,10 +254,13 @@ def entrenamiento_editar(request,entrenamiento_id):
             entrenamientoCreateSerializer.save()
             return Response("Entrenamiento EDITADO")
         except serializers.ValidationError as error:
+            print(repr(error))
             return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
         except Exception as error:
+            print(repr(error))
             return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
+        print(repr(entrenamientoCreateSerializer.errors))
         return Response(entrenamientoCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PATCH'])
