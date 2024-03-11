@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from .models import *
 from .serializers import *
 from rest_framework.response import Response
@@ -14,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated
 """EJERCICIOS"""
 @api_view(['GET'])
 def ejercicio_list(request):
-    ejercicios = Ejercicio.objects.all()
+    ejercicios = Ejercicio.objects.prefetch_related('usuarios','grupos_musculares')
     serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
     return Response(serializer.data)
 
@@ -23,15 +25,17 @@ def usuarios_list(request):
     usuarios = Usuario.objects.all()
     serializer = UsuarioSerializer(usuarios, many=True)
     return Response(serializer.data)
-    
-    
+
+
+
+
 @api_view(['GET'])
 def ejercicio_buscar(request):
     #if(request.user.has_perm("biblioteca.view_libro")):
         formulario = BusquedaEjercicioForm(request.query_params)
         if(formulario.is_valid()):
             texto = formulario.data.get('textoBusqueda')
-            ejercicios = Ejercicio.objects.prefetch_related("usuarios")
+            ejercicios = Ejercicio.objects.prefetch_related("usuarios","grupos_musculares")
             ejercicios = ejercicios.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
             serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
             return Response(serializer.data)
@@ -47,7 +51,7 @@ def ejercicio_buscar_avanzado(request):
         formulario = BusquedaAvanzadaEjercicioForm(request.query_params)
         if formulario.is_valid():
             texto = formulario.cleaned_data.get('textoBusqueda')
-            QSEjercicios = Ejercicio.objects.prefetch_related('usuarios')
+            QSEjercicios = Ejercicio.objects.prefetch_related('usuarios','grupos_musculares')
             #Obtenemos los filtros:
             textoBusqueda = formulario.cleaned_data.get('textoBusqueda')
             descripcion = formulario.cleaned_data.get('descripcion')
@@ -80,7 +84,7 @@ def ejercicio_create(request):
     
     # Verifica si los datos son válidos según el serializador
     if ejercicio_create_serializer.is_valid():
-        # Intenta guardar el libro
+        # Intenta guardar el ejercicio
         try:
             ejercicio_create_serializer.save()
             # Si se guarda correctamente, devuelve una respuesta exitosa
@@ -404,6 +408,131 @@ def comentario_eliminar(request,comentario_id):
         return Response("comentario ELIMINADO")
     except Exception as error:
         return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+
+# api_view(['GET'])
+# def ejercicios_entrenamiento(request,entrenamiento_id):
+#     entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+#     ejercicios = entrenamiento.objects.all()
+#     #Los serializamos:
+#     serializer = EjercicioMejoradoSerializer(ejercicios,many=True)
+#     return (serializer.data)
+    
+
+
+
+#VISTAS DE LAS FUNCIONALIDADES DE MIS COMPAÑEROS:
+
+@api_view(['GET'])
+def ejercicios_entrenamiento(request, entrenamiento_id):
+    entrenamiento = Entrenamiento.objects.get(id=entrenamiento_id)
+    ejercicios = entrenamiento.ejercicios.all()
+    serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
+    return Response(serializer.data)
+
+    
+@api_view(['GET'])
+def grupos_musculares_list(request):
+    grupos_musculares = GrupoMuscular.objects.all()
+    serializer = GrupoMuscularSerializer(grupos_musculares,many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def obtener_historial(request,usuario_id):
+    usuario = Usuario.objects.get(id=usuario_id)
+    historial_personalizado = HistorialEjercicio.objects.filter(usuario=usuario)
+    serializer = HistorialEjercicioSerializer(historial_personalizado, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def obtener_perfil_usuario(request,usuario_id):
+    usuario = Usuario.objects.get(id=usuario_id)
+    perfil = Perfil_de_Usuario.objects.filter(usuario=usuario)
+    serializer = PerfilUsuarioSerializer(perfil, many=True)
+    return Response(serializer.data)
+    
+@api_view(['GET'])
+def perfil_list(request):
+    perfiles = Perfil_de_Usuario.objects.all()
+    serializer = PerfilUsuarioSerializer(perfiles, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET']) 
+def ejercicio_obtener(request,ejercicio_id):
+    ejercicio = Ejercicio.objects.prefetch_related("usuarios")
+    ejercicio = ejercicio.get(id=ejercicio_id)
+    serializer = EjercicioMejoradoSerializer(ejercicio)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def obtener_usuario(request,usuario_id):
+    usuario = Usuario.objects.get(id=usuario_id)
+    serializer = UsuarioSerializer(usuario)
+    return Response(serializer.data)
+
+
+@api_view(['PUT'])
+def perfil_editar(request,usuario_id):
+    perfil = Perfil_de_Usuario.objects.get(id=usuario_id)
+    perfilCreateSerializer = PerfilUsuarioActualizarSerializer(data=request.data,instance=perfil)
+    if perfilCreateSerializer.is_valid():
+        try:
+            perfilCreateSerializer.save()
+            return Response("Libro EDITADO")
+        except serializers.ValidationError as error:
+            return Response(error.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            return Response(repr(error), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(perfilCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

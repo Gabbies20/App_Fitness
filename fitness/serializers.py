@@ -1,12 +1,26 @@
+import re
 from rest_framework import serializers
 from .models import *
 from django.utils import timezone
 
 
+
+class MusculoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Musculo
+        fields = '__all__'
+
+class GrupoMuscularSerializer(serializers.ModelSerializer):
+    musculos = MusculoSerializer(many=True)
+    class Meta:
+        model = GrupoMuscular
+        fields = ('id','nombre','nivel','musculos')
+
+
 class EjercicioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ejercicio
-        fields = ['id','nombre','descripcion','tipo_ejercicio','usuarios']
+        fields = ['id','nombre','descripcion','tipo_ejercicio','usuarios','grupos_musculares']
 
 class UsuarioSerializer(serializers.ModelSerializer):
     
@@ -23,9 +37,10 @@ class HistorialEjercicioSerializer(serializers.ModelSerializer):
         
 class EjercicioMejoradoSerializer(serializers.ModelSerializer):
     usuarios = HistorialEjercicioSerializer(read_only=True,source='historialejercicio_set',many=True)
+    grupos_musculares = GrupoMuscularSerializer(many=True)
     class Meta:
         model = Ejercicio
-        fields =('id','nombre','descripcion','tipo_ejercicio','usuarios')
+        fields =('id','nombre','descripcion','tipo_ejercicio','usuarios','grupos_musculares')
         #fields = '__all__'
     
     
@@ -34,7 +49,7 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = Ejercicio
         fields = ['nombre','descripcion','tipo_ejercicio',
-                  'usuarios']
+                  'usuarios','grupos_musculares']
     
     def validate_nombre(self,nombre):
         ejercicioNombre = Ejercicio.objects.filter(nombre=nombre).first()
@@ -44,8 +59,6 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
                  pass
              else:
                 raise serializers.ValidationError('Ya existe un ejercicio con ese nombre')
-            
-        
         return nombre
     
     def validate_descripcion(self,descripcion):
@@ -54,42 +67,34 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
         return descripcion
     
     def validate_tipo_ejercicio(self, tipo_ejercicio):
-        # Verifica si el campo tipo_ejercicio está vacío
         if not tipo_ejercicio:
             raise serializers.ValidationError('El campo tipo_ejercicio no puede estar vacío')
-
-        # Verifica si el campo tipo_ejercicio contiene solo letras
         if not tipo_ejercicio.isalpha():
-            raise serializers.ValidationError('El campo tipo_ejercicio solo puede contener letras')
-
+            raise serializers.ValidationError('El tipo de ejercicio solo puede contener letras')
         return tipo_ejercicio
-    #def validate_fecha_publicacion(self,fecha_publicacion):
-     #   fechaHoy = date.today()
-      #  if fechaHoy >= fecha_publicacion:
-       #     raise serializers.ValidationError('La fecha de publicacion debe ser mayor a Hoy')
-       # return fecha_publicacion
-    
-    
+       
+    def validate_grupos_musculares(self, grupos_musculares):
+        if not grupos_musculares:
+            raise serializers.ValidationError("Debe seleccionar al menos un grupo muscular.")
+        return grupos_musculares
+        
     def create(self, validated_data):
         usuarios = self.initial_data['usuarios']
         if len(usuarios) < 1:
-            raise serializers.ValidationError(
-                    {'usuarios':
-                    ['Debe seleccionar al menos un usuarios.']
-                    })
+            raise serializers.ValidationError({'usuarios': ['Debe seleccionar al menos un usuario.']})
+    
         
         ejercicio = Ejercicio.objects.create(
-            nombre = validated_data["nombre"],
-            descripcion = validated_data["descripcion"],
-            tipo_ejercicio = validated_data["tipo_ejercicio"]
+            nombre = validated_data['nombre'],
+            descripcion = validated_data['descripcion'],
+            tipo_ejercicio = validated_data['tipo_ejercicio']  
         )
-        #libro.autores.set(validated_data["autores"])
-       
-        for usuario in usuarios:
-            modeloUsuario = Usuario.objects.get(id=usuario)
-            HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=ejercicio)
+        ejercicio.grupos_musculares.set(validated_data['grupos_musculares'])
+        for usuario_id in usuarios:
+            usuario = Usuario.objects.get(id=usuario_id)
+            HistorialEjercicio.objects.create(usuario=usuario, ejercicio=ejercicio)
         return ejercicio
-    
+        
     def update(self, instance, validated_data):
         usuarios = self.initial_data['usuarios']
         if len(usuarios) < 2:
@@ -102,8 +107,8 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
         instance.descripcion = validated_data["descripcion"]
         instance.tipo_ejercicio = validated_data["tipo_ejercicio"]
         instance.save()
-        
-        #instance.autores.set(validated_data["autores"])
+        print(instance)
+        instance.grupos_musculares.set(validated_data["grupos_musculares"])
 
         instance.usuarios.clear()
         for usuario in usuarios:
@@ -222,11 +227,11 @@ class EntrenamientoSerializerCreate(serializers.ModelSerializer):
         for ejercicio in ejercicios:
             ejercicio = Ejercicio.objects.get(id=ejercicio)
             EntrenamientoEjercicio.objects.create(ejercicio=ejercicio,entrenamiento=entrenamiento)
-        return ejercicio
+        return entrenamiento
     
     def update(self,instance, validated_data):
         ejercicios = self.initial_data['ejercicios']
-        if len(ejercicios)< 1:
+        if len(ejercicios) < 1:
             raise serializers.ValidationError(
                 {'ejercicios':'Debe seleccionar al menos un ejercico'
                     
@@ -348,6 +353,43 @@ class ComentarioSerializerActualizarTexto(serializers.ModelSerializer):
         return texto
 
 
+
+    
+    
+class PerfilUsuarioSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
+    class Meta:
+        model = Perfil_de_Usuario
+        fields = ['usuario','edad','altura','peso','foto_perfil']
+        
+        
+class PerfilUsuarioActualizarSerializer():
+    class Meta:
+        model = Perfil_de_Usuario
+        fields = ['usuario','edad','altura','peso','gmail']
+    
+    def validate_edad(self, edad):
+        if edad <= 0:
+            raise serializers.ValidationError("La edad debe ser mayor que cero.")
+        return edad
+
+    def validate_altura(self, altura):
+        if altura <= 0 or altura > 300:
+            raise serializers.ValidationError("La altura debe estar entre 0 y 300.")
+        return altura
+
+    def validate_peso(self, peso):
+        if peso <= 0 or peso > 1000:
+            raise serializers.ValidationError("El peso debe estar entre 0 y 1000.")
+        return peso
+
+    def validate_gmail(self, gmail):
+        # Validar el formato del correo electrónico
+        if gmail:
+            if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', gmail):
+                raise serializers.ValidationError("El correo electrónico no tiene un formato válido.")
+        return gmail
+    
 class UsuarioSerializerRegistro(serializers.Serializer):
     username = serializers.CharField()
     password1 = serializers.CharField()
@@ -355,8 +397,4 @@ class UsuarioSerializerRegistro(serializers.Serializer):
     email = serializers.EmailField()
     rol = serializers.IntegerField()
     
-    def validate_username(self,username):
-        usuario = Usuario.objects.filter(username=username).first()
-        if(not usuario is None):
-            raise serializers.ValidationError('Ya existe un usuario con ese nombre')
-        return username
+    

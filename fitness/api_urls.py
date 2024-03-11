@@ -30,6 +30,17 @@ urlpatterns = [
     path('comentarios/editar/<int:comentario_id>',comentario_editar),
     path('comentarios/actualizar/nombre/<int:comentario_id>',comentario_actualizar_nombre),
     path('comentarios/eliminar/<int:comentario_id>',comentario_eliminar,name='comentario_eliminar'),
+    
+    
+    #FUNCIONALIDADES DE MIS COMPAÑEROS:
+    path('entrenamiento-ejercicios/<int:entrenamiento_id>',ejercicios_entrenamiento),
+    path('grupos-musculares',grupos_musculares_list),
+    #path('historiales',obtener_historial),
+    path('historiales/<int:usuario_id>',obtener_historial),
+    path('perfil-usuario/<int:usuario_id>',obtener_perfil_usuario),
+    path('perfiles',perfil_list),
+    path('usuario/<int:usuario_id>',obtener_usuario),
+    
     #REGISTRO:
     path('registrar/usuario',registrar_usuario.as_view()),
     path('usuario/token/<str:token>',obtener_usuario_token),

@@ -4,6 +4,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+
 class Usuario(AbstractUser):
     ADMINISTRADOR = 1
     CLIENTE = 2
@@ -17,6 +19,7 @@ class Usuario(AbstractUser):
     rol  = models.PositiveSmallIntegerField(
         choices=ROLES,default=1
     )
+    
     
 class Entrenador(models.Model):
     usuario = models.OneToOneField(Usuario, 
@@ -40,12 +43,6 @@ class Suscripcion(models.Model):
     numero_cuenta = models.CharField(max_length=20)
     titular = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     
-class Cliente(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    suscripcion = models.OneToOneField(Suscripcion, 
-                                       on_delete=models.CASCADE,
-                                       null=True, blank=True)
-    
     
     def __str__(self):
         return f"Cliente: {self.usuario.username}"
@@ -62,20 +59,64 @@ class Perfil_de_Usuario(models.Model):
         return  f"Perfil de {self.usuario.username}, Edad: {self.edad}, Altura: {self.altura}, Peso: {self.peso}"
     
     
+
+class Musculo(models.Model):
+    nombre = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.nombre
+    
+class GrupoMuscular(models.Model):
+    NIVEL_CHOICES = (
+        ('GRANDE', 'Grupos musculares grandes'),
+        ('MEDIANO', 'Grupos musculares medianos'),
+        ('PEQUEÑO', 'Grupos musculares pequeños'),
+    )
+    
+    nombre = models.CharField(max_length=50)
+    nivel = models.CharField(max_length=10, choices=NIVEL_CHOICES)
+    musculos = models.ManyToManyField(Musculo)
+
+    def __str__(self):
+        return self.nombre
+
+    
 class Ejercicio(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField()
-    tipo_ejercicio = models.CharField(max_length=20)
+    TIPOS = [
+        ('AER','Aeróbico'),
+        ('FUE','Fuerza o anaeróbico'),
+        ('FUN','Funcional'),
+        ('HIT','Hit'),
+        ('POT','Potencia'),
+    ]
+    tipo_ejercicio = models.CharField(max_length=3,
+                            choices=TIPOS,
+                            default='HIT',
+                            )
     usuarios = models.ManyToManyField(Usuario, through='HistorialEjercicio')
+    grupos_musculares = models.ManyToManyField(GrupoMuscular)
+    imagen = models.FileField(null=True)
     #usuarios_votos = models.ManyToManyField(Usuario,through='Voto',related_name='usuarios_votos')
-
-    def __str__(self) -> str:
+    
+    def __str__(self):
         return self.nombre
+   
+
+class Cliente(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    ejercicios_favoritos = models.ManyToManyField(Ejercicio, through='Favoritos', related_name='ejercicios_favoritos_cliente')
+
+
+class Favoritos(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    ejercicio = models.ForeignKey(Ejercicio, on_delete=models.CASCADE)
+
 
 class CategoriaEjercicio(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
-    grupo_muscular_principal = models.CharField(max_length=50)
     ejercicios = models.ManyToManyField('Ejercicio')
     
     def __str__(self) -> str:
@@ -83,11 +124,14 @@ class CategoriaEjercicio(models.Model):
     
 class Entrenamiento(models.Model):
     TIPOS = [
-        ('AER','Aeróbico'),
+        ('RES','Resistencia'),
         ('FUE','Fuerza o anaeróbico'),
-        ('FUN','Funcional'),
+        ('VEL','Velocidad'),
         ('HIT','Hit'),
         ('POT','Potencia'),
+        ('POT','Potencia'),
+        ('GAP','GAP'),
+        ('ZUM','Zumba'),
     ]
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=200)
@@ -113,7 +157,7 @@ class HistorialEjercicio(models.Model):
     duracion = models.IntegerField(default=0)
     repeticiones = models.IntegerField(default=0)
     peso = models.FloatField(default=0)
-    #calorias = models.FloatField(default=0)
+    calorias = models.FloatField(default=0)
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

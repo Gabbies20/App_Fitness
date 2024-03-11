@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Usuario,Perfil_de_Usuario,Ejercicio,CategoriaEjercicio,Entrenamiento,EntrenamientoEjercicio,HistorialEjercicio,Comentario,PlanEntrenamiento,EntrenamientoPlan,SeguimientoPlanEntrenamiento,RutinaDiaria,RutinaEjercicio,Voto,Suscripcion
+from .models import Usuario,Perfil_de_Usuario,Ejercicio,CategoriaEjercicio,Entrenamiento,EntrenamientoEjercicio,HistorialEjercicio,Comentario,PlanEntrenamiento,EntrenamientoPlan,SeguimientoPlanEntrenamiento,RutinaDiaria,RutinaEjercicio,Voto,Suscripcion,Musculo,GrupoMuscular,Cliente,Favoritos,Entrenador
 
 # Register your models here.
 admin.site.register(Usuario)
@@ -17,3 +17,9 @@ admin.site.register(RutinaDiaria)
 admin.site.register(RutinaEjercicio)
 admin.site.register(Voto)
 admin.site.register(Suscripcion)
+#Modelos agregados para las didtintas funcionalidades.
+admin.site.register(Musculo)
+admin.site.register(GrupoMuscular)
+admin.site.register(Favoritos)
+admin.site.register(Cliente)
+admin.site.register(Entrenador)
