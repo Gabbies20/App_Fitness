@@ -35,8 +35,8 @@ def ejercicio_buscar(request):
         formulario = BusquedaEjercicioForm(request.query_params)
         if(formulario.is_valid()):
             texto = formulario.data.get('textoBusqueda')
-            ejercicios = Ejercicio.objects.prefetch_related("usuarios","grupos_musculares")
-            ejercicios = ejercicios.filter(Q(nombre__contains=texto) | Q(descripcion__contains=texto)).all()
+            ejercicios = Ejercicio.objects.prefetch_related("usuarios", "grupos_musculares")
+            ejercicios = ejercicios.filter(grupos_musculares__musculos__nombre__contains=texto)
             serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
             return Response(serializer.data)
         else:
@@ -442,10 +442,13 @@ def grupos_musculares_list(request):
 
 @api_view(['GET'])
 def obtener_historial(request,usuario_id):
-    usuario = Usuario.objects.get(id=usuario_id)
-    historial_personalizado = HistorialEjercicio.objects.filter(usuario=usuario)
-    serializer = HistorialEjercicioSerializer(historial_personalizado, many=True)
-    return Response(serializer.data)
+    if(request.user.has_perm("fitness.view_historialejercicio")):
+        usuario = Usuario.objects.get(id=usuario_id)
+        historial_personalizado = HistorialEjercicio.objects.filter(usuario=usuario)
+        serializer = HistorialEjercicioSerializer(historial_personalizado, many=True)
+        return Response(serializer.data)
+    else:
+        return Response("NO TIENE PERMISO", status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
 def obtener_perfil_usuario(request,usuario_id):
@@ -491,9 +494,17 @@ def perfil_editar(request,usuario_id):
         return Response(perfilCreateSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
+@api_view(['GET'])
+def ejercicio_buscar_musculos(request):
+    formulario = BusquedaEjercicioForm(request.query_params)
+    if(formulario.is_valid()):
+        texto = formulario.data.get('textoBusqueda')
+        ejercicios = Ejercicio.objects.prefetch_related("usuarios","grupos_musculares")
+        ejercicios = ejercicios.filter(grupos_musculares__musculos__nombre__icontains=texto).distinct()
+        serializer = EjercicioMejoradoSerializer(ejercicios, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(formulario.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -581,6 +592,7 @@ def obtener_usuario_token(request,token):
     usuario = Usuario.objects.get(id=ModeloToken.user_id)
     serializer = UsuarioSerializer(usuario)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def obtener_calorias_usuario(request):

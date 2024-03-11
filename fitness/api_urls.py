@@ -37,10 +37,10 @@ urlpatterns = [
     path('grupos-musculares',grupos_musculares_list),
     #path('historiales',obtener_historial),
     path('historiales/<int:usuario_id>',obtener_historial),
-    path('perfil-usuario/<int:usuario_id>',obtener_perfil_usuario),
+    path('perfil-usuario/<int:usuario_id>',obtener_perfil_usuario,name="perfil-usuario"),
     path('perfiles',perfil_list),
     path('usuario/<int:usuario_id>',obtener_usuario),
-    
+    path('ejercicios/musculos/busqueda',ejercicio_buscar_musculos),
     #REGISTRO:
     path('registrar/usuario',registrar_usuario.as_view()),
     path('usuario/token/<str:token>',obtener_usuario_token),

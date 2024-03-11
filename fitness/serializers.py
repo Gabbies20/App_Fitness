@@ -390,6 +390,9 @@ class PerfilUsuarioActualizarSerializer():
                 raise serializers.ValidationError("El correo electrónico no tiene un formato válido.")
         return gmail
     
+    
+    
+    
 class UsuarioSerializerRegistro(serializers.Serializer):
     username = serializers.CharField()
     password1 = serializers.CharField()
