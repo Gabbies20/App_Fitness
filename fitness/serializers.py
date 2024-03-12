@@ -90,6 +90,8 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
             tipo_ejercicio = validated_data['tipo_ejercicio']  
         )
         ejercicio.grupos_musculares.set(validated_data['grupos_musculares'])
+        
+        
         for usuario_id in usuarios:
             usuario = Usuario.objects.get(id=usuario_id)
             HistorialEjercicio.objects.create(usuario=usuario, ejercicio=ejercicio)
@@ -107,14 +109,38 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
         instance.descripcion = validated_data["descripcion"]
         instance.tipo_ejercicio = validated_data["tipo_ejercicio"]
         instance.save()
-        print(instance)
+        
         instance.grupos_musculares.set(validated_data["grupos_musculares"])
-
+        instance.save()
+        
         instance.usuarios.clear()
         for usuario in usuarios:
             modeloUsuario = Usuario.objects.get(id=usuario)
             HistorialEjercicio.objects.create(usuario=modeloUsuario,ejercicio=instance)
         return instance
+    
+    #    def update(self,instance, validated_data):
+    #     ejercicios = self.initial_data['ejercicios']
+    #     if len(ejercicios) < 1:
+    #         raise serializers.ValidationError(
+    #             {'ejercicios':'Debe seleccionar al menos un ejercico'
+                    
+    #             })
+            
+    #     instance.nombre = validated_data['nombre']
+    #     instance.descripcion = validated_data['descripcion']
+    #     instance.duracion = validated_data['duracion']
+    #     instance.tipo = validated_data['tipo']
+    #     instance.usuario = validated_data['usuario']
+    #     instance.save()
+        
+    #     #Actualizamos los ejercicios que es una relación ManytoMany y tabla intermedia, se eliminan clear():
+    #     instance.ejercicios.clear()
+    #     for ejercicio in ejercicios:
+    #         modeloEjercicio =Ejercicio.objects.get(id=ejercicio)
+    #         EntrenamientoEjercicio.objects.create(entrenamiento=instance,ejercicio=modeloEjercicio) 
+        
+    #     return instance
 
 class EjercicioSerializerActualizarNombre(serializers.ModelSerializer):
  
