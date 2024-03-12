@@ -108,8 +108,6 @@ class EjercicioSerializerCreate(serializers.ModelSerializer):
         instance.nombre = validated_data["nombre"]
         instance.descripcion = validated_data["descripcion"]
         instance.tipo_ejercicio = validated_data["tipo_ejercicio"]
-        instance.save()
-        
         instance.grupos_musculares.set(validated_data["grupos_musculares"])
         instance.save()
         
